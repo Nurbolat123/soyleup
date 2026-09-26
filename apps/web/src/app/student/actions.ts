@@ -37,9 +37,9 @@ export async function createLinkCode(): Promise<LinkCode> {
 
 export async function setOwnConsent(type: ConsentType, grant: boolean) {
   if (grant) {
-    await apiFetch("/users/consents", { method: "POST", body: JSON.stringify({ type }) });
+    await apiFetch("/users/me/consents", { method: "POST", body: JSON.stringify({ type }) });
   } else {
-    await apiFetch(`/users/consents/${type}`, { method: "DELETE" });
+    await apiFetch(`/users/me/consents/${type}`, { method: "DELETE" });
   }
   revalidatePath("/student");
 }
