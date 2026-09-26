@@ -260,6 +260,8 @@ req GET /curator/review-queue 403 "$PTOKEN" >/dev/null   # не куратор
 [[ $(req GET /learning/homework 200 "$PTOKEN" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>console.log(JSON.parse(s).some(h=>h.id==="'"$HWID"'")))') == true ]]
 req POST /learning/homework/$HWID/submit 201 "$PTOKEN" '{"text":"Hello, my name is...","audioKey":"fake/hw.webm","integritySignals":{"tabAwayCount":1,"fullscreenExitCount":0,"pasteDetected":false}}' >/dev/null
 [[ $(req GET /curator/review-queue 200 "$HWCUR" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>console.log(JSON.parse(s).some(i=>i.type==="HOMEWORK"&&i.id==="'"$HWID"'")))') == true ]]
+[[ $(req GET /notifications 200 "$HWCUR" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>console.log(JSON.parse(s).items.some(n=>n.type==="HOMEWORK_SUBMITTED")))') == true ]]   # куратор уведомлён о сдаче ДЗ
+req GET /notifications 200 "$OTHERCURTOKEN" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{if(JSON.parse(s).items.some(n=>n.type==="HOMEWORK_SUBMITTED"))process.exit(1)})'   # чужому куратору — не приходит
 req GET /curator/review-queue 200 "$OTHERCURTOKEN" >/dev/null   # чужой куратор — просто пустая своя очередь, не ошибка
 req GET /curator/homework/$HWID/listen 404 "$OTHERCURTOKEN" >/dev/null   # чужой ученик — не видно
 SPEAK_BEFORE=$(req GET /curator/students/$PID 200 "$HWCUR" | json studentProfile.speakingScore)
@@ -374,7 +376,7 @@ req POST /notifications/$NID/read 201 "$NOTIFPARENT" >/dev/null
 [[ $(req GET /notifications 200 "$NOTIFPARENT" | json unread) == 0 ]]
 
 SETTINGS=$(req GET /notifications/settings 200 "$NOTIFPARENT")
-[[ $(echo "$SETTINGS" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>console.log(JSON.parse(s).length))') == 6 ]]
+[[ $(echo "$SETTINGS" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>console.log(JSON.parse(s).length))') == 7 ]]
 req PATCH /notifications/settings/LESSON_COMPLETED 200 "$NOTIFPARENT" '{"inApp":false,"email":false,"telegram":false}' >/dev/null
 
 NLID2=$(req POST /admin/content/modules/$NMID/lessons 201 "$ADMIN" '{"title":"Notif lesson 2","order":1}' | json id)

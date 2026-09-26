@@ -51,4 +51,13 @@ export class AccessService {
     });
     return rows.map((r) => r.parentId);
   }
+
+  /** Активные кураторы ученика — получатели уведомлений о том, что нужно проверить. */
+  async getActiveCuratorIds(studentId: string): Promise<string[]> {
+    const rows = await this.db.query.curatorStudents.findMany({
+      where: and(eq(curatorStudents.studentId, studentId), eq(curatorStudents.active, true)),
+      columns: { curatorId: true },
+    });
+    return rows.map((r) => r.curatorId);
+  }
 }

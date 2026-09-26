@@ -127,7 +127,18 @@ export class HomeworkService {
       })
       .where(eq(homework.id, homeworkId))
       .returning();
+    await this.notifySubmitted(studentId, row.title);
     return updated;
+  }
+
+  private async notifySubmitted(studentId: string, title: string) {
+    const curatorIds = await this.access.getActiveCuratorIds(studentId);
+    if (!curatorIds.length) return;
+    await this.events.emit('HOMEWORK_SUBMITTED', curatorIds, {
+      title: 'Домашнее задание на проверку',
+      body: `«${title}» — ученик отправил ответ, нужна проверка.`,
+      meta: { studentId },
+    });
   }
 
   async getListenUrl(actor: AuthUser, homeworkId: string) {

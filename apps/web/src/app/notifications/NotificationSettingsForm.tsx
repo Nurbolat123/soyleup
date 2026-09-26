@@ -11,10 +11,12 @@ const TYPE_LABEL: Record<NotificationType, string> = {
   REVIEW_CREATED: "Куратор проверил работу",
   SCORE_DROPPED: "Балл по навыку снизился",
   LESSON_MISSED: "Пропущен день занятий",
+  HOMEWORK_SUBMITTED: "Ученик сдал домашнее задание",
 };
 
 const TYPE_ORDER: NotificationType[] = [
   "LESSON_COMPLETED", "ASSIGNMENT_CREATED", "ASSIGNMENT_OVERDUE", "REVIEW_CREATED", "SCORE_DROPPED", "LESSON_MISSED",
+  "HOMEWORK_SUBMITTED",
 ];
 
 export function NotificationSettingsForm({ initial }: { initial: NotificationSettingRow[] }) {

@@ -459,7 +459,8 @@ export interface PlacementSpeakingRecording {
 
 // ── Уведомления и отчёты (Шаг 6) ────────────────────────
 export type NotificationType =
-  | "LESSON_COMPLETED" | "ASSIGNMENT_CREATED" | "ASSIGNMENT_OVERDUE" | "REVIEW_CREATED" | "SCORE_DROPPED" | "LESSON_MISSED";
+  | "LESSON_COMPLETED" | "ASSIGNMENT_CREATED" | "ASSIGNMENT_OVERDUE" | "REVIEW_CREATED" | "SCORE_DROPPED" | "LESSON_MISSED"
+  | "HOMEWORK_SUBMITTED";
 
 export interface AppNotification {
   id: string;
