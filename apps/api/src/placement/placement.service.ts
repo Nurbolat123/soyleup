@@ -1,5 +1,6 @@
 import { BadRequestException, ForbiddenException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { and, count, eq, inArray, isNull, notInArray, sql } from 'drizzle-orm';
+import { AccessService } from '../common/access.service';
 import { AuthUser } from '../common/auth.decorators';
 import { gradeAnswer, stripAnswer } from '../common/exerciseContent';
 import { levelMidpointScore, QUESTION_LEVELS, QuestionLevel } from '../common/levels';
@@ -7,6 +8,7 @@ import { DB, Database } from '../db/db.module';
 import {
   consents, placementAnswers, placementAttempts, PlacementAttempt, questionBank, Skill, skillSnapshots, studentProfiles,
 } from '../db/schema';
+import { NotificationEventsService } from '../notifications/notification-events.service';
 import { SubmitAnswerDto, SubmitSpeakingDto } from './dto/placement.dto';
 
 const AUTO_SKILLS: Skill[] = ['GRAMMAR', 'VOCABULARY', 'READING', 'LISTENING'];
@@ -27,7 +29,11 @@ type ResultsShape = Partial<Record<Skill, SkillResult | { status: 'PENDING' }>> 
 
 @Injectable()
 export class PlacementService {
-  constructor(@Inject(DB) private readonly db: Database) {}
+  constructor(
+    @Inject(DB) private readonly db: Database,
+    private readonly access: AccessService,
+    private readonly events: NotificationEventsService,
+  ) {}
 
   async startAttempt(actor: AuthUser | undefined) {
     let includeSpeaking = false;
@@ -164,7 +170,18 @@ export class PlacementService {
 
     const results: ResultsShape = { ...(attempt.results as ResultsShape | null), SPEAKING: { status: 'PENDING' } };
     const finalResults = await this.finalizeAttempt({ ...attempt, results });
+    await this.notifySpeakingSubmitted(actor.id);
     return { skillCompleted: true, attemptCompleted: true, results: finalResults };
+  }
+
+  private async notifySpeakingSubmitted(studentId: string) {
+    const curatorIds = await this.access.getActiveCuratorIds(studentId);
+    if (!curatorIds.length) return;
+    await this.events.emit('PLACEMENT_SPEAKING_SUBMITTED', curatorIds, {
+      title: 'Устная часть теста на проверку',
+      body: 'Ученик записал устный ответ в тесте на уровень, нужна проверка.',
+      meta: { studentId },
+    });
   }
 
   /** Анонимная попытка привязывается к аккаунту после регистрации/входа — тогда же сохраняется в профиль. */

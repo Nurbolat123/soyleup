@@ -342,6 +342,7 @@ for i in 1 2; do
 done
 [[ $(req GET /placement/attempts/$AID2 200 "$PTOKEN" | json results.SPEAKING.status) == PENDING ]]
 [[ $(req GET /curator/review-queue 200 "$HWCUR" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>console.log(JSON.parse(s).some(i=>i.type==="PLACEMENT"&&i.id==="'"$AID2"'")))') == true ]]
+[[ $(req GET /notifications 200 "$HWCUR" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>console.log(JSON.parse(s).items.some(n=>n.type==="PLACEMENT_SPEAKING_SUBMITTED")))') == true ]]   # куратор уведомлён об устном ответе в тесте
 req POST /curator/placement-attempts/$AID2/review-speaking 404 "$OTHERCURTOKEN" '{"rubric":{"vocabulary":3,"grammar":3,"fluency":3,"pronunciation":3}}' >/dev/null
 req POST /curator/placement-attempts/$AID2/review-speaking 201 "$HWCUR" '{"rubric":{"vocabulary":5,"grammar":5,"fluency":5,"pronunciation":5},"comment":"Отлично"}' >/dev/null
 [[ $(req GET /curator/students/$PID 200 "$HWCUR" | json studentProfile.speakingScore) == 100 ]]
@@ -377,7 +378,7 @@ req POST /notifications/$NID/read 201 "$NOTIFPARENT" >/dev/null
 [[ $(req GET /notifications 200 "$NOTIFPARENT" | json unread) == 0 ]]
 
 SETTINGS=$(req GET /notifications/settings 200 "$NOTIFPARENT")
-[[ $(echo "$SETTINGS" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>console.log(JSON.parse(s).length))') == 8 ]]
+[[ $(echo "$SETTINGS" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>console.log(JSON.parse(s).length))') == 9 ]]
 req PATCH /notifications/settings/LESSON_COMPLETED 200 "$NOTIFPARENT" '{"inApp":false,"email":false,"telegram":false}' >/dev/null
 
 NLID2=$(req POST /admin/content/modules/$NMID/lessons 201 "$ADMIN" '{"title":"Notif lesson 2","order":1}' | json id)
