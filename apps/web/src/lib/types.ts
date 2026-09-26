@@ -12,6 +12,7 @@ export interface PublicUser {
   firstName: string;
   lastName: string | null;
   locale: string;
+  canManageContent: boolean;
   lastLoginAt: string | null;
   createdAt: string;
 }

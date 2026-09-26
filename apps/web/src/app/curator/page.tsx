@@ -37,6 +37,12 @@ export default async function CuratorPage({
   return (
     <DashboardShell role="CURATOR" name={user.firstName}>
       <div className="flex flex-col gap-8">
+        {user.canManageContent && (
+          <Link href="/admin/content" className="text-sm font-semibold text-blue">
+            Контент (курсы, словарь, банк вопросов) →
+          </Link>
+        )}
+
         <div>
           <h2 className="display text-[19px]">Очередь на проверку</h2>
           {queue.length === 0 ? (

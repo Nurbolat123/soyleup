@@ -2,7 +2,9 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestj
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthUser, CurrentUser, ReqMeta, RequestMeta, Roles } from '../common/auth.decorators';
 import { AdminService } from './admin.service';
-import { AssignCuratorDto, CreateStaffDto, ListUsersQueryDto, StudentIdParamDto, UpdateStatusDto, UserIdParamDto } from './dto/admin.dto';
+import {
+  AssignCuratorDto, CreateStaffDto, ListUsersQueryDto, StudentIdParamDto, UpdateContentAccessDto, UpdateStatusDto, UserIdParamDto,
+} from './dto/admin.dto';
 
 @ApiTags('admin')
 @ApiBearerAuth()
@@ -25,6 +27,11 @@ export class AdminController {
   @Patch('users/:id/status')
   updateStatus(@CurrentUser() user: AuthUser, @Param() params: UserIdParamDto, @Body() dto: UpdateStatusDto, @ReqMeta() meta: RequestMeta) {
     return this.admin.updateStatus(user.id, params.id, dto.status, meta.ip);
+  }
+
+  @Patch('users/:id/content-access')
+  setContentAccess(@CurrentUser() user: AuthUser, @Param() params: UserIdParamDto, @Body() dto: UpdateContentAccessDto, @ReqMeta() meta: RequestMeta) {
+    return this.admin.setContentAccess(user.id, params.id, dto.canManageContent, meta.ip);
   }
 
   @Post('curator-assignments')

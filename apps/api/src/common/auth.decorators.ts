@@ -6,6 +6,7 @@ export interface AuthUser {
   id: string;
   role: Role;
   status: UserStatus;
+  canManageContent: boolean;
 }
 
 export const IS_PUBLIC = 'auth:public';

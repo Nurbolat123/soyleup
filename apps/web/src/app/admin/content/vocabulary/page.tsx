@@ -32,7 +32,7 @@ export default async function VocabularyPage({
   const totalPages = Math.max(1, Math.ceil(list.total / list.pageSize));
 
   return (
-    <DashboardShell role="ADMIN" name={me.firstName} title="Словарь" wide>
+    <DashboardShell role={me.role} name={me.firstName} title="Словарь" wide>
       <Link href="/admin/content" className="text-sm text-muted">
         ← Контент
       </Link>

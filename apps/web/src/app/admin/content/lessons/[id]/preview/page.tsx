@@ -25,7 +25,7 @@ export default async function LessonPreviewPage({ params }: { params: Promise<{ 
   ]);
 
   return (
-    <DashboardShell role="ADMIN" name={me.firstName} title={`Предпросмотр: ${lesson.title}`} wide>
+    <DashboardShell role={me.role} name={me.firstName} title={`Предпросмотр: ${lesson.title}`} wide>
       <Link href={`/admin/content/lessons/${id}`} className="text-sm text-muted">
         ← Вернуться к редактированию
       </Link>

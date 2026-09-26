@@ -38,7 +38,7 @@ export class JwtAuthGuard implements CanActivate {
     // действуют сразу, а не после истечения токена. Позже можно кэшировать в Redis.
     const user: AuthUser | undefined = await this.db.query.users.findFirst({
       where: eq(users.id, sub),
-      columns: { id: true, role: true, status: true },
+      columns: { id: true, role: true, status: true, canManageContent: true },
     });
     if (!user || user.status === 'BLOCKED') {
       if (optional) return true;

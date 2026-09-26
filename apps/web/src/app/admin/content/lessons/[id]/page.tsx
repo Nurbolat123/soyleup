@@ -13,7 +13,7 @@ export default async function LessonBuilderPage({ params }: { params: Promise<{ 
   ]);
 
   return (
-    <DashboardShell role="ADMIN" name={me.firstName} title={lesson.title} wide>
+    <DashboardShell role={me.role} name={me.firstName} title={lesson.title} wide>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <span className="text-sm text-muted">Конструктор урока</span>
         <Link

@@ -14,7 +14,7 @@ export default async function CoursePage({ params }: { params: Promise<{ id: str
   ]);
 
   return (
-    <DashboardShell role="ADMIN" name={me.firstName} title={course.title} wide>
+    <DashboardShell role={me.role} name={me.firstName} title={course.title} wide>
       <Link href="/admin/content/courses" className="text-sm text-muted">
         ← Все курсы
       </Link>

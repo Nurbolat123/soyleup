@@ -83,6 +83,17 @@ export class AdminService {
     return { id: userId, status };
   }
 
+  async setContentAccess(adminId: string, userId: string, canManageContent: boolean, ip?: string) {
+    const user = await this.db.query.users.findFirst({ where: eq(users.id, userId), columns: { role: true } });
+    if (user?.role !== 'CURATOR') throw new BadRequestException('Content access applies to curators only');
+
+    await this.db.update(users).set({ canManageContent }).where(eq(users.id, userId));
+    await this.audit.log({
+      actorId: adminId, action: 'admin.set_content_access', entity: 'user', entityId: userId, meta: { canManageContent }, ip,
+    });
+    return { id: userId, canManageContent };
+  }
+
   async assignCurator(adminId: string, dto: AssignCuratorDto, ip?: string) {
     const [curator, student] = await Promise.all([
       this.db.query.users.findFirst({ where: eq(users.id, dto.curatorId), columns: { role: true, status: true } }),

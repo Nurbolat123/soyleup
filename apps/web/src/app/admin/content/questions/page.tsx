@@ -34,7 +34,7 @@ export default async function QuestionsPage({
   const totalPages = Math.max(1, Math.ceil(list.total / list.pageSize));
 
   return (
-    <DashboardShell role="ADMIN" name={me.firstName} title="Банк вопросов" wide>
+    <DashboardShell role={me.role} name={me.firstName} title="Банк вопросов" wide>
       <Link href="/admin/content" className="text-sm text-muted">
         ← Контент
       </Link>

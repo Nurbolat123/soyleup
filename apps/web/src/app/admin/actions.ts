@@ -38,6 +38,14 @@ export async function setUserStatus(userId: string, status: UserStatus) {
   revalidatePath("/admin");
 }
 
+export async function setContentAccess(userId: string, canManageContent: boolean) {
+  await apiFetch(`/admin/users/${userId}/content-access`, {
+    method: "PATCH",
+    body: JSON.stringify({ canManageContent }),
+  });
+  revalidatePath("/admin");
+}
+
 export async function assignCurator(formData: FormData) {
   const studentId = formData.get("studentId");
   const curatorId = formData.get("curatorId");

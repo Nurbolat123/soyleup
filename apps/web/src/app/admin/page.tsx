@@ -3,7 +3,7 @@ import { apiFetch } from "@/lib/api";
 import { DashboardShell } from "@/components/DashboardShell";
 import { StatusBadge } from "@/components/StatusBadge";
 import type { PublicUser, Role, UserListResponse } from "@/lib/types";
-import { assignCurator, setUserStatus } from "./actions";
+import { assignCurator, setContentAccess, setUserStatus } from "./actions";
 import { CreateStaffForm } from "./CreateStaffForm";
 
 const ROLE_LABEL: Record<Role, string> = {
@@ -122,6 +122,7 @@ export default async function AdminPage({
                 <th className="px-5 py-3">Email</th>
                 <th className="px-5 py-3">Роль</th>
                 <th className="px-5 py-3">Статус</th>
+                <th className="px-5 py-3">Контент</th>
                 <th className="px-5 py-3">Назначить куратора</th>
                 <th className="px-5 py-3" />
               </tr>
@@ -136,6 +137,29 @@ export default async function AdminPage({
                   <td className="px-5 py-3">{ROLE_LABEL[user.role]}</td>
                   <td className="px-5 py-3">
                     <StatusBadge status={user.status} />
+                  </td>
+                  <td className="px-5 py-3">
+                    {user.role === "CURATOR" ? (
+                      <form
+                        action={async () => {
+                          "use server";
+                          await setContentAccess(user.id, !user.canManageContent);
+                        }}
+                      >
+                        <button
+                          type="submit"
+                          className={`rounded-lg border px-3 py-1.5 text-[13px] font-semibold ${
+                            user.canManageContent
+                              ? "border-error text-error hover:bg-error hover:text-white"
+                              : "border-ink text-ink hover:bg-ink hover:text-paper"
+                          }`}
+                        >
+                          {user.canManageContent ? "Забрать доступ" : "Дать доступ"}
+                        </button>
+                      </form>
+                    ) : (
+                      <span className="text-muted">—</span>
+                    )}
                   </td>
                   <td className="px-5 py-3">
                     {user.role === "STUDENT" ? (
@@ -191,7 +215,7 @@ export default async function AdminPage({
               ))}
               {list.items.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="px-5 py-8 text-center text-muted">
+                  <td colSpan={7} className="px-5 py-8 text-center text-muted">
                     Никого не найдено
                   </td>
                 </tr>

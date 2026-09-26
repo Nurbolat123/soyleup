@@ -1,12 +1,14 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Roles } from '../common/auth.decorators';
+import { ContentAccessGuard } from '../common/guards/content-access.guard';
 import { CreateQuestionDto, ImportQuestionsDto, ListQuestionsQueryDto, QuestionIdParamDto, UpdateQuestionDto } from './dto/questions.dto';
 import { QuestionsService } from './questions.service';
 
 @ApiTags('admin-content')
 @ApiBearerAuth()
-@Roles('ADMIN')
+@Roles('ADMIN', 'CURATOR')
+@UseGuards(ContentAccessGuard)
 @Controller('admin/content/questions')
 export class QuestionsController {
   constructor(private readonly questions: QuestionsService) {}

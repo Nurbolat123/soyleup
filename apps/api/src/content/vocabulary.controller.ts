@@ -1,6 +1,7 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Roles } from '../common/auth.decorators';
+import { ContentAccessGuard } from '../common/guards/content-access.guard';
 import {
   CreateVocabularyDto, ImportVocabularyDto, ListVocabularyQueryDto, UpdateVocabularyDto, VocabularyIdParamDto,
 } from './dto/vocabulary.dto';
@@ -8,7 +9,8 @@ import { VocabularyService } from './vocabulary.service';
 
 @ApiTags('admin-content')
 @ApiBearerAuth()
-@Roles('ADMIN')
+@Roles('ADMIN', 'CURATOR')
+@UseGuards(ContentAccessGuard)
 @Controller('admin/content/vocabulary')
 export class VocabularyController {
   constructor(private readonly vocabulary: VocabularyService) {}

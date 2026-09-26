@@ -43,6 +43,9 @@ export const users = pgTable(
     firstName: text('first_name').notNull(),
     lastName: text('last_name'),
     locale: text('locale').notNull().default('ru'),
+    // Доступ куратора к управлению контентом (курсы/уроки/словарь/банк вопросов) — включает админ.
+    // У ADMIN всегда есть доступ независимо от этого флага.
+    canManageContent: boolean('can_manage_content').notNull().default(false),
     lastLoginAt: ts('last_login_at'),
     createdAt: ts('created_at').notNull().defaultNow(),
     updatedAt: ts('updated_at').notNull().defaultNow().$onUpdate(() => new Date()),

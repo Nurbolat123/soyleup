@@ -88,6 +88,15 @@ req POST /admin/curator-assignments 400 "$ADMIN" "{\"curatorId\":\"$ADULT_ID\",\
 [[ $(req GET /curator/students 200 "$CURATOR" | json length) == 1 ]]
 req GET /students/$ADULT_ID 404 "$CURATOR" >/dev/null
 
+echo "▸ доступ куратора к контенту (canManageContent)"
+req GET /admin/content/courses 403 "$CURATOR" >/dev/null   # доступ пока не выдан
+req PATCH /admin/users/$ADULT_ID/content-access 400 "$ADMIN" '{"canManageContent":true}' >/dev/null   # не куратор
+req PATCH /admin/users/$CURATOR_ID/content-access 403 "$CURATOR" '{"canManageContent":true}' >/dev/null   # не сам себе
+req PATCH /admin/users/$CURATOR_ID/content-access 200 "$ADMIN" '{"canManageContent":true}' >/dev/null
+req GET /admin/content/courses 200 "$CURATOR" >/dev/null
+req PATCH /admin/users/$CURATOR_ID/content-access 200 "$ADMIN" '{"canManageContent":false}' >/dev/null
+req GET /admin/content/courses 403 "$CURATOR" >/dev/null
+
 echo "▸ refresh rotation & reuse detection"
 NEW_REFRESH=$(req POST /auth/refresh 200 "" "{\"refreshToken\":\"$ADULT_REFRESH\"}" | json refreshToken)
 req POST /auth/refresh 401 "" "{\"refreshToken\":\"$ADULT_REFRESH\"}" >/dev/null   # повтор старого

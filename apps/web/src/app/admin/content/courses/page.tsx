@@ -12,7 +12,7 @@ export default async function CoursesPage() {
   ]);
 
   return (
-    <DashboardShell role="ADMIN" name={me.firstName} title="Курсы и уроки" wide>
+    <DashboardShell role={me.role} name={me.firstName} title="Курсы и уроки" wide>
       <Link href="/admin/content" className="text-sm text-muted">
         ← Контент
       </Link>

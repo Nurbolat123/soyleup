@@ -1,6 +1,7 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Roles } from '../common/auth.decorators';
+import { ContentAccessGuard } from '../common/guards/content-access.guard';
 import { CoursesService } from './courses.service';
 import {
   CreateCourseDto, CreateExerciseDto, CreateLessonBlockDto, CreateLessonDto, CreateModuleDto,
@@ -10,7 +11,8 @@ import {
 
 @ApiTags('admin-content')
 @ApiBearerAuth()
-@Roles('ADMIN')
+@Roles('ADMIN', 'CURATOR')
+@UseGuards(ContentAccessGuard)
 @Controller('admin/content')
 export class CoursesController {
   constructor(private readonly courses: CoursesService) {}

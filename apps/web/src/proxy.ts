@@ -9,11 +9,14 @@ import {
   ROLE_HOME,
 } from "@/lib/session";
 
-const ZONE_ROLE: Record<string, Role> = {
-  "/student": "STUDENT",
-  "/parent": "PARENT",
-  "/curator": "CURATOR",
-  "/admin": "ADMIN",
+const ZONE_ROLES: Record<string, Role[]> = {
+  "/student": ["STUDENT"],
+  "/parent": ["PARENT"],
+  "/curator": ["CURATOR"],
+  // Доступ куратора к самому контенту (canManageContent) проверяется на API —
+  // здесь только грубая проверка роли, без похода в базу.
+  "/admin/content": ["ADMIN", "CURATOR"],
+  "/admin": ["ADMIN"],
 };
 
 // Доступно любой авторизованной роли (не привязано к одному кабинету)
@@ -61,9 +64,10 @@ export async function proxy(request: NextRequest) {
   }
 
   const isAuthPage = pathname === "/login" || pathname === "/register";
-  const zonePrefix = Object.keys(ZONE_ROLE).find(
-    (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
-  );
+  // Более специфичный префикс (например /admin/content) должен выигрывать у общего (/admin).
+  const zonePrefix = Object.keys(ZONE_ROLES)
+    .filter((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`))
+    .sort((a, b) => b.length - a.length)[0];
   const isAuthOnly = AUTH_ONLY_PREFIXES.some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`));
 
   let response: NextResponse;
@@ -75,7 +79,7 @@ export async function proxy(request: NextRequest) {
   } else if (zonePrefix) {
     if (!payload) {
       response = NextResponse.redirect(new URL("/login", request.url));
-    } else if (payload.role !== ZONE_ROLE[zonePrefix]) {
+    } else if (!ZONE_ROLES[zonePrefix].includes(payload.role)) {
       response = NextResponse.redirect(new URL(ROLE_HOME[payload.role], request.url));
     } else {
       response = NextResponse.next();
