@@ -58,3 +58,22 @@ export class RefreshDto {
   @MaxLength(200)
   refreshToken: string;
 }
+
+export class ForgotPasswordDto {
+  @IsEmail()
+  @MaxLength(254)
+  email: string;
+}
+
+export class ResetPasswordDto {
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(200)
+  token: string;
+
+  /** 8–72 символа, как и при регистрации */
+  @IsString()
+  @MinLength(8)
+  @MaxLength(72)
+  newPassword: string;
+}

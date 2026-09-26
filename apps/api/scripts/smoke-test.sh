@@ -47,6 +47,17 @@ req PATCH /users/me 200 "$ADULT" '{"targetLevel":"B2","dailyMinutes":30}' >/dev/
 req POST /users/me/consents 201 "$ADULT" '{"type":"VOICE_RECORDING"}' >/dev/null
 req DELETE /users/me/consents/DATA_PROCESSING 400 "$ADULT" >/dev/null
 
+echo "▸ password reset"
+req POST /auth/forgot-password 200 "" '{"email":"no-such-user@t.kz"}' >/dev/null   # не выдаёт, есть ли такой email
+RESET_TOKEN=$(req POST /auth/forgot-password 200 "" "{\"email\":\"adult$RUN@t.kz\"}" | json token)
+req POST /auth/reset-password 400 "" '{"token":"garbage","newPassword":"newpassword123"}' >/dev/null
+req POST /auth/reset-password 200 "" "{\"token\":\"$RESET_TOKEN\",\"newPassword\":\"newpassword123\"}" >/dev/null
+req POST /auth/refresh 401 "" "{\"refreshToken\":\"$ADULT_REFRESH\"}" >/dev/null   # старая сессия отозвана после смены пароля
+req POST /auth/login 401 "" "{\"email\":\"adult$RUN@t.kz\",\"password\":\"password123\"}" >/dev/null   # старый пароль не работает
+NEWLOGIN=$(req POST /auth/login 200 "" "{\"email\":\"adult$RUN@t.kz\",\"password\":\"newpassword123\"}")
+ADULT=$(echo "$NEWLOGIN" | json accessToken); ADULT_REFRESH=$(echo "$NEWLOGIN" | json refreshToken)   # свежая пара — старый refresh отозван выше
+req POST /auth/reset-password 400 "" "{\"token\":\"$RESET_TOKEN\",\"newPassword\":\"anotherpassword123\"}" >/dev/null   # токен одноразовый
+
 echo "▸ minor student waits for parent consent"
 R=$(register STUDENT "minor$RUN@t.kz" 2014-05-01)
 MINOR=$(echo "$R" | json accessToken); MINOR_ID=$(echo "$R" | json user.id)
@@ -106,9 +117,9 @@ req POST /auth/refresh 401 "" '{"refreshToken":"garbage"}' >/dev/null
 echo "▸ blocking"
 req PATCH /admin/users/$ADULT_ID/status 200 "$ADMIN" '{"status":"BLOCKED"}' >/dev/null
 req GET /users/me 401 "$ADULT" >/dev/null
-req POST /auth/login 403 "" "{\"email\":\"adult$RUN@t.kz\",\"password\":\"password123\"}" >/dev/null
+req POST /auth/login 403 "" "{\"email\":\"adult$RUN@t.kz\",\"password\":\"newpassword123\"}" >/dev/null
 req PATCH /admin/users/$ADULT_ID/status 200 "$ADMIN" '{"status":"ACTIVE"}' >/dev/null
-req POST /auth/login 200 "" "{\"email\":\"adult$RUN@t.kz\",\"password\":\"password123\"}" >/dev/null
+req POST /auth/login 200 "" "{\"email\":\"adult$RUN@t.kz\",\"password\":\"newpassword123\"}" >/dev/null
 
 echo "▸ consent revocation"
 req DELETE /parents/children/$MINOR_ID/consents/DATA_PROCESSING 200 "$PARENT" >/dev/null

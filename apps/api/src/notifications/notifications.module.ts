@@ -25,6 +25,6 @@ import { TelegramService } from './telegram.service';
     EmailService, TelegramService, NotificationsService, NotificationEventsService,
     NotificationsProcessor, DailyCheckProcessor, SchedulerService,
   ],
-  exports: [NotificationEventsService, TelegramService],
+  exports: [NotificationEventsService, TelegramService, EmailService],
 })
 export class NotificationsModule {}

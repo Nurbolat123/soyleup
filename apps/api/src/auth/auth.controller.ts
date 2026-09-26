@@ -3,7 +3,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
 import { Public, ReqMeta, RequestMeta } from '../common/auth.decorators';
 import { AuthService } from './auth.service';
-import { LoginDto, RefreshDto, RegisterDto } from './dto/auth.dto';
+import { ForgotPasswordDto, LoginDto, RefreshDto, RegisterDto, ResetPasswordDto } from './dto/auth.dto';
 
 @ApiTags('auth')
 @Public()
@@ -33,5 +33,17 @@ export class AuthController {
   @HttpCode(200)
   logout(@Body() dto: RefreshDto) {
     return this.auth.logout(dto);
+  }
+
+  @Post('forgot-password')
+  @HttpCode(200)
+  forgotPassword(@Body() dto: ForgotPasswordDto, @ReqMeta() meta: RequestMeta) {
+    return this.auth.forgotPassword(dto, meta);
+  }
+
+  @Post('reset-password')
+  @HttpCode(200)
+  resetPassword(@Body() dto: ResetPasswordDto, @ReqMeta() meta: RequestMeta) {
+    return this.auth.resetPassword(dto, meta);
   }
 }

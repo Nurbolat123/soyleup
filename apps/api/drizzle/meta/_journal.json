@@ -64,6 +64,13 @@
       "when": 1790448780037,
       "tag": "0008_flat_rogue",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1790450240197,
+      "tag": "0009_true_shaman",
+      "breakpoints": true
     }
   ]
 }
