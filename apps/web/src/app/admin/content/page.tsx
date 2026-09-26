@@ -15,9 +15,13 @@ export default async function AdminContentPage() {
 
   return (
     <DashboardShell role={me.role} name={me.firstName} title="Контент" wide>
-      {me.role === "ADMIN" && (
+      {me.role === "ADMIN" ? (
         <Link href="/admin" className="text-sm text-muted">
           ← Пользователи
+        </Link>
+      ) : (
+        <Link href="/curator" className="text-sm text-muted">
+          ← Кабинет куратора
         </Link>
       )}
       {noAccess ? (
