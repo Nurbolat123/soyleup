@@ -207,6 +207,7 @@ export interface LessonBlock {
 }
 
 export interface LessonWithBlocks extends Lesson {
+  module: { courseId: string };
   blocks: (LessonBlock & { exercises: Exercise[] })[];
 }
 

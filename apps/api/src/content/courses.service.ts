@@ -99,6 +99,7 @@ export class CoursesService {
     const lesson = await this.db.query.lessons.findFirst({
       where: eq(lessons.id, id),
       with: {
+        module: { columns: { courseId: true } },
         blocks: {
           orderBy: asc(lessonBlocks.order),
           with: { exercises: { orderBy: asc(exercises.order) } },

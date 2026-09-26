@@ -14,7 +14,11 @@ export default async function LessonBuilderPage({ params }: { params: Promise<{ 
 
   return (
     <DashboardShell role={me.role} name={me.firstName} title={lesson.title} wide>
-      <div className="flex flex-wrap items-center justify-between gap-3">
+      <Link href={`/admin/content/courses/${lesson.module.courseId}`} className="text-sm text-muted">
+        ← Курс
+      </Link>
+
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
         <span className="text-sm text-muted">Конструктор урока</span>
         <Link
           href={`/admin/content/lessons/${id}/preview`}
