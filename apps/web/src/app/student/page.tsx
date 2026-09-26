@@ -108,7 +108,8 @@ export default async function StudentPage() {
             <ConsentSettings activeConsents={user.activeConsents} />
           )}
 
-          <LinkCodeWidget />
+          {/* Код для привязки родителя нужен только несовершеннолетним — у взрослых своя учётка */}
+          {user.studentProfile?.isMinor && <LinkCodeWidget />}
         </div>
       )}
     </DashboardShell>
