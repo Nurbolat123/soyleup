@@ -537,6 +537,10 @@ export const homework = pgTable(
     status: homeworkStatusEnum('status').notNull().default('ASSIGNED'),
     submissionText: text('submission_text'),
     submissionAudioKey: text('submission_audio_key'),
+    // Вложения к письменному ответу — фото тетради, PDF, Word и т.п. Ключи в приватном
+    // бакете speaking, как и аудио; в отличие от аудио, родителю не скрываются
+    // (это не голосовая запись).
+    submissionFileKeys: jsonb('submission_file_keys').$type<string[]>(),
     submittedAt: ts('submitted_at'),
     integritySignals: jsonb('integrity_signals').$type<IntegritySignals>(),
     rubric: jsonb('rubric').$type<SpeakingRubric>(),

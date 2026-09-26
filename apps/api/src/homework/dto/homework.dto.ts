@@ -1,6 +1,7 @@
 import { Type } from 'class-transformer';
 import {
-  IsBoolean, IsDateString, IsIn, IsInt, IsNotEmpty, IsOptional, IsString, IsUUID, Max, MaxLength, Min, ValidateIf, ValidateNested,
+  ArrayMaxSize, IsArray, IsBoolean, IsDateString, IsIn, IsInt, IsNotEmpty, IsOptional, IsString, IsUUID, Max, MaxLength, Min,
+  ValidateNested,
 } from 'class-validator';
 
 export class HomeworkIdParamDto {
@@ -45,20 +46,44 @@ export class IntegritySignalsDto {
 }
 
 export class SubmitHomeworkDto {
-  @ValidateIf((o: SubmitHomeworkDto) => !o.audioKey)
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
   text?: string;
 
-  @ValidateIf((o: SubmitHomeworkDto) => !o.text)
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
   audioKey?: string;
+
+  /** Вложения к письменному ответу (ключи из file-presign) — фото, PDF, Word, 1–10 штук */
+  @IsOptional()
+  @IsArray()
+  @ArrayMaxSize(10)
+  @IsString({ each: true })
+  fileKeys?: string[];
 
   @IsOptional()
   @ValidateNested()
   @Type(() => IntegritySignalsDto)
   integritySignals?: IntegritySignalsDto;
+}
+
+const ALLOWED_HOMEWORK_FILE_TYPES = [
+  'image/jpeg', 'image/png', 'image/webp', 'image/heic',
+  'application/pdf',
+  'application/msword',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+] as const;
+
+/** Presigned-загрузка вложения к письменному ответу — тот же приватный бакет, что и голос. */
+export class PresignFileDto {
+  @IsString()
+  @IsNotEmpty()
+  fileName: string;
+
+  @IsIn(ALLOWED_HOMEWORK_FILE_TYPES)
+  contentType: string;
 }
 
 export class RubricDto {

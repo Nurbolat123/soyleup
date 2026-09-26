@@ -415,6 +415,7 @@ export interface Homework {
   status: HomeworkStatus;
   submissionText: string | null;
   submissionAudioKey: string | null;
+  submissionFileKeys: string[] | null;
   submittedAt: string | null;
   integritySignals: IntegritySignals | null;
   rubric: SpeakingRubric | null;

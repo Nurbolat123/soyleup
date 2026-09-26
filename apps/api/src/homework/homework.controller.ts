@@ -2,7 +2,7 @@ import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthUser, CurrentUser, Roles } from '../common/auth.decorators';
 import { PresignSpeakingDto } from '../common/dto/presign-speaking.dto';
-import { HomeworkIdParamDto, SubmitHomeworkDto } from './dto/homework.dto';
+import { HomeworkIdParamDto, PresignFileDto, SubmitHomeworkDto } from './dto/homework.dto';
 import { HomeworkService } from './homework.service';
 
 @ApiTags('homework')
@@ -20,6 +20,11 @@ export class HomeworkController {
   @Post(':id/speaking-presign')
   presign(@CurrentUser() user: AuthUser, @Param() params: HomeworkIdParamDto, @Body() dto: PresignSpeakingDto) {
     return this.homework.presignAudio(user.id, params.id, dto);
+  }
+
+  @Post(':id/file-presign')
+  presignFile(@CurrentUser() user: AuthUser, @Param() params: HomeworkIdParamDto, @Body() dto: PresignFileDto) {
+    return this.homework.presignFile(user.id, params.id, dto);
   }
 
   @Post(':id/submit')

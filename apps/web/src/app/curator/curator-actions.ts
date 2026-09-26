@@ -106,6 +106,10 @@ export async function getHomeworkListenUrl(homeworkId: string) {
   return apiFetch<{ url: string }>(`/curator/homework/${homeworkId}/listen`);
 }
 
+export async function getHomeworkFileUrls(homeworkId: string) {
+  return apiFetch<{ urls: string[] }>(`/curator/homework/${homeworkId}/files`);
+}
+
 export async function reviewHomework(
   homeworkId: string,
   studentId: string,

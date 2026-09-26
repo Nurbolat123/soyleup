@@ -14,9 +14,16 @@ export async function presignHomeworkAudio(homeworkId: string, fileName: string,
   });
 }
 
+export async function presignHomeworkFile(homeworkId: string, fileName: string, contentType: string) {
+  return apiFetch<{ uploadUrl: string; key: string }>(`/learning/homework/${homeworkId}/file-presign`, {
+    method: "POST",
+    body: JSON.stringify({ fileName, contentType }),
+  });
+}
+
 export async function submitHomework(
   homeworkId: string,
-  data: { text?: string; audioKey?: string; integritySignals?: IntegritySignals },
+  data: { text?: string; audioKey?: string; fileKeys?: string[]; integritySignals?: IntegritySignals },
 ) {
   return apiFetch<Homework>(`/learning/homework/${homeworkId}/submit`, {
     method: "POST",

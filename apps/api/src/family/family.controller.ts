@@ -2,7 +2,9 @@ import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AllowPending, AuthUser, CurrentUser, ReqMeta, RequestMeta, Roles } from '../common/auth.decorators';
 import { HomeworkService } from '../homework/homework.service';
-import { ChildConsentParamDto, ChildParamDto, LessonReportParamDto, LinkChildDto, StudentParamDto } from './dto/family.dto';
+import {
+  ChildConsentParamDto, ChildParamDto, HomeworkFilesParamDto, LessonReportParamDto, LinkChildDto, StudentParamDto,
+} from './dto/family.dto';
 import { ConsentTypeDto } from '../consents/dto/consent.dto';
 import { FamilyService } from './family.service';
 
@@ -57,6 +59,12 @@ export class StudentsController {
   @Get(':id/homework')
   homeworkList(@CurrentUser() user: AuthUser, @Param() params: StudentParamDto) {
     return this.homework.listForStudent(user, params.id);
+  }
+
+  /** Вложения к письменному ответу ДЗ — не голос, поэтому родителю не скрываются */
+  @Get(':id/homework/:hwId/files')
+  homeworkFiles(@CurrentUser() user: AuthUser, @Param() params: HomeworkFilesParamDto) {
+    return this.homework.getFileUrls(user, params.hwId);
   }
 }
 

@@ -2,8 +2,9 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { getHomeworkListenUrl, reviewHomework } from "../../../../curator-actions";
+import { getHomeworkFileUrls, getHomeworkListenUrl, reviewHomework } from "../../../../curator-actions";
 import { AudioPlayer } from "../../../../AudioPlayer";
+import { FileAttachments } from "../../../../FileAttachments";
 import { RubricForm } from "../../../../RubricForm";
 import type { Homework, SpeakingRubric } from "@/lib/types";
 
@@ -66,6 +67,14 @@ export function HomeworkReview({ homework, studentId }: { homework: Homework; st
 
       {homework.submissionAudioKey && (
         <AudioPlayer label="Запись голоса" fetchUrl={() => getHomeworkListenUrl(homework.id)} />
+      )}
+
+      {homework.submissionFileKeys && homework.submissionFileKeys.length > 0 && (
+        <FileAttachments
+          label="Файлы"
+          count={homework.submissionFileKeys.length}
+          fetchUrls={() => getHomeworkFileUrls(homework.id)}
+        />
       )}
 
       {!canReview && (

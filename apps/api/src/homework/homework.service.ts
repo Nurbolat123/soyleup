@@ -10,7 +10,7 @@ import { DB, Database } from '../db/db.module';
 import { consents, homework, LessonBlock } from '../db/schema';
 import { SkillRecalcService } from '../learning/skill-recalc.service';
 import { NotificationEventsService } from '../notifications/notification-events.service';
-import { AssignHomeworkDto, ReviewHomeworkDto, SubmitHomeworkDto } from './dto/homework.dto';
+import { AssignHomeworkDto, PresignFileDto, ReviewHomeworkDto, SubmitHomeworkDto } from './dto/homework.dto';
 
 const HOMEWORK_SPEAKING_WEIGHT = 0.1; // как мини-тест урока — см. CLAUDE.md и обсуждение шага 5
 
@@ -96,10 +96,21 @@ export class HomeworkService {
     return this.speakingStorage.presign(dto, studentId);
   }
 
+  async presignFile(studentId: string, homeworkId: string, dto: PresignFileDto) {
+    const row = await this.loadOwnHomework(studentId, homeworkId);
+    if (!['ASSIGNED', 'RETURNED'].includes(row.status)) {
+      throw new BadRequestException('Homework is not open for submission');
+    }
+    return this.speakingStorage.presign(dto, studentId);
+  }
+
   async submit(studentId: string, homeworkId: string, dto: SubmitHomeworkDto) {
     const row = await this.loadOwnHomework(studentId, homeworkId);
     if (!['ASSIGNED', 'RETURNED'].includes(row.status)) {
       throw new BadRequestException('Homework is not open for submission');
+    }
+    if (!dto.text?.trim() && !dto.audioKey && !dto.fileKeys?.length) {
+      throw new BadRequestException('Provide text, audio or at least one file');
     }
     if (dto.audioKey) await this.assertVoiceConsent(studentId);
 
@@ -109,6 +120,7 @@ export class HomeworkService {
         status: 'SUBMITTED',
         submissionText: dto.text ?? null,
         submissionAudioKey: dto.audioKey ?? null,
+        submissionFileKeys: dto.fileKeys ?? null,
         submittedAt: new Date(),
         integritySignals: dto.integritySignals ?? null,
       })
@@ -132,6 +144,17 @@ export class HomeworkService {
     });
     const url = await this.speakingStorage.getListenUrl(row.submissionAudioKey);
     return { url };
+  }
+
+  async getFileUrls(actor: AuthUser, homeworkId: string) {
+    const row = await this.db.query.homework.findFirst({ where: eq(homework.id, homeworkId) });
+    if (!row) throw new NotFoundException('Homework not found');
+    await this.access.assertCanViewStudent(actor, row.studentId);
+    const keys = row.submissionFileKeys ?? [];
+    if (!keys.length) throw new BadRequestException('No file submissions for this homework');
+
+    const urls = await Promise.all(keys.map((key) => this.speakingStorage.getListenUrl(key)));
+    return { urls };
   }
 
   async review(actor: AuthUser, homeworkId: string, dto: ReviewHomeworkDto) {

@@ -1,0 +1,1 @@
+ALTER TABLE "homework" ADD COLUMN "submission_file_keys" jsonb;

@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { FileUploader } from "@/components/FileUploader";
 import { SpeakingRecorder } from "@/components/SpeakingRecorder";
 import type { Homework } from "@/lib/types";
-import { presignHomeworkAudio, submitHomework } from "../../homework-actions";
+import { presignHomeworkAudio, presignHomeworkFile, submitHomework } from "../../homework-actions";
 
 const STATUS_LABEL: Record<Homework["status"], string> = {
   ASSIGNED: "Ждёт выполнения",
@@ -23,6 +24,7 @@ const RUBRIC_LABEL: Record<string, string> = {
 export function HomeworkDetail({ homework, hasVoiceConsent }: { homework: Homework; hasVoiceConsent: boolean }) {
   const [text, setText] = useState(homework.submissionText ?? "");
   const [audioKey, setAudioKey] = useState<string | null>(null);
+  const [fileKeys, setFileKeys] = useState<string[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState(false);
@@ -50,8 +52,8 @@ export function HomeworkDetail({ homework, hasVoiceConsent }: { homework: Homewo
   const canSubmit = homework.status === "ASSIGNED" || homework.status === "RETURNED";
 
   async function handleSubmit() {
-    if (!text.trim() && !audioKey) {
-      setError("Добавьте текстовый ответ или запись голоса.");
+    if (!text.trim() && !audioKey && fileKeys.length === 0) {
+      setError("Добавьте текстовый ответ, запись голоса или хотя бы один файл.");
       return;
     }
     setSubmitting(true);
@@ -60,6 +62,7 @@ export function HomeworkDetail({ homework, hasVoiceConsent }: { homework: Homewo
       await submitHomework(homework.id, {
         text: text.trim() || undefined,
         audioKey: audioKey ?? undefined,
+        fileKeys: fileKeys.length ? fileKeys : undefined,
         integritySignals: homework.requiresIntegrityCheck
           ? {
               tabAwayCount: tabAwayCount.current,
@@ -162,6 +165,16 @@ export function HomeworkDetail({ homework, hasVoiceConsent }: { homework: Homewo
                 (для несовершеннолетних — родитель в своём кабинете).
               </p>
             )}
+
+            <div>
+              <label className="mb-1.5 block text-[14px] font-semibold">
+                Файлы: фото письменной работы, PDF, Word (необязательно)
+              </label>
+              <FileUploader
+                onPresign={(fileName, contentType) => presignHomeworkFile(homework.id, fileName, contentType)}
+                onChange={setFileKeys}
+              />
+            </div>
 
             {error && <p className="text-[14px] font-semibold text-error">{error}</p>}
 

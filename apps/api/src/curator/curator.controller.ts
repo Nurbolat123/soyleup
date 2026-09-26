@@ -70,6 +70,11 @@ export class CuratorController {
     return this.homework.getListenUrl(user, params.id);
   }
 
+  @Get('homework/:id/files')
+  homeworkFiles(@CurrentUser() user: AuthUser, @Param() params: HomeworkIdParamDto) {
+    return this.homework.getFileUrls(user, params.id);
+  }
+
   @Get('review-queue')
   reviewQueue(@CurrentUser() user: AuthUser) {
     return this.speakingReview.reviewQueue(user.id);

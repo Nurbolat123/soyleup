@@ -283,6 +283,16 @@ HWID3=$(req POST /curator/homework 201 "$HWCUR" "{\"studentId\":\"$PID\",\"title
 req POST /learning/homework/$HWID3/submit 201 "$PTOKEN" '{"text":"no audio"}' >/dev/null
 req POST /curator/homework/$HWID3/review 400 "$HWCUR" '{"action":"APPROVE","rubric":{"vocabulary":3,"grammar":3,"fluency":3,"pronunciation":3}}' >/dev/null
 
+echo "▸ вложения к ДЗ: фото/PDF/Word"
+HWID4=$(req POST /curator/homework 201 "$HWCUR" "{\"studentId\":\"$PID\",\"title\":\"Тест4\"}" | json id)
+req POST /learning/homework/$HWID4/file-presign 400 "$PTOKEN" '{"fileName":"a.mp4","contentType":"video/mp4"}' >/dev/null   # недопустимый тип
+FILEKEY=$(req POST /learning/homework/$HWID4/file-presign 201 "$PTOKEN" '{"fileName":"page1.pdf","contentType":"application/pdf"}' | json key)
+req POST /learning/homework/$HWID4/submit 400 "$PTOKEN" '{}' >/dev/null   # ни текста, ни аудио, ни файла
+req POST /learning/homework/$HWID4/submit 201 "$PTOKEN" "{\"fileKeys\":[\"$FILEKEY\"]}" >/dev/null   # файла достаточно
+req GET /curator/homework/$HWID4/files 200 "$HWCUR" >/dev/null
+req GET /curator/homework/$HWID4/files 404 "$OTHERCURTOKEN" >/dev/null   # чужой ученик
+req GET /students/$PID/homework/$HWID4/files 200 "$HWCUR" >/dev/null   # тот же доступ через family-эндпоинт
+
 echo "▸ куратор: проверка speaking в уроке"
 SPBID=$(req POST /admin/content/lessons/$LID/blocks 201 "$ADMIN" '{"type":"SPEAKING","order":2}' | json id)
 SPEID=$(req POST /admin/content/blocks/$SPBID/exercises 201 "$ADMIN" '{"type":"SPEAKING","content":{"prompt":"Tell me about yourself"}}' | json id)

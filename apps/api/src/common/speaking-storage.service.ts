@@ -4,16 +4,21 @@ import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { randomUUID } from 'node:crypto';
 import { Env } from '../config/env';
-import { PresignSpeakingDto } from './dto/presign-speaking.dto';
 import { createS3Client, ensureBucketQuiet } from './s3';
 
 const UPLOAD_URL_TTL_SECONDS = 5 * 60;
 const LISTEN_URL_TTL_SECONDS = 5 * 60;
 
+interface PresignInput {
+  fileName: string;
+  contentType: string;
+}
+
 /**
- * Приватный бакет для голосовых записей учеников (в отличие от общедоступного `content`
- * для учебных материалов). Presigned GET для прослушивания куратором — короткий срок жизни,
- * каждый вызов пишется в аудит вызывающим сервисом (правило «доступ к записям — в аудит»).
+ * Приватный бакет для личных файлов учеников — голосовые записи (placement/уроки/ДЗ) и
+ * фото письменных работ к ДЗ. Отдельно от общедоступного `content` для учебных материалов.
+ * Presigned GET — короткий срок жизни; для голоса доступ пишется в аудит вызывающим
+ * сервисом (правило «доступ к записям — в аудит»), для фото это не требуется.
  */
 @Injectable()
 export class SpeakingStorageService implements OnModuleInit {
@@ -34,8 +39,8 @@ export class SpeakingStorageService implements OnModuleInit {
     await ensureBucketQuiet(this.client, this.bucket, { publicRead: false });
   }
 
-  async presign(dto: PresignSpeakingDto, studentId: string) {
-    const ext = dto.fileName.includes('.') ? dto.fileName.split('.').pop() : 'webm';
+  async presign(dto: PresignInput, studentId: string) {
+    const ext = dto.fileName.includes('.') ? dto.fileName.split('.').pop() : 'bin';
     const key = `${studentId}/${randomUUID()}.${ext}`;
     try {
       const uploadUrl = await getSignedUrl(
