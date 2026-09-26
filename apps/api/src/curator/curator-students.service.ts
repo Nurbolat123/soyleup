@@ -1,12 +1,12 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { and, desc, eq, inArray, isNull, sql } from 'drizzle-orm';
+import { and, asc, desc, eq, inArray, isNull, sql } from 'drizzle-orm';
 import { AccessService } from '../common/access.service';
 import { AuthUser } from '../common/auth.decorators';
 import { buildEnglishProfile, TARGET_SCORE_BY_LEVEL } from '../common/levels';
 import { DB, Database } from '../db/db.module';
 import {
-  curatorStudents, exercises, homework, lessonExerciseAnswers, lessonProgress, lessons, placementAttempts,
-  studentProfiles, users,
+  courseModules, courses, curatorStudents, exercises, homework, lessonExerciseAnswers, lessonProgress, lessons,
+  placementAttempts, studentProfiles, users,
 } from '../db/schema';
 import { UpdateStudentPlanDto } from './dto/curator.dto';
 
@@ -110,7 +110,7 @@ export class CuratorStudentsService {
     const student = await this.db.query.users.findFirst({
       where: eq(users.id, studentId),
       columns: { id: true, firstName: true, lastName: true, status: true, locale: true, lastLoginAt: true, createdAt: true },
-      with: { studentProfile: true },
+      with: { studentProfile: { with: { assignedLesson: { columns: { id: true, title: true } } } } },
     });
     if (!student) throw new NotFoundException('Student not found');
 
@@ -131,9 +131,40 @@ export class CuratorStudentsService {
             dailyMinutes: studentProfile.dailyMinutes, grammarScore: studentProfile.grammarScore,
             vocabularyScore: studentProfile.vocabularyScore, readingScore: studentProfile.readingScore,
             listeningScore: studentProfile.listeningScore, speakingScore: studentProfile.speakingScore,
+            assignedLesson: studentProfile.assignedLesson,
           }
         : null,
     };
+  }
+
+  /** Куратор ставит конкретный урок в план на день вместо автоподбора по курсу. */
+  async assignLesson(actor: AuthUser, studentId: string, lessonId: string) {
+    await this.access.assertCanViewStudent(actor, studentId);
+    const lesson = await this.db.query.lessons.findFirst({ where: eq(lessons.id, lessonId), columns: { id: true } });
+    if (!lesson) throw new NotFoundException('Lesson not found');
+    await this.db.update(studentProfiles).set({ assignedLessonId: lessonId }).where(eq(studentProfiles.userId, studentId));
+    return this.studentCard(actor, studentId);
+  }
+
+  async unassignLesson(actor: AuthUser, studentId: string) {
+    await this.access.assertCanViewStudent(actor, studentId);
+    await this.db.update(studentProfiles).set({ assignedLessonId: null }).where(eq(studentProfiles.userId, studentId));
+    return this.studentCard(actor, studentId);
+  }
+
+  /** Лёгкий список курсов/уроков для выбора при назначении — доступен любому куратору. */
+  async listLessonsForPicker() {
+    return this.db.query.courses.findMany({
+      orderBy: asc(courses.createdAt),
+      columns: { id: true, title: true },
+      with: {
+        modules: {
+          orderBy: asc(courseModules.order),
+          columns: { id: true, title: true },
+          with: { lessons: { orderBy: asc(lessons.order), columns: { id: true, title: true } } },
+        },
+      },
+    });
   }
 
   /** Последние неверные ответы в уроках — для раздела «ошибки» в карточке ученика */

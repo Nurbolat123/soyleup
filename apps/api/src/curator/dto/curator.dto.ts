@@ -39,6 +39,11 @@ export class UpdateStudentPlanDto {
   goal?: string;
 }
 
+export class AssignLessonDto {
+  @IsUUID()
+  lessonId: string;
+}
+
 export class StudentListQueryDto {
   /** Не занимался N и более дней (по последнему входу) */
   @IsOptional()

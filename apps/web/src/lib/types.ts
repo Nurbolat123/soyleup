@@ -122,7 +122,18 @@ export interface CuratorStudentCard {
     readingScore: number | null;
     listeningScore: number | null;
     speakingScore: number | null;
+    assignedLesson: { id: string; title: string } | null;
   } | null;
+}
+
+export interface CuratorLessonOption {
+  id: string;
+  title: string;
+  modules: {
+    id: string;
+    title: string;
+    lessons: { id: string; title: string }[];
+  }[];
 }
 
 export interface StudentSummary {

@@ -245,6 +245,22 @@ OTHERCUR=$(req POST /admin/users 201 "$ADMIN" "{\"email\":\"othercur$RUN@t.kz\",
 OTHERCURTOKEN=$(req POST /auth/login 200 "" "{\"email\":\"othercur$RUN@t.kz\",\"password\":\"curator-pass-123\"}" | json accessToken)
 req POST /admin/curator-assignments 201 "$ADMIN" "{\"curatorId\":\"$HWCID\",\"studentId\":\"$PID\"}" >/dev/null
 
+echo "▸ куратор: назначение конкретного урока в план на день"
+[[ $(req GET /learning/today-plan 200 "$PTOKEN" | json lesson) == null ]]   # курс пройден, автоподбор ничего не даёт
+ALID=$(req POST /admin/content/modules/$MID/lessons 201 "$ADMIN" '{"title":"Назначенный вручную","order":1}' | json id)
+req POST /curator/students/$PID/assign-lesson 404 "$OTHERCURTOKEN" "{\"lessonId\":\"$ALID\"}" >/dev/null   # чужой ученик
+req POST /curator/students/$PID/assign-lesson 201 "$HWCUR" "{\"lessonId\":\"$ALID\"}" >/dev/null
+[[ $(req GET /learning/today-plan 200 "$PTOKEN" | json lesson.id) == "$ALID" ]]
+[[ $(req GET /curator/students/$PID 200 "$HWCUR" | json studentProfile.assignedLesson.id) == "$ALID" ]]
+[[ $(req GET /curator/lessons 200 "$HWCUR" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>console.log(JSON.parse(s).some(c=>c.id==="'"$CID"'")))') == true ]]
+ALBID=$(req POST /admin/content/lessons/$ALID/blocks 201 "$ADMIN" '{"type":"INTRO","order":0}' | json id)
+req POST /learning/lessons/$ALID/blocks/$ALBID/complete 201 "$PTOKEN" >/dev/null
+[[ $(req GET /learning/today-plan 200 "$PTOKEN" | json lesson) == null ]]   # прошли назначенный урок — вернулся автоподбор (курс пройден)
+[[ $(req GET /curator/students/$PID 200 "$HWCUR" | json studentProfile.assignedLesson) == null ]]
+req POST /curator/students/$PID/assign-lesson 201 "$HWCUR" "{\"lessonId\":\"$ALID\"}" >/dev/null   # назначим снова — проверим ручную отмену
+req DELETE /curator/students/$PID/assign-lesson 200 "$HWCUR" >/dev/null
+[[ $(req GET /curator/students/$PID 200 "$HWCUR" | json studentProfile.assignedLesson) == null ]]
+
 # Без согласия на запись голоса — аудио к ДЗ не принимается (ни presign, ни submit)
 NOCONSENT=$(register STUDENT "noconsent$RUN@t.kz" 2000-01-01)
 NOCONSENT_TOKEN=$(echo "$NOCONSENT" | json accessToken); NOCONSENT_ID=$(echo "$NOCONSENT" | json user.id)

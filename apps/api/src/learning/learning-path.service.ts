@@ -32,7 +32,11 @@ export class LearningPathService {
     const priority = priorityLearningPath(scores, profile.targetLevel as CourseLevel | null);
 
     const courseId = profile.courseId ?? (await this.assignCourse(userId, profile.birthDate, scores));
-    const lesson = courseId ? await this.findNextLesson(userId, courseId) : null;
+    const lesson = profile.assignedLessonId
+      ? await this.findAssignedLesson(userId, profile.assignedLessonId)
+      : courseId
+        ? await this.findNextLesson(userId, courseId)
+        : null;
 
     const dueWords = await this.db.query.studentVocabulary.findMany({
       where: and(eq(studentVocabulary.userId, userId), lte(studentVocabulary.dueAt, new Date())),
@@ -111,6 +115,22 @@ export class LearningPathService {
       id: next.id,
       title: next.title,
       estimatedMinutes: next.estimatedMinutes,
+      status: progress?.status ?? 'NOT_STARTED',
+      currentBlockOrder: progress?.currentBlockOrder ?? 0,
+    };
+  }
+
+  /** Урок, который куратор вручную поставил в план вместо автоподбора. */
+  private async findAssignedLesson(userId: string, lessonId: string) {
+    const lesson = await this.db.query.lessons.findFirst({ where: eq(lessons.id, lessonId) });
+    if (!lesson) return null;
+    const progress = await this.db.query.lessonProgress.findFirst({
+      where: and(eq(lessonProgress.userId, userId), eq(lessonProgress.lessonId, lessonId)),
+    });
+    return {
+      id: lesson.id,
+      title: lesson.title,
+      estimatedMinutes: lesson.estimatedMinutes,
       status: progress?.status ?? 'NOT_STARTED',
       currentBlockOrder: progress?.currentBlockOrder ?? 0,
     };

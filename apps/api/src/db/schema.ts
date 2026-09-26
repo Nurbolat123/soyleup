@@ -62,6 +62,9 @@ export const studentProfiles = pgTable('student_profiles', {
   dailyMinutes: integer('daily_minutes').notNull().default(20),
   // Назначенный курс (этап 4) — подбирается автоматически по уровню/возрасту, куратор может сменить.
   courseId: uuid('course_id').references(() => courses.id, { onDelete: 'set null' }),
+  // Урок, который куратор вручную поставил в план на день вместо автоподбора по курсу.
+  // Снимается автоматически, когда ученик проходит этот урок — план возвращается к автоподбору.
+  assignedLessonId: uuid('assigned_lesson_id').references(() => lessons.id, { onDelete: 'set null' }),
   // Одноразовый код, который ученик передаёт родителю для привязки
   linkCode: text('link_code').unique(),
   linkCodeExpiresAt: ts('link_code_expires_at'),
@@ -185,6 +188,7 @@ export const usersRelations = relations(users, ({ one, many }) => ({
 export const studentProfilesRelations = relations(studentProfiles, ({ one }) => ({
   user: one(users, { fields: [studentProfiles.userId], references: [users.id] }),
   course: one(courses, { fields: [studentProfiles.courseId], references: [courses.id] }),
+  assignedLesson: one(lessons, { fields: [studentProfiles.assignedLessonId], references: [lessons.id] }),
 }));
 
 export const parentChildLinksRelations = relations(parentChildLinks, ({ one }) => ({

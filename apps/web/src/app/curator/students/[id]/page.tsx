@@ -6,9 +6,10 @@ import { SkillHistoryChart } from "@/app/student/SkillHistoryChart";
 import { apiFetch, ApiError } from "@/lib/api";
 import type { PublicUser, Skill } from "@/lib/types";
 import {
-  getStudentCard, getStudentHomework, getStudentMistakes, getStudentRecordings, getStudentSkillHistory,
+  getLessonOptions, getStudentCard, getStudentHomework, getStudentMistakes, getStudentRecordings, getStudentSkillHistory,
 } from "../../curator-actions";
 import { AssignHomeworkForm } from "./AssignHomeworkForm";
+import { LessonAssignForm } from "./LessonAssignForm";
 import { PlanEditForm } from "./PlanEditForm";
 
 const SKILL_LABELS: Record<Skill, string> = {
@@ -35,14 +36,16 @@ export default async function CuratorStudentPage({ params }: { params: Promise<{
   let mistakes: Awaited<ReturnType<typeof getStudentMistakes>>;
   let recordings: Awaited<ReturnType<typeof getStudentRecordings>>;
   let homework: Awaited<ReturnType<typeof getStudentHomework>>;
+  let lessonOptions: Awaited<ReturnType<typeof getLessonOptions>>;
   try {
-    [user, student, skillHistory, mistakes, recordings, homework] = await Promise.all([
+    [user, student, skillHistory, mistakes, recordings, homework, lessonOptions] = await Promise.all([
       apiFetch<PublicUser>("/users/me"),
       getStudentCard(id),
       getStudentSkillHistory(id),
       getStudentMistakes(id),
       getStudentRecordings(id),
       getStudentHomework(id),
+      getLessonOptions(),
     ]);
   } catch (e) {
     if (e instanceof ApiError && e.status === 404) notFound();
@@ -178,12 +181,25 @@ export default async function CuratorStudentPage({ params }: { params: Promise<{
         </div>
 
         {student.studentProfile && (
-          <div className="rounded-2xl border border-line bg-card p-6">
-            <p className="text-[17px] font-semibold">Цель и уровень</p>
-            <div className="mt-4">
-              <PlanEditForm studentId={id} targetLevel={student.studentProfile.targetLevel} goal={student.studentProfile.goal} />
+          <>
+            <div className="rounded-2xl border border-line bg-card p-6">
+              <p className="text-[17px] font-semibold">Цель и уровень</p>
+              <div className="mt-4">
+                <PlanEditForm studentId={id} targetLevel={student.studentProfile.targetLevel} goal={student.studentProfile.goal} />
+              </div>
             </div>
-          </div>
+
+            <div className="rounded-2xl border border-line bg-card p-6">
+              <p className="text-[17px] font-semibold">Урок в плане на день</p>
+              <div className="mt-4">
+                <LessonAssignForm
+                  studentId={id}
+                  lessonOptions={lessonOptions}
+                  assignedLesson={student.studentProfile.assignedLesson}
+                />
+              </div>
+            </div>
+          </>
         )}
       </div>
     </DashboardShell>

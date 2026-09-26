@@ -3,8 +3,8 @@
 import { revalidatePath } from "next/cache";
 import { apiFetch, ApiError } from "@/lib/api";
 import type {
-  CuratorStudent, CuratorStudentCard, Homework, MistakeItem, PlacementSpeakingRecording, ReviewQueueItem,
-  SkillSnapshot, SpeakingRecordingsResponse, SpeakingRubric,
+  CuratorLessonOption, CuratorStudent, CuratorStudentCard, Homework, MistakeItem, PlacementSpeakingRecording,
+  ReviewQueueItem, SkillSnapshot, SpeakingRecordingsResponse, SpeakingRubric,
 } from "@/lib/types";
 
 function buildQuery(params: Record<string, string | undefined>) {
@@ -100,6 +100,25 @@ export async function assignHomework(studentId: string, _prevState: AssignHomewo
   }
   revalidatePath(`/curator/students/${studentId}`);
   return { error: null };
+}
+
+export async function getLessonOptions() {
+  return apiFetch<CuratorLessonOption[]>("/curator/lessons");
+}
+
+export async function assignLesson(studentId: string, lessonId: string) {
+  const result = await apiFetch<CuratorStudentCard>(`/curator/students/${studentId}/assign-lesson`, {
+    method: "POST",
+    body: JSON.stringify({ lessonId }),
+  });
+  revalidatePath(`/curator/students/${studentId}`);
+  return result;
+}
+
+export async function unassignLesson(studentId: string) {
+  const result = await apiFetch<CuratorStudentCard>(`/curator/students/${studentId}/assign-lesson`, { method: "DELETE" });
+  revalidatePath(`/curator/students/${studentId}`);
+  return result;
 }
 
 export async function getHomeworkListenUrl(homeworkId: string) {

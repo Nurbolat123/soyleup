@@ -1,12 +1,12 @@
-import { Body, Controller, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthUser, CurrentUser, Roles } from '../common/auth.decorators';
 import { AssignHomeworkDto, HomeworkIdParamDto, ReviewHomeworkDto } from '../homework/dto/homework.dto';
 import { HomeworkService } from '../homework/homework.service';
 import { CuratorStudentsService } from './curator-students.service';
 import {
-  LessonAnswerIdParamDto, PlacementAttemptIdParamDto, ReviewSpeakingDto, StudentIdParamDto, StudentListQueryDto,
-  UpdateStudentPlanDto,
+  AssignLessonDto, LessonAnswerIdParamDto, PlacementAttemptIdParamDto, ReviewSpeakingDto, StudentIdParamDto,
+  StudentListQueryDto, UpdateStudentPlanDto,
 } from './dto/curator.dto';
 import { SpeakingReviewService } from './speaking-review.service';
 
@@ -53,6 +53,21 @@ export class CuratorController {
   @Patch('students/:id/plan')
   updatePlan(@CurrentUser() user: AuthUser, @Param() params: StudentIdParamDto, @Body() dto: UpdateStudentPlanDto) {
     return this.students.updatePlan(user, params.id, dto);
+  }
+
+  @Get('lessons')
+  lessonOptions() {
+    return this.students.listLessonsForPicker();
+  }
+
+  @Post('students/:id/assign-lesson')
+  assignLesson(@CurrentUser() user: AuthUser, @Param() params: StudentIdParamDto, @Body() dto: AssignLessonDto) {
+    return this.students.assignLesson(user, params.id, dto.lessonId);
+  }
+
+  @Delete('students/:id/assign-lesson')
+  unassignLesson(@CurrentUser() user: AuthUser, @Param() params: StudentIdParamDto) {
+    return this.students.unassignLesson(user, params.id);
   }
 
   @Post('homework')

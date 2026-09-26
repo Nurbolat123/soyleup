@@ -5,7 +5,7 @@ import { gradeAnswer, stripAnswer } from '../common/exerciseContent';
 import { DB, Database } from '../db/db.module';
 import {
   consents, exercises, lessonBlocks, lessonExerciseAnswers, LessonExerciseAnswer, lessonProgress, lessons,
-  studentVocabulary, vocabularyWords,
+  studentProfiles, studentVocabulary, vocabularyWords,
 } from '../db/schema';
 import { HomeworkService } from '../homework/homework.service';
 import { NotificationEventsService } from '../notifications/notification-events.service';
@@ -143,6 +143,11 @@ export class LessonPlayerService {
 
     if (justCompleted) {
       await this.notifyLessonCompleted(userId, lessonId, updated.activeSeconds);
+      // Куратор назначал именно этот урок — прошли, план возвращается к автоподбору по курсу.
+      await this.db
+        .update(studentProfiles)
+        .set({ assignedLessonId: null })
+        .where(and(eq(studentProfiles.userId, userId), eq(studentProfiles.assignedLessonId, lessonId)));
     }
 
     return { status: updated.status, currentBlockOrder: updated.currentBlockOrder };
