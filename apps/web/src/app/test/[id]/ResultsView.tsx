@@ -29,8 +29,8 @@ export function ResultsView({
   return (
     <main className="flex min-h-screen justify-center bg-paper px-5 py-12">
       <div className="w-full max-w-[560px]">
-        <Link href="/" className="text-sm text-muted">
-          ← На главную
+        <Link href={saved ? "/student" : "/"} className="text-sm text-muted">
+          {saved ? "← В кабинет" : "← На главную"}
         </Link>
 
         <div className="mt-4 rounded-3xl border border-line bg-card p-8 shadow-[0_30px_60px_-30px_rgba(22,24,29,0.25)]">
