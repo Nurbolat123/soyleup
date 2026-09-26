@@ -44,7 +44,7 @@ services:
     command: redis-server --save 60 1 --appendonly yes
 
   minio:
-    image: minio/minio:latest
+    image: quay.io/minio/minio:latest
     restart: unless-stopped
     logging: *default-logging
     environment:
