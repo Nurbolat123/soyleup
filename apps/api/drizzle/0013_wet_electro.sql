@@ -1,0 +1,1 @@
+ALTER TYPE "public"."notification_type" ADD VALUE 'LESSON_SPEAKING_SUBMITTED';

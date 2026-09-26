@@ -314,6 +314,7 @@ echo "▸ куратор: проверка speaking в уроке"
 SPBID=$(req POST /admin/content/lessons/$LID/blocks 201 "$ADMIN" '{"type":"SPEAKING","order":2}' | json id)
 SPEID=$(req POST /admin/content/blocks/$SPBID/exercises 201 "$ADMIN" '{"type":"SPEAKING","content":{"prompt":"Tell me about yourself"}}' | json id)
 req POST /learning/lessons/$LID/exercises/$SPEID/speaking 201 "$PTOKEN" '{"audioKey":"fake/lesson-speak.webm"}' >/dev/null
+[[ $(req GET /notifications 200 "$HWCUR" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>console.log(JSON.parse(s).items.some(n=>n.type==="LESSON_SPEAKING_SUBMITTED")))') == true ]]   # куратор уведомлён об устном ответе в уроке
 ANSID=$(req GET /learning/lessons/$LID 200 "$PTOKEN" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{const l=JSON.parse(s);for(const b of l.blocks)for(const e of b.exercises)if(e.id==="'"$SPEID"'")console.log("ok")})')
 LANSID=$(req GET /curator/students/$PID/speaking-recordings 200 "$HWCUR" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>console.log(JSON.parse(s).lesson[0].id))')
 req GET /curator/lesson-answers/$LANSID/recording 404 "$OTHERCURTOKEN" >/dev/null
@@ -376,7 +377,7 @@ req POST /notifications/$NID/read 201 "$NOTIFPARENT" >/dev/null
 [[ $(req GET /notifications 200 "$NOTIFPARENT" | json unread) == 0 ]]
 
 SETTINGS=$(req GET /notifications/settings 200 "$NOTIFPARENT")
-[[ $(echo "$SETTINGS" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>console.log(JSON.parse(s).length))') == 7 ]]
+[[ $(echo "$SETTINGS" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>console.log(JSON.parse(s).length))') == 8 ]]
 req PATCH /notifications/settings/LESSON_COMPLETED 200 "$NOTIFPARENT" '{"inApp":false,"email":false,"telegram":false}' >/dev/null
 
 NLID2=$(req POST /admin/content/modules/$NMID/lessons 201 "$ADMIN" '{"title":"Notif lesson 2","order":1}' | json id)

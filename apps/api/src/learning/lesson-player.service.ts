@@ -93,8 +93,20 @@ export class LessonPlayerService {
 
     const progress = await this.getOrCreateProgress(userId, lessonId);
     await this.upsertAnswer(progress.id, exerciseId, { audioKey: dto.audioKey, isCorrect: null });
+    await this.notifySpeakingSubmitted(userId, lessonId);
 
     return { submitted: true };
+  }
+
+  private async notifySpeakingSubmitted(userId: string, lessonId: string) {
+    const curatorIds = await this.access.getActiveCuratorIds(userId);
+    if (!curatorIds.length) return;
+    const lesson = await this.db.query.lessons.findFirst({ where: eq(lessons.id, lessonId), columns: { title: true } });
+    await this.events.emit('LESSON_SPEAKING_SUBMITTED', curatorIds, {
+      title: 'Устная часть на проверку',
+      body: `Урок «${lesson?.title ?? ''}» — ученик записал устный ответ, нужна проверка.`,
+      meta: { studentId: userId, lessonId },
+    });
   }
 
   /** Ученик закончил блок (посмотрел/ответил на все его упражнения) — переходит к следующему. */

@@ -92,6 +92,13 @@
       "when": 1790459826665,
       "tag": "0012_premium_bastion",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1790460185202,
+      "tag": "0013_wet_electro",
+      "breakpoints": true
     }
   ]
 }

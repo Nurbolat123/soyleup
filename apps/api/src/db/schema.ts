@@ -567,7 +567,7 @@ export type Homework = typeof homework.$inferSelect;
 // ── Уведомления (этап 6) ────────────────────────────────────
 export const notificationTypeEnum = pgEnum('notification_type', [
   'LESSON_COMPLETED', 'ASSIGNMENT_CREATED', 'ASSIGNMENT_OVERDUE', 'REVIEW_CREATED', 'SCORE_DROPPED', 'LESSON_MISSED',
-  'HOMEWORK_SUBMITTED',
+  'HOMEWORK_SUBMITTED', 'LESSON_SPEAKING_SUBMITTED',
 ]);
 export const notificationChannelEnum = pgEnum('notification_channel', ['IN_APP', 'EMAIL', 'TELEGRAM']);
 export type NotificationType = (typeof notificationTypeEnum.enumValues)[number];
