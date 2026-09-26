@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ExerciseCard } from "@/components/ExerciseCard";
 import { SpeakingRecorder } from "@/components/SpeakingRecorder";
+import { VideoEmbed } from "@/components/VideoEmbed";
 import type { LessonBlockType, LessonPlayerData } from "@/lib/types";
 import {
   completeBlock, presignLessonSpeaking, sendHeartbeat, submitExerciseAnswer, submitLessonSpeaking,
@@ -132,6 +133,9 @@ export function LessonPlayer({ lessonId, initialLesson }: { lessonId: string; in
           <h1 className="display text-[22px]">{block.title ?? BLOCK_LABELS[block.type]}</h1>
 
           <div className="mt-5 flex flex-col gap-5">
+            {"videoUrl" in block.content && typeof block.content.videoUrl === "string" && block.content.videoUrl && (
+              <VideoEmbed url={block.content.videoUrl} />
+            )}
             {"text" in block.content && typeof block.content.text === "string" && (
               <p className="text-[16px] leading-relaxed">{block.content.text}</p>
             )}

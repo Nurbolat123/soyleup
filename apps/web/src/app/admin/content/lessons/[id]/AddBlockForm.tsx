@@ -51,6 +51,10 @@ export function AddBlockForm({ lessonId, nextOrder }: { lessonId: string; nextOr
         <p className="text-[12px] text-muted">
           Пример для {type}: <code>{BLOCK_CONTENT_EXAMPLES[type]}</code>
         </p>
+        <p className="text-[12px] text-muted">
+          В любой блок можно добавить поле <code>&quot;videoUrl&quot;</code> со ссылкой на YouTube
+          или Vimeo — ученику покажется встроенным плеером.
+        </p>
         <button
           type="submit"
           disabled={pending}

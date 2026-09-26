@@ -2,6 +2,7 @@ import Link from "next/link";
 import { apiFetch } from "@/lib/api";
 import { DashboardShell } from "@/components/DashboardShell";
 import type { LessonWithBlocks, PublicUser } from "@/lib/types";
+import { VideoEmbed } from "@/components/VideoEmbed";
 import { ExercisePreview } from "./ExercisePreview";
 
 const BLOCK_TITLE: Record<string, string> = {
@@ -43,6 +44,7 @@ export default async function LessonPreviewPage({ params }: { params: Promise<{ 
               {block.title && <h2 className="display mt-1 text-[20px]">{block.title}</h2>}
 
               <div className="mt-3 flex flex-col gap-3 text-[15px] leading-relaxed">
+                {typeof c.videoUrl === "string" && c.videoUrl && <VideoEmbed url={c.videoUrl} />}
                 {typeof c.text === "string" && <p>{c.text}</p>}
                 {typeof c.explanation === "string" && <p>{c.explanation}</p>}
                 {Array.isArray(c.words) && (
