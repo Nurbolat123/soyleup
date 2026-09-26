@@ -138,7 +138,16 @@ export function HomeworkDetail({ homework, hasVoiceConsent }: { homework: Homewo
             </div>
 
             {audioKey ? (
-              <p className="text-[14px] font-semibold text-blue">Запись голоса прикреплена ✓</p>
+              <div className="flex items-center justify-between gap-3 rounded-2xl bg-paper-2 px-4 py-3">
+                <p className="text-[14px] font-semibold text-blue">Запись голоса прикреплена ✓</p>
+                <button
+                  type="button"
+                  onClick={() => setAudioKey(null)}
+                  className="text-[13px] font-semibold text-error"
+                >
+                  Удалить
+                </button>
+              </div>
             ) : hasVoiceConsent ? (
               <SpeakingRecorder
                 prompt="Можно также ответить голосом (необязательно)"
