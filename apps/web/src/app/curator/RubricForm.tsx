@@ -13,11 +13,16 @@ const RUBRIC_FIELDS: { key: keyof SpeakingRubric; label: string }[] = [
 export function RubricForm({
   onSubmit,
   submitLabel = "Сохранить оценку",
+  showRubric = true,
+  showWrittenGrade = false,
 }: {
-  onSubmit: (rubric: SpeakingRubric, comment: string) => Promise<void>;
+  onSubmit: (rubric: SpeakingRubric, comment: string, writtenGrade?: number) => Promise<void>;
   submitLabel?: string;
+  showRubric?: boolean;
+  showWrittenGrade?: boolean;
 }) {
   const [rubric, setRubric] = useState<SpeakingRubric>({ vocabulary: 3, grammar: 3, fluency: 3, pronunciation: 3 });
+  const [writtenGrade, setWrittenGrade] = useState(3);
   const [comment, setComment] = useState("");
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -26,7 +31,7 @@ export function RubricForm({
     setPending(true);
     setError(null);
     try {
-      await onSubmit(rubric, comment.trim());
+      await onSubmit(rubric, comment.trim(), showWrittenGrade ? writtenGrade : undefined);
     } catch {
       setError("Не удалось сохранить оценку. Попробуйте ещё раз.");
     } finally {
@@ -36,29 +41,54 @@ export function RubricForm({
 
   return (
     <div className="flex flex-col gap-4">
-      {RUBRIC_FIELDS.map(({ key, label }) => (
-        <div key={key} className="flex items-center justify-between gap-4">
-          <label htmlFor={`rubric-${key}`} className="text-[15px] font-semibold">
-            {label}
+      {showRubric &&
+        RUBRIC_FIELDS.map(({ key, label }) => (
+          <div key={key} className="flex items-center justify-between gap-4">
+            <label htmlFor={`rubric-${key}`} className="text-[15px] font-semibold">
+              {label}
+            </label>
+            <div className="flex gap-1.5">
+              {[1, 2, 3, 4, 5].map((v) => (
+                <button
+                  key={v}
+                  type="button"
+                  onClick={() => setRubric((r) => ({ ...r, [key]: v }))}
+                  className={`h-9 w-9 rounded-full text-[14px] font-semibold ${
+                    rubric[key] === v ? "bg-ink text-paper" : "border border-line text-ink"
+                  }`}
+                  aria-pressed={rubric[key] === v}
+                  id={v === 1 ? `rubric-${key}` : undefined}
+                >
+                  {v}
+                </button>
+              ))}
+            </div>
+          </div>
+        ))}
+
+      {showWrittenGrade && (
+        <div className="flex items-center justify-between gap-4">
+          <label htmlFor="rubric-written" className="text-[15px] font-semibold">
+            Письменный ответ
           </label>
           <div className="flex gap-1.5">
             {[1, 2, 3, 4, 5].map((v) => (
               <button
                 key={v}
                 type="button"
-                onClick={() => setRubric((r) => ({ ...r, [key]: v }))}
+                onClick={() => setWrittenGrade(v)}
                 className={`h-9 w-9 rounded-full text-[14px] font-semibold ${
-                  rubric[key] === v ? "bg-ink text-paper" : "border border-line text-ink"
+                  writtenGrade === v ? "bg-ink text-paper" : "border border-line text-ink"
                 }`}
-                aria-pressed={rubric[key] === v}
-                id={v === 1 ? `rubric-${key}` : undefined}
+                aria-pressed={writtenGrade === v}
+                id={v === 1 ? "rubric-written" : undefined}
               >
                 {v}
               </button>
             ))}
           </div>
         </div>
-      ))}
+      )}
 
       <div>
         <label htmlFor="review-comment" className="mb-1.5 block text-[14px] font-semibold">

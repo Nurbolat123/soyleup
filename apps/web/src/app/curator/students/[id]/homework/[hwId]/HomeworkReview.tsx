@@ -17,10 +17,11 @@ export function HomeworkReview({ homework, studentId }: { homework: Homework; st
 
   const canReview = homework.status === "SUBMITTED";
 
-  async function handleApprove(rubric: SpeakingRubric, comment: string) {
+  async function handleApprove(rubric: SpeakingRubric, comment: string, writtenGrade?: number) {
     await reviewHomework(homework.id, studentId, {
       action: "APPROVE",
       rubric: homework.submissionAudioKey ? rubric : undefined,
+      writtenGrade,
       comment: comment || undefined,
     });
     router.push(`/curator/students/${studentId}`);
@@ -85,7 +86,12 @@ export function HomeworkReview({ homework, studentId }: { homework: Homework; st
 
       {canReview && !returning && (
         <div className="flex flex-col gap-4">
-          <RubricForm onSubmit={handleApprove} submitLabel="Принять" />
+          <RubricForm
+            onSubmit={handleApprove}
+            submitLabel="Принять"
+            showRubric={!!homework.submissionAudioKey}
+            showWrittenGrade={!!(homework.submissionText || homework.submissionFileKeys?.length)}
+          />
           <button
             type="button"
             onClick={() => setReturning(true)}

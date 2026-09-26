@@ -118,6 +118,12 @@ export function HomeworkDetail({ homework, hasVoiceConsent }: { homework: Homewo
                 ))}
               </dl>
             )}
+            {homework.writtenGrade != null && (
+              <div className="mt-3 flex justify-between text-[14px]">
+                <dt className="text-muted">Письменный ответ</dt>
+                <dd className="font-semibold">{homework.writtenGrade} / 5</dd>
+              </div>
+            )}
           </div>
         )}
 

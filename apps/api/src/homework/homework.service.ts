@@ -13,6 +13,7 @@ import { NotificationEventsService } from '../notifications/notification-events.
 import { AssignHomeworkDto, PresignFileDto, ReviewHomeworkDto, SubmitHomeworkDto } from './dto/homework.dto';
 
 const HOMEWORK_SPEAKING_WEIGHT = 0.1; // как мини-тест урока — см. CLAUDE.md и обсуждение шага 5
+const HOMEWORK_WRITTEN_WEIGHT = 0.1;
 
 @Injectable()
 export class HomeworkService {
@@ -177,9 +178,16 @@ export class HomeworkService {
     if (dto.rubric && !row.submissionAudioKey) {
       throw new BadRequestException('Rubric requires an audio submission');
     }
+    if (dto.writtenGrade && !row.submissionText && !row.submissionFileKeys?.length) {
+      throw new BadRequestException('Written grade requires a text or file submission');
+    }
     if (dto.rubric) {
       const score = rubricToScore(dto.rubric);
       await this.skillRecalc.recalcSkill(row.studentId, 'SPEAKING', score, HOMEWORK_SPEAKING_WEIGHT, 'HOMEWORK');
+    }
+    if (dto.writtenGrade) {
+      const score = (dto.writtenGrade / 5) * 100;
+      await this.skillRecalc.recalcSkill(row.studentId, 'GRAMMAR', score, HOMEWORK_WRITTEN_WEIGHT, 'HOMEWORK');
     }
 
     const [updated] = await this.db
@@ -187,6 +195,7 @@ export class HomeworkService {
       .set({
         status: 'REVIEWED',
         rubric: dto.rubric ?? null,
+        writtenGrade: dto.writtenGrade ?? null,
         reviewComment: dto.comment ?? null,
         reviewedAt: new Date(),
         reviewedByCuratorId: actor.id,

@@ -544,6 +544,8 @@ export const homework = pgTable(
     submittedAt: ts('submitted_at'),
     integritySignals: jsonb('integrity_signals').$type<IntegritySignals>(),
     rubric: jsonb('rubric').$type<SpeakingRubric>(),
+    // Оценка письменного ответа (текст/файлы), 1–5, как рубрика говорения. Влияет на навык Grammar.
+    writtenGrade: integer('written_grade'),
     reviewComment: text('review_comment'),
     reviewedAt: ts('reviewed_at'),
     reviewedByCuratorId: uuid('reviewed_by_curator_id').references(() => users.id, { onDelete: 'set null' }),

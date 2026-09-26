@@ -121,5 +121,12 @@ export class ReviewHomeworkDto {
   @IsString()
   @MaxLength(2000)
   comment?: string;
+
+  /** Оценка письменного ответа (текст/файлы), 1–5. Влияет на навык Grammar. */
+  @IsOptional()
+  @IsInt()
+  @Min(1)
+  @Max(5)
+  writtenGrade?: number;
 }
 

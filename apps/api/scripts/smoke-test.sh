@@ -293,6 +293,21 @@ req GET /curator/homework/$HWID4/files 200 "$HWCUR" >/dev/null
 req GET /curator/homework/$HWID4/files 404 "$OTHERCURTOKEN" >/dev/null   # чужой ученик
 req GET /students/$PID/homework/$HWID4/files 200 "$HWCUR" >/dev/null   # тот же доступ через family-эндпоинт
 
+echo "▸ оценка письменного ответа (влияет на Grammar)"
+HWID5=$(req POST /curator/homework 201 "$HWCUR" "{\"studentId\":\"$PID\",\"title\":\"Тест5\"}" | json id)
+req POST /curator/homework/$HWID5/review 400 "$HWCUR" '{"action":"APPROVE","writtenGrade":4}' >/dev/null   # ещё не сдано — 400 (не SUBMITTED)
+req POST /learning/homework/$HWID5/submit 201 "$PTOKEN" '{"text":"my written answer"}' >/dev/null
+GRAMMAR_BEFORE=$(req GET /users/me 200 "$PTOKEN" | json studentProfile.grammarScore)
+req POST /curator/homework/$HWID5/review 400 "$HWCUR" '{"action":"APPROVE","writtenGrade":6}' >/dev/null   # вне диапазона 1–5
+REVIEWED5=$(req POST /curator/homework/$HWID5/review 201 "$HWCUR" '{"action":"APPROVE","writtenGrade":4,"comment":"Хорошо"}')
+[[ $(echo "$REVIEWED5" | json writtenGrade) == 4 ]]
+GRAMMAR_AFTER=$(req GET /users/me 200 "$PTOKEN" | json studentProfile.grammarScore)
+[[ $GRAMMAR_AFTER != "$GRAMMAR_BEFORE" ]]   # оценка письменного ответа (вес 0.1) сдвинула Grammar
+
+HWID6=$(req POST /curator/homework 201 "$HWCUR" "{\"studentId\":\"$PID\",\"title\":\"Тест6\"}" | json id)
+req POST /learning/homework/$HWID6/submit 201 "$PTOKEN" '{"audioKey":"fake/hw6.webm"}' >/dev/null
+req POST /curator/homework/$HWID6/review 400 "$HWCUR" '{"action":"APPROVE","writtenGrade":5}' >/dev/null   # только аудио — оценка письма невозможна
+
 echo "▸ куратор: проверка speaking в уроке"
 SPBID=$(req POST /admin/content/lessons/$LID/blocks 201 "$ADMIN" '{"type":"SPEAKING","order":2}' | json id)
 SPEID=$(req POST /admin/content/blocks/$SPBID/exercises 201 "$ADMIN" '{"type":"SPEAKING","content":{"prompt":"Tell me about yourself"}}' | json id)

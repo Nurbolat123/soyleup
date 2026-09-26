@@ -113,7 +113,7 @@ export async function getHomeworkFileUrls(homeworkId: string) {
 export async function reviewHomework(
   homeworkId: string,
   studentId: string,
-  data: { action: "APPROVE" | "RETURN"; rubric?: SpeakingRubric; comment?: string },
+  data: { action: "APPROVE" | "RETURN"; rubric?: SpeakingRubric; writtenGrade?: number; comment?: string },
 ) {
   const result = await apiFetch<Homework>(`/curator/homework/${homeworkId}/review`, {
     method: "POST",

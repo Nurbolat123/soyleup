@@ -419,6 +419,7 @@ export interface Homework {
   submittedAt: string | null;
   integritySignals: IntegritySignals | null;
   rubric: SpeakingRubric | null;
+  writtenGrade: number | null;
   reviewComment: string | null;
   reviewedAt: string | null;
   reviewedByCuratorId: string | null;
