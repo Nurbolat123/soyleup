@@ -132,7 +132,7 @@ export function SpeakingRecorder({
               disabled={status === "uploading"}
               className="h-[48px] flex-1 rounded-2xl border border-ink text-[15px] font-semibold text-ink disabled:opacity-40"
             >
-              Записать заново
+              Удалить запись
             </button>
             <button
               type="button"
