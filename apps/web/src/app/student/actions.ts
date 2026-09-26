@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { apiFetch, ApiError } from "@/lib/api";
-import type { CefrTarget, LinkCode, MeResponse } from "@/lib/types";
+import type { CefrTarget, ConsentType, LinkCode, MeResponse } from "@/lib/types";
 
 export interface ProfileFormState {
   error: string | null;
@@ -33,4 +33,13 @@ export async function updateProfile(
 
 export async function createLinkCode(): Promise<LinkCode> {
   return apiFetch<LinkCode>("/students/me/link-code", { method: "POST" });
+}
+
+export async function setOwnConsent(type: ConsentType, grant: boolean) {
+  if (grant) {
+    await apiFetch("/users/consents", { method: "POST", body: JSON.stringify({ type }) });
+  } else {
+    await apiFetch(`/users/consents/${type}`, { method: "DELETE" });
+  }
+  revalidatePath("/student");
 }

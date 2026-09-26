@@ -51,24 +51,24 @@ export interface SkillSnapshot {
   createdAt: string;
 }
 
-export interface MeResponse extends PublicUser {
-  studentProfile: StudentProfile | null;
-  englishProfile: EnglishProfile | null;
-  activeConsents: { type: string; version: string; grantedAt: string }[];
-  requiresParentConsent: boolean;
-}
-
-export interface LinkCode {
-  code: string;
-  expiresAt: string;
-}
-
 export type ConsentType = "DATA_PROCESSING" | "VOICE_RECORDING" | "CAMERA" | "MICROPHONE" | "MARKETING";
 
 export interface ActiveConsent {
   type: ConsentType;
   version: string;
   grantedAt: string;
+}
+
+export interface MeResponse extends PublicUser {
+  studentProfile: StudentProfile | null;
+  englishProfile: EnglishProfile | null;
+  activeConsents: ActiveConsent[];
+  requiresParentConsent: boolean;
+}
+
+export interface LinkCode {
+  code: string;
+  expiresAt: string;
 }
 
 export interface ChildSummary {

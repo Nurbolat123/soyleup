@@ -2,6 +2,7 @@ import Link from "next/link";
 import { apiFetch } from "@/lib/api";
 import { DashboardShell } from "@/components/DashboardShell";
 import type { MeResponse, TodayPlan } from "@/lib/types";
+import { ConsentSettings } from "./ConsentSettings";
 import { EnglishProfileCard } from "./EnglishProfileCard";
 import { getMyHomework } from "./homework-actions";
 import { getSkillHistory, getTodayPlan } from "./learning-actions";
@@ -100,6 +101,11 @@ export default async function StudentPage() {
                 <ProfileForm profile={user.studentProfile} />
               </div>
             </div>
+          )}
+
+          {/* Несовершеннолетним согласия выдаёт родитель в своём кабинете (см. CLAUDE.md) */}
+          {user.studentProfile && !user.studentProfile.isMinor && (
+            <ConsentSettings activeConsents={user.activeConsents} />
           )}
 
           <LinkCodeWidget />
