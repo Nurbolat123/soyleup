@@ -2,14 +2,30 @@
 
 import { useActionState, useEffect, useRef, useState, useTransition } from "react";
 import { deleteExercise, updateExercise, type ActionState } from "../../actions";
+import { contentToDefaults, ExerciseContentFields } from "./ExerciseContentFields";
 import type { Exercise } from "@/lib/types";
 
 const initial: ActionState = { error: null };
 
+const SKILL_LABEL: Record<string, string> = {
+  GRAMMAR: "Грамматика", VOCABULARY: "Лексика", READING: "Чтение", LISTENING: "Аудирование", SPEAKING: "Говорение",
+};
+
+function ExerciseSummary({ exercise }: { exercise: Exercise }) {
+  const c = exercise.content;
+  const question = (c.question as string) || (c.text as string) || (c.prompt as string) || "";
+  return (
+    <div className="mt-2 text-[13px] text-ink-2">
+      {question && <p>{question}</p>}
+      {exercise.skill && <p className="mt-1 text-muted">Навык: {SKILL_LABEL[exercise.skill]}</p>}
+    </div>
+  );
+}
+
 export function ExerciseCard({ lessonId, exercise }: { lessonId: string; exercise: Exercise }) {
   const [editing, setEditing] = useState(false);
   const [deleting, startDelete] = useTransition();
-  const action = updateExercise.bind(null, lessonId, exercise.id);
+  const action = updateExercise.bind(null, lessonId, exercise.id, exercise.type);
   const [state, formAction, pending] = useActionState(action, initial);
 
   const wasPending = useRef(false);
@@ -44,11 +60,10 @@ export function ExerciseCard({ lessonId, exercise }: { lessonId: string; exercis
 
       {editing ? (
         <form action={formAction} className="mt-2 flex flex-col gap-2">
-          <textarea
-            name="content"
-            rows={5}
-            defaultValue={JSON.stringify(exercise.content, null, 2)}
-            className="rounded-lg border border-line px-3 py-2 font-mono text-[12px]"
+          <ExerciseContentFields
+            type={exercise.type}
+            defaults={{ ...contentToDefaults(exercise.type, exercise.content), skill: exercise.skill }}
+            showSkill={exercise.type !== "SPEAKING" && exercise.type !== "FREE_RESPONSE"}
           />
           <button
             type="submit"
@@ -60,7 +75,7 @@ export function ExerciseCard({ lessonId, exercise }: { lessonId: string; exercis
           {state.error && <p className="text-[12px] font-semibold text-error">{state.error}</p>}
         </form>
       ) : (
-        <pre className="mt-2 overflow-x-auto text-[12px] text-ink-2">{JSON.stringify(exercise.content, null, 2)}</pre>
+        <ExerciseSummary exercise={exercise} />
       )}
     </div>
   );

@@ -206,6 +206,7 @@ export interface Exercise {
   type: ExerciseType;
   order: number;
   content: Record<string, unknown>;
+  skill: Skill | null;
 }
 
 export interface LessonBlock {

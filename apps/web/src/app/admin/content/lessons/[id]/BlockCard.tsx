@@ -4,9 +4,32 @@ import { useActionState, useEffect, useRef, useState, useTransition } from "reac
 import { deleteBlock, updateBlock, type ActionState } from "../../actions";
 import type { LessonBlock, Exercise } from "@/lib/types";
 import { AddExerciseForm } from "./AddExerciseForm";
+import { BlockContentFields } from "./BlockContentFields";
 import { ExerciseCard } from "./ExerciseCard";
 
 const initial: ActionState = { error: null };
+
+function BlockContentSummary({ block }: { block: LessonBlock }) {
+  const c = block.content as Record<string, unknown>;
+  const rows: [string, string][] = [];
+  if (typeof c.text === "string" && c.text) rows.push(["Текст", c.text]);
+  if (typeof c.explanation === "string" && c.explanation) rows.push(["Объяснение", c.explanation]);
+  if (Array.isArray(c.words)) rows.push(["Слова", (c.words as string[]).join(", ")]);
+  if (typeof c.audioUrl === "string" && c.audioUrl) rows.push(["Аудио", c.audioUrl]);
+  if (typeof c.transcript === "string" && c.transcript) rows.push(["Транскрипт", c.transcript]);
+  if (typeof c.videoUrl === "string" && c.videoUrl) rows.push(["Видео", c.videoUrl]);
+  if (!rows.length) return <p className="mt-3 text-[13px] text-muted">Нет своего содержимого — только упражнения ниже.</p>;
+  return (
+    <dl className="mt-3 flex flex-col gap-1.5 rounded-lg bg-paper px-3 py-2 text-[13px]">
+      {rows.map(([label, value]) => (
+        <div key={label}>
+          <dt className="font-semibold text-muted">{label}</dt>
+          <dd className="whitespace-pre-wrap text-ink-2">{value}</dd>
+        </div>
+      ))}
+    </dl>
+  );
+}
 
 export function BlockCard({
   lessonId,
@@ -17,7 +40,7 @@ export function BlockCard({
 }) {
   const [editing, setEditing] = useState(false);
   const [deleting, startDelete] = useTransition();
-  const action = updateBlock.bind(null, lessonId, block.id);
+  const action = updateBlock.bind(null, lessonId, block.id, block.type);
   const [state, formAction, pending] = useActionState(action, initial);
 
   const wasPending = useRef(false);
@@ -60,12 +83,7 @@ export function BlockCard({
             placeholder="Заголовок"
             className="h-[38px] rounded-lg border border-line px-3 text-[14px]"
           />
-          <textarea
-            name="content"
-            rows={5}
-            defaultValue={JSON.stringify(block.content, null, 2)}
-            className="rounded-lg border border-line px-3 py-2 font-mono text-[12px]"
-          />
+          <BlockContentFields type={block.type} defaults={block.content as Record<string, unknown>} />
           <button
             type="submit"
             disabled={pending}
@@ -76,9 +94,7 @@ export function BlockCard({
           {state.error && <p className="text-[13px] font-semibold text-error">{state.error}</p>}
         </form>
       ) : (
-        <pre className="mt-3 overflow-x-auto rounded-lg bg-paper px-3 py-2 text-[12px] text-ink-2">
-          {JSON.stringify(block.content, null, 2)}
-        </pre>
+        <BlockContentSummary block={block} />
       )}
 
       <div className="mt-4 flex flex-col gap-2">

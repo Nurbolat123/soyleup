@@ -2,13 +2,17 @@
 
 import { useActionState, useState } from "react";
 import { createBlock, type ActionState } from "../../actions";
-import { BLOCK_CONTENT_EXAMPLES } from "../../contentExamples";
+import { BlockContentFields } from "./BlockContentFields";
 import type { LessonBlockType } from "@/lib/types";
 
 const initial: ActionState = { error: null };
 const TYPES: LessonBlockType[] = [
   "INTRO", "VOCABULARY", "GRAMMAR", "READING", "LISTENING", "EXERCISE", "SPEAKING", "MINI_TEST", "HOMEWORK",
 ];
+const TYPE_LABEL: Record<LessonBlockType, string> = {
+  INTRO: "Введение", VOCABULARY: "Новые слова", GRAMMAR: "Грамматика", READING: "Чтение", LISTENING: "Аудирование",
+  EXERCISE: "Упражнения", SPEAKING: "Говорение", MINI_TEST: "Мини-тест", HOMEWORK: "Домашнее задание",
+};
 
 export function AddBlockForm({ lessonId, nextOrder }: { lessonId: string; nextOrder: number }) {
   const action = createBlock.bind(null, lessonId);
@@ -29,7 +33,7 @@ export function AddBlockForm({ lessonId, nextOrder }: { lessonId: string; nextOr
           >
             {TYPES.map((t) => (
               <option key={t} value={t}>
-                {t}
+                {TYPE_LABEL[t]}
               </option>
             ))}
           </select>
@@ -40,21 +44,7 @@ export function AddBlockForm({ lessonId, nextOrder }: { lessonId: string; nextOr
             className="h-[42px] w-[260px] rounded-lg border border-line px-3 text-[14px]"
           />
         </div>
-        <textarea
-          name="content"
-          rows={4}
-          defaultValue="{}"
-          key={type}
-          placeholder={BLOCK_CONTENT_EXAMPLES[type]}
-          className="rounded-lg border border-line px-3 py-2 font-mono text-[13px]"
-        />
-        <p className="text-[12px] text-muted">
-          Пример для {type}: <code>{BLOCK_CONTENT_EXAMPLES[type]}</code>
-        </p>
-        <p className="text-[12px] text-muted">
-          В любой блок можно добавить поле <code>&quot;videoUrl&quot;</code> со ссылкой на YouTube
-          или Vimeo — ученику покажется встроенным плеером.
-        </p>
+        <BlockContentFields key={type} type={type} />
         <button
           type="submit"
           disabled={pending}
