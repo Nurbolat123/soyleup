@@ -158,6 +158,8 @@ IMPORT=$(req POST /admin/content/vocabulary/import 201 "$ADMIN" '{"csv":"word,tr
 [[ $(echo "$IMPORT" | json imported) == 1 ]]
 [[ $(echo "$IMPORT" | json skipped | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>console.log(JSON.parse(s).length))') == 1 ]]
 req DELETE /admin/content/vocabulary/$WID 200 "$ADMIN" >/dev/null
+WID2=$(req GET "/admin/content/vocabulary?search=smokeword2" 200 "$ADMIN" | json items.0.id)
+req DELETE /admin/content/vocabulary/$WID2 200 "$ADMIN" >/dev/null   # импортированная строка — иначе засоряет поиск в следующем прогоне
 
 echo "▸ content: question bank"
 QID=$(req POST /admin/content/questions 201 "$ADMIN" '{"skill":"GRAMMAR","level":"B1","type":"MULTIPLE_CHOICE","content":{"question":"q","options":["a","b"],"correctIndex":0}}' | json id)

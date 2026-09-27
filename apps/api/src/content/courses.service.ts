@@ -1,5 +1,5 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { and, asc, eq, SQL } from 'drizzle-orm';
+import { and, asc, eq, gt, sql, SQL } from 'drizzle-orm';
 import { stripAnswer } from '../common/exerciseContent';
 import { definedOnly } from '../common/utils';
 import { DB, Database } from '../db/db.module';
@@ -138,9 +138,24 @@ export class CoursesService {
     return row;
   }
 
+  /**
+   * Удаление блока сдвигает order всех блоков после него — иначе order урока
+   * перестаёт быть подряд идущей последовательностью 0..N-1, а плеер урока
+   * ищет следующий блок именно по order+1 (см. LessonPlayerService.completeBlock)
+   * и ученик застревает на блоке перед «дырой», не доходя до остальных.
+   */
   async deleteBlock(id: string) {
-    const rows = await this.db.delete(lessonBlocks).where(eq(lessonBlocks.id, id)).returning({ id: lessonBlocks.id });
-    if (!rows.length) throw new NotFoundException('Lesson block not found');
+    await this.db.transaction(async (tx) => {
+      const [deleted] = await tx.delete(lessonBlocks).where(eq(lessonBlocks.id, id)).returning({
+        lessonId: lessonBlocks.lessonId,
+        order: lessonBlocks.order,
+      });
+      if (!deleted) throw new NotFoundException('Lesson block not found');
+      await tx
+        .update(lessonBlocks)
+        .set({ order: sql`${lessonBlocks.order} - 1` })
+        .where(and(eq(lessonBlocks.lessonId, deleted.lessonId), gt(lessonBlocks.order, deleted.order)));
+    });
     return { ok: true };
   }
 
@@ -158,8 +173,17 @@ export class CoursesService {
   }
 
   async deleteExercise(id: string) {
-    const rows = await this.db.delete(exercises).where(eq(exercises.id, id)).returning({ id: exercises.id });
-    if (!rows.length) throw new NotFoundException('Exercise not found');
+    await this.db.transaction(async (tx) => {
+      const [deleted] = await tx.delete(exercises).where(eq(exercises.id, id)).returning({
+        lessonBlockId: exercises.lessonBlockId,
+        order: exercises.order,
+      });
+      if (!deleted) throw new NotFoundException('Exercise not found');
+      await tx
+        .update(exercises)
+        .set({ order: sql`${exercises.order} - 1` })
+        .where(and(eq(exercises.lessonBlockId, deleted.lessonBlockId), gt(exercises.order, deleted.order)));
+    });
     return { ok: true };
   }
 

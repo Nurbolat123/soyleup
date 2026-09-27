@@ -1,5 +1,5 @@
 import { BadRequestException, ForbiddenException, Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { and, asc, desc, eq, inArray, isNull } from 'drizzle-orm';
+import { and, asc, eq, inArray, isNull } from 'drizzle-orm';
 import { AccessService } from '../common/access.service';
 import { gradeAnswer, stripAnswer } from '../common/exerciseContent';
 import { DB, Database } from '../db/db.module';
@@ -109,7 +109,14 @@ export class LessonPlayerService {
     });
   }
 
-  /** Ученик закончил блок (посмотрел/ответил на все его упражнения) — переходит к следующему. */
+  /**
+   * Ученик закончил блок (посмотрел/ответил на все его упражнения) — переходит к следующему.
+   * Следующий блок ищем по фактическому порядку в списке блоков урока, а не через
+   * block.order + 1 — order не обязан идти подряд без дыр (например, если блок из середины
+   * урока когда-то удалили до того, как удаление стало сдвигать order остальных блоков).
+   * Расчёт по +1 на такой «дырявой» последовательности не находил следующий блок и
+   * ошибочно считал урок пройденным, поэтому ученик не видел блоки после дыры.
+   */
   async completeBlock(userId: string, lessonId: string, blockId: string) {
     const block = await this.db.query.lessonBlocks.findFirst({ where: eq(lessonBlocks.id, blockId) });
     if (!block || block.lessonId !== lessonId) throw new NotFoundException('Block not found');
@@ -122,19 +129,21 @@ export class LessonPlayerService {
     }
 
     const progress = await this.getOrCreateProgress(userId, lessonId);
-    const lastBlock = await this.db.query.lessonBlocks.findFirst({
+    const allBlocks = await this.db.query.lessonBlocks.findMany({
       where: eq(lessonBlocks.lessonId, lessonId),
-      orderBy: desc(lessonBlocks.order),
-      columns: { order: true },
+      orderBy: asc(lessonBlocks.order),
+      columns: { id: true, order: true },
     });
-    const isLast = !lastBlock || block.order >= lastBlock.order;
+    const index = allBlocks.findIndex((b) => b.id === blockId);
+    const nextBlock = index === -1 ? undefined : allBlocks[index + 1];
+    const isLast = !nextBlock;
 
     const justCompleted = isLast && progress.status !== 'COMPLETED';
 
     const [updated] = await this.db
       .update(lessonProgress)
       .set({
-        currentBlockOrder: Math.max(progress.currentBlockOrder, block.order + 1),
+        currentBlockOrder: Math.max(progress.currentBlockOrder, nextBlock ? nextBlock.order : block.order + 1),
         status: isLast ? 'COMPLETED' : progress.status,
         completedAt: isLast ? new Date() : progress.completedAt,
       })
