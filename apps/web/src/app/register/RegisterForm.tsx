@@ -12,13 +12,27 @@ const ROLE_HOME: Record<RoleChoice, string> = {
   PARENT: "/parent",
 };
 
+/** Возраст на сегодня по дате рождения (YYYY-MM-DD). */
+function calcAge(isoDate: string): number {
+  const birth = new Date(isoDate);
+  if (Number.isNaN(birth.getTime())) return NaN;
+  const today = new Date();
+  let age = today.getFullYear() - birth.getFullYear();
+  const monthDiff = today.getMonth() - birth.getMonth();
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) age--;
+  return age;
+}
+
 export function RegisterForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const attemptId = searchParams.get("attempt");
   const [role, setRole] = useState<RoleChoice>("STUDENT");
+  const [birthDate, setBirthDate] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+
+  const isMinor = role === "STUDENT" && birthDate.length === 10 && calcAge(birthDate) < 18;
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -133,6 +147,8 @@ export function RegisterForm() {
                 name="birthDate"
                 type="date"
                 required
+                value={birthDate}
+                onChange={(e) => setBirthDate(e.target.value)}
                 className="h-[50px] rounded-2xl border border-line px-4 text-[16px] focus:border-blue focus:outline-none"
               />
               <span className="text-[13px] text-muted">
@@ -180,16 +196,26 @@ export function RegisterForm() {
               required
               className="mt-1 h-5 w-5 shrink-0 accent-blue"
             />
-            <span>
-              Согласен(на) на обработку персональных данных в соответствии с{" "}
-              <Link href="/privacy" target="_blank" className="text-blue">
-                политикой конфиденциальности
-              </Link>{" "}
-              и принимаю{" "}
-              <Link href="/terms" target="_blank" className="text-blue">
-                условия использования
-              </Link>
-            </span>
+            {isMinor ? (
+              <span>
+                Принимаю{" "}
+                <Link href="/terms" target="_blank" className="text-blue">
+                  условия использования
+                </Link>
+                . Согласие на обработку персональных данных даст родитель после регистрации.
+              </span>
+            ) : (
+              <span>
+                Согласен(на) на обработку персональных данных в соответствии с{" "}
+                <Link href="/privacy" target="_blank" className="text-blue">
+                  политикой конфиденциальности
+                </Link>{" "}
+                и принимаю{" "}
+                <Link href="/terms" target="_blank" className="text-blue">
+                  условия использования
+                </Link>
+              </span>
+            )}
           </label>
 
           {error && <p className="text-[15px] font-semibold text-error">{error}</p>}
