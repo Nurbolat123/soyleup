@@ -25,7 +25,15 @@ const BLOCK_LABELS: Record<LessonBlockType, string> = {
 const HEARTBEAT_SECONDS = 15;
 const IDLE_LIMIT_MS = 30_000;
 
-export function LessonPlayer({ lessonId, initialLesson }: { lessonId: string; initialLesson: LessonPlayerData }) {
+export function LessonPlayer({
+  lessonId,
+  initialLesson,
+  hasVoiceConsent,
+}: {
+  lessonId: string;
+  initialLesson: LessonPlayerData;
+  hasVoiceConsent: boolean;
+}) {
   const [blockOrder, setBlockOrder] = useState(initialLesson.progress.currentBlockOrder);
   const [finished, setFinished] = useState(initialLesson.progress.status === "COMPLETED");
   const [answered, setAnswered] = useState<Record<string, boolean>>(() => {
@@ -171,12 +179,24 @@ export function LessonPlayer({ lessonId, initialLesson }: { lessonId: string; in
               />
             ))}
 
-            {speakingExercises.map((ex) =>
-              answered[ex.id] ? (
-                <div key={ex.id} className="rounded-2xl border border-line bg-lime/20 p-4 text-[15px] font-semibold">
-                  Запись отправлена
-                </div>
-              ) : (
+            {speakingExercises.map((ex) => {
+              if (answered[ex.id]) {
+                return (
+                  <div key={ex.id} className="rounded-2xl border border-line bg-lime/20 p-4 text-[15px] font-semibold">
+                    Запись отправлена
+                  </div>
+                );
+              }
+              if (!hasVoiceConsent) {
+                return (
+                  <div key={ex.id} className="rounded-2xl border border-line bg-paper-2 p-4 text-[14px] text-muted">
+                    Это задание нужно выполнить голосом, а согласие на запись голоса ещё не дано. Дайте
+                    согласие в разделе «Согласия» в кабинете ученика (для несовершеннолетних — родитель в
+                    своём кабинете), затем вернитесь к уроку.
+                  </div>
+                );
+              }
+              return (
                 <SpeakingRecorder
                   key={ex.id}
                   prompt={String(ex.content.prompt ?? "")}
@@ -186,8 +206,8 @@ export function LessonPlayer({ lessonId, initialLesson }: { lessonId: string; in
                     markAnswered(ex.id);
                   }}
                 />
-              ),
-            )}
+              );
+            })}
 
             <button
               type="button"
