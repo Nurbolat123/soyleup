@@ -69,30 +69,24 @@ export default async function StudentPage() {
 
           {skillHistory && <SkillHistoryChart snapshots={skillHistory} />}
 
-          <div className="grid gap-4 sm:grid-cols-2">
-            <Link
-              href="/student/homework"
-              className="rounded-2xl border border-line bg-card p-6 no-underline transition-colors hover:border-blue"
-            >
-              <p className="text-[15px] font-semibold text-ink">Задания от куратора</p>
-              {activeHomework.length === 0 ? (
-                <p className="mt-2 text-[14px] text-muted">Здесь появятся домашние задания, когда куратор их назначит.</p>
-              ) : (
-                <ul className="mt-2 flex flex-col gap-1.5">
-                  {activeHomework.slice(0, 3).map((h) => (
-                    <li key={h.id} className="flex items-center justify-between text-[14px]">
-                      <span className="truncate text-ink">{h.title}</span>
-                      <span className="ml-2 shrink-0 text-muted">{HOMEWORK_STATUS_LABEL[h.status]}</span>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </Link>
-            <div className="rounded-2xl border border-line bg-card p-6">
-              <p className="text-[15px] font-semibold">Уведомления</p>
-              <p className="mt-2 text-[14px] text-muted">Пока новых уведомлений нет.</p>
-            </div>
-          </div>
+          <Link
+            href="/student/homework"
+            className="block rounded-2xl border border-line bg-card p-6 no-underline transition-colors hover:border-blue"
+          >
+            <p className="text-[15px] font-semibold text-ink">Задания от куратора</p>
+            {activeHomework.length === 0 ? (
+              <p className="mt-2 text-[14px] text-muted">Здесь появятся домашние задания, когда куратор их назначит.</p>
+            ) : (
+              <ul className="mt-2 flex flex-col gap-1.5">
+                {activeHomework.slice(0, 3).map((h) => (
+                  <li key={h.id} className="flex items-center justify-between text-[14px]">
+                    <span className="truncate text-ink">{h.title}</span>
+                    <span className="ml-2 shrink-0 text-muted">{HOMEWORK_STATUS_LABEL[h.status]}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </Link>
 
           {user.studentProfile && (
             <div className="rounded-2xl border border-line bg-card p-6">
