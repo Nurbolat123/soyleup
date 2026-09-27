@@ -88,9 +88,7 @@ export function SkillHistoryChart({ snapshots }: { snapshots: SkillSnapshot[] })
               )}
               {points.map((p, i) => (
                 <circle key={i} cx={x(new Date(p.createdAt).getTime())} cy={y(p.score)} r={3.5} fill={color}>
-                  <title>
-                    {SKILL_LABELS[skill]}: {p.score} · {SOURCE_LABELS[p.source]} · {dateFmt(p.createdAt)}
-                  </title>
+                  <title>{`${SKILL_LABELS[skill]}: ${p.score} · ${SOURCE_LABELS[p.source]} · ${dateFmt(p.createdAt)}`}</title>
                 </circle>
               ))}
             </g>
