@@ -48,10 +48,10 @@ export class QuestionsService {
   }
 
   /**
-   * CSV-шаблон (только для MULTIPLE_CHOICE и FILL_BLANK — остальные типы добавляются через админку):
-   * skill,level,difficulty,type,question,options,correctAnswer,explanation
-   * - options: варианты через `;` (только для MULTIPLE_CHOICE)
-   * - correctAnswer: для MULTIPLE_CHOICE — текст правильного варианта (должен совпадать с одним из options);
+   * Шаблон (Excel/CSV, только для MULTIPLE_CHOICE и FILL_BLANK — остальные типы добавляются через админку):
+   * skill,level,difficulty,type,question,option1,option2,option3,option4,correctAnswer,explanation
+   * - option1..option4: варианты ответа, каждый в своей колонке (только для MULTIPLE_CHOICE, пустые игнорируются)
+   * - correctAnswer: для MULTIPLE_CHOICE — текст правильного варианта (должен точно совпадать с одним из option1..4);
    *   для FILL_BLANK — допустимые ответы через `;`
    */
   async importCsv(dto: ImportQuestionsDto) {
@@ -77,17 +77,19 @@ export class QuestionsService {
 
       let content: Record<string, unknown>;
       if (r.type === 'MULTIPLE_CHOICE') {
-        const options = splitMulti(r.options);
+        const options = ['option1', 'option2', 'option3', 'option4', 'option5', 'option6']
+          .map((k) => r[k]?.trim())
+          .filter((v): v is string => !!v);
         const correctIndex = options.findIndex((o) => o === r.correctAnswer);
         if (options.length < 2 || correctIndex === -1) {
-          skipped.push({ row: rowNum, reason: 'correctAnswer должен совпадать с одним из options' });
+          skipped.push({ row: rowNum, reason: 'correctAnswer должен точно совпадать с одним из option1..option6' });
           continue;
         }
         content = { question: r.question, options, correctIndex, explanation: r.explanation || undefined };
       } else if (r.type === 'FILL_BLANK') {
         content = { text: r.question, answers: splitMulti(r.correctAnswer) };
       } else {
-        skipped.push({ row: rowNum, reason: 'через CSV поддерживаются только MULTIPLE_CHOICE и FILL_BLANK' });
+        skipped.push({ row: rowNum, reason: 'через импорт поддерживаются только MULTIPLE_CHOICE и FILL_BLANK' });
         continue;
       }
 
