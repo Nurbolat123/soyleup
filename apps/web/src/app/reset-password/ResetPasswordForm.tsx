@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, type FormEvent } from "react";
+import { translateApiError } from "@/lib/errorMessages";
 
 export function ResetPasswordForm() {
   const router = useRouter();
@@ -32,7 +33,7 @@ export function ResetPasswordForm() {
       });
       if (!res.ok) {
         const data = await res.json().catch(() => undefined);
-        setError(data?.message ?? "Ссылка недействительна или устарела. Запросите новую.");
+        setError(translateApiError(data?.message, "Ссылка недействительна или устарела. Запросите новую."));
         setSubmitting(false);
         return;
       }

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, type FormEvent } from "react";
+import { translateApiError } from "@/lib/errorMessages";
 
 const ROLE_HOME: Record<string, string> = {
   STUDENT: "/student",
@@ -38,7 +39,7 @@ export function LoginForm() {
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(res.status === 401 ? "Неверный email или пароль" : (data?.message ?? "Не удалось войти"));
+        setError(res.status === 401 ? "Неверный email или пароль" : translateApiError(data?.message, "Не удалось войти"));
         setSubmitting(false);
         return;
       }

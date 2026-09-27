@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, type FormEvent } from "react";
+import { translateApiError } from "@/lib/errorMessages";
 
 type RoleChoice = "STUDENT" | "PARENT";
 
@@ -51,8 +52,7 @@ export function RegisterForm() {
       });
       const data = await res.json();
       if (!res.ok) {
-        const message = Array.isArray(data?.message) ? data.message.join(", ") : data?.message;
-        setError(message ?? "Не удалось зарегистрироваться. Проверьте данные.");
+        setError(translateApiError(data?.message, "Не удалось зарегистрироваться. Проверьте данные."));
         setSubmitting(false);
         return;
       }
