@@ -2,15 +2,12 @@
 
 import { useActionState, useState } from "react";
 import { createExercise, type ActionState } from "../../actions";
+import { EXERCISE_TYPE_LABEL } from "../../labels";
 import { ExerciseContentFields } from "./ExerciseContentFields";
 import type { ExerciseType } from "@/lib/types";
 
 const initial: ActionState = { error: null };
 const TYPES: ExerciseType[] = ["MULTIPLE_CHOICE", "FILL_BLANK", "MATCHING", "ORDERING", "FREE_RESPONSE", "SPEAKING"];
-const TYPE_LABEL: Record<ExerciseType, string> = {
-  MULTIPLE_CHOICE: "Выбор ответа", FILL_BLANK: "Заполнить пропуск", MATCHING: "Сопоставление",
-  ORDERING: "Порядок слов", FREE_RESPONSE: "Свободный ответ", SPEAKING: "Устный ответ",
-};
 
 export function AddExerciseForm({
   lessonId,
@@ -38,7 +35,7 @@ export function AddExerciseForm({
         >
           {TYPES.map((t) => (
             <option key={t} value={t}>
-              {TYPE_LABEL[t]}
+              {EXERCISE_TYPE_LABEL[t]}
             </option>
           ))}
         </select>

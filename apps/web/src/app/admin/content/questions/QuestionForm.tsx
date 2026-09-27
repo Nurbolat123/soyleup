@@ -2,6 +2,7 @@
 
 import { useActionState, useState } from "react";
 import { createQuestion, type ActionState } from "./actions";
+import { EXERCISE_TYPE_LABEL, SKILL_LABEL } from "../labels";
 import { ExerciseContentFields } from "../lessons/[id]/ExerciseContentFields";
 import type { ExerciseType, QuestionLevel, Skill } from "@/lib/types";
 
@@ -20,7 +21,7 @@ export function QuestionForm() {
       <form action={formAction} className="mt-4 flex flex-col gap-3">
         <div className="flex flex-wrap gap-3">
           <select name="skill" defaultValue="GRAMMAR" className="h-[42px] rounded-lg border border-line bg-white px-3 text-[14px]">
-            {SKILLS.map((s) => <option key={s} value={s}>{s}</option>)}
+            {SKILLS.map((s) => <option key={s} value={s}>{SKILL_LABEL[s]}</option>)}
           </select>
           <select name="level" defaultValue="B1" className="h-[42px] rounded-lg border border-line bg-white px-3 text-[14px]">
             {LEVELS.map((l) => <option key={l} value={l}>{l}</option>)}
@@ -32,7 +33,7 @@ export function QuestionForm() {
             onChange={(e) => setType(e.target.value as ExerciseType)}
             className="h-[42px] rounded-lg border border-line bg-white px-3 text-[14px]"
           >
-            {TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
+            {TYPES.map((t) => <option key={t} value={t}>{EXERCISE_TYPE_LABEL[t]}</option>)}
           </select>
         </div>
         <ExerciseContentFields key={type} type={type} showSkill={false} />

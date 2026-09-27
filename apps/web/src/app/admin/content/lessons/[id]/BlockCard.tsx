@@ -2,6 +2,7 @@
 
 import { useActionState, useEffect, useRef, useState, useTransition } from "react";
 import { deleteBlock, updateBlock, type ActionState } from "../../actions";
+import { BLOCK_TYPE_LABEL } from "../../labels";
 import type { LessonBlock, Exercise } from "@/lib/types";
 import { AddExerciseForm } from "./AddExerciseForm";
 import { BlockContentFields } from "./BlockContentFields";
@@ -53,7 +54,7 @@ export function BlockCard({
     <div className="rounded-2xl border border-line bg-card p-5">
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <span className="rounded-full bg-ink px-3 py-1 text-[12px] font-semibold text-paper">{block.type}</span>
+          <span className="rounded-full bg-ink px-3 py-1 text-[12px] font-semibold text-paper">{BLOCK_TYPE_LABEL[block.type]}</span>
           <span className="text-[15px] font-semibold">{block.title || "без заголовка"}</span>
         </div>
         <div className="flex gap-4">

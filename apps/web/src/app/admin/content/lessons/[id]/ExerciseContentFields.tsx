@@ -1,14 +1,8 @@
 "use client";
 
+import { SKILL_LABEL } from "../../labels";
 import type { ExerciseType, Skill } from "@/lib/types";
 
-const SKILL_LABEL: Record<Skill, string> = {
-  GRAMMAR: "Грамматика",
-  VOCABULARY: "Лексика",
-  READING: "Чтение",
-  LISTENING: "Аудирование",
-  SPEAKING: "Говорение",
-};
 const SKILLS: Skill[] = ["GRAMMAR", "VOCABULARY", "READING", "LISTENING", "SPEAKING"];
 
 interface Defaults {

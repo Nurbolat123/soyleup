@@ -2,6 +2,7 @@
 
 import { useActionState, useState } from "react";
 import { createBlock, type ActionState } from "../../actions";
+import { BLOCK_TYPE_LABEL } from "../../labels";
 import { BlockContentFields } from "./BlockContentFields";
 import type { LessonBlockType } from "@/lib/types";
 
@@ -9,10 +10,6 @@ const initial: ActionState = { error: null };
 const TYPES: LessonBlockType[] = [
   "INTRO", "VOCABULARY", "GRAMMAR", "READING", "LISTENING", "EXERCISE", "SPEAKING", "MINI_TEST", "HOMEWORK",
 ];
-const TYPE_LABEL: Record<LessonBlockType, string> = {
-  INTRO: "Введение", VOCABULARY: "Новые слова", GRAMMAR: "Грамматика", READING: "Чтение", LISTENING: "Аудирование",
-  EXERCISE: "Упражнения", SPEAKING: "Говорение", MINI_TEST: "Мини-тест", HOMEWORK: "Домашнее задание",
-};
 
 export function AddBlockForm({ lessonId, nextOrder }: { lessonId: string; nextOrder: number }) {
   const action = createBlock.bind(null, lessonId);
@@ -33,7 +30,7 @@ export function AddBlockForm({ lessonId, nextOrder }: { lessonId: string; nextOr
           >
             {TYPES.map((t) => (
               <option key={t} value={t}>
-                {TYPE_LABEL[t]}
+                {BLOCK_TYPE_LABEL[t]}
               </option>
             ))}
           </select>

@@ -2,14 +2,11 @@
 
 import { useActionState, useEffect, useRef, useState, useTransition } from "react";
 import { deleteExercise, updateExercise, type ActionState } from "../../actions";
+import { EXERCISE_TYPE_LABEL, SKILL_LABEL } from "../../labels";
 import { contentToDefaults, ExerciseContentFields } from "./ExerciseContentFields";
 import type { Exercise } from "@/lib/types";
 
 const initial: ActionState = { error: null };
-
-const SKILL_LABEL: Record<string, string> = {
-  GRAMMAR: "Грамматика", VOCABULARY: "Лексика", READING: "Чтение", LISTENING: "Аудирование", SPEAKING: "Говорение",
-};
 
 function ExerciseSummary({ exercise }: { exercise: Exercise }) {
   const c = exercise.content;
@@ -38,7 +35,7 @@ export function ExerciseCard({ lessonId, exercise }: { lessonId: string; exercis
     <div className="rounded-xl border border-line bg-white p-3">
       <div className="flex items-center justify-between gap-2">
         <span className="rounded-full bg-paper-2 px-2 py-0.5 text-[11px] font-semibold uppercase text-ink-2">
-          {exercise.type}
+          {EXERCISE_TYPE_LABEL[exercise.type]}
         </span>
         <div className="flex gap-3">
           <button type="button" onClick={() => setEditing((v) => !v)} className="text-[12px] font-semibold text-blue">

@@ -1,13 +1,14 @@
 import Link from "next/link";
 import { apiFetch } from "@/lib/api";
 import { DashboardShell } from "@/components/DashboardShell";
-import type { PublicUser, QuestionListResponse } from "@/lib/types";
+import type { PublicUser, QuestionListResponse, Skill } from "@/lib/types";
+import { SKILL_LABEL } from "../labels";
 import { ImportQuestions } from "./ImportQuestions";
 import { QuestionForm } from "./QuestionForm";
 import { QuestionRow } from "./QuestionRow";
 
 const PAGE_SIZE = 30;
-const SKILLS = ["GRAMMAR", "VOCABULARY", "READING", "LISTENING", "SPEAKING"];
+const SKILLS: Skill[] = ["GRAMMAR", "VOCABULARY", "READING", "LISTENING", "SPEAKING"];
 const LEVELS = ["A1", "A1+", "A2", "A2+", "B1", "B1+", "B2", "B2+", "C1"];
 
 function buildQuery(params: Record<string, string | undefined>) {
@@ -46,7 +47,7 @@ export default async function QuestionsPage({
           <form method="get" className="flex flex-wrap items-end gap-3">
             <select name="skill" defaultValue={sp.skill ?? ""} className="h-[42px] rounded-lg border border-line bg-white px-3 text-[14px]">
               <option value="">Все навыки</option>
-              {SKILLS.map((s) => <option key={s} value={s}>{s}</option>)}
+              {SKILLS.map((s) => <option key={s} value={s}>{SKILL_LABEL[s]}</option>)}
             </select>
             <select name="level" defaultValue={sp.level ?? ""} className="h-[42px] rounded-lg border border-line bg-white px-3 text-[14px]">
               <option value="">Все уровни</option>

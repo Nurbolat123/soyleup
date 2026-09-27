@@ -2,6 +2,7 @@
 
 import { useTransition } from "react";
 import { deleteQuestion } from "./actions";
+import { EXERCISE_TYPE_LABEL, SKILL_LABEL } from "../labels";
 import type { QuestionBankItem } from "@/lib/types";
 
 function preview(content: Record<string, unknown>): string {
@@ -13,10 +14,10 @@ export function QuestionRow({ item }: { item: QuestionBankItem }) {
 
   return (
     <tr className="border-b border-line last:border-0">
-      <td className="px-4 py-2">{item.skill}</td>
+      <td className="px-4 py-2">{SKILL_LABEL[item.skill]}</td>
       <td className="px-4 py-2">{item.level}</td>
       <td className="px-4 py-2">{item.difficulty}</td>
-      <td className="px-4 py-2">{item.type}</td>
+      <td className="px-4 py-2">{EXERCISE_TYPE_LABEL[item.type]}</td>
       <td className="px-4 py-2 text-muted">{preview(item.content)}</td>
       <td className="px-4 py-2 text-right">
         <button
