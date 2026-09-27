@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { apiFetch, ApiError } from "@/lib/api";
+import { buildExerciseContent } from "../contentBuilders";
 import type { ExerciseType, ImportResult, QuestionBankItem, QuestionLevel, Skill } from "@/lib/types";
 
 export interface ActionState {
@@ -11,13 +12,9 @@ export interface ActionState {
 const ok: ActionState = { error: null };
 
 export async function createQuestion(_prev: ActionState, formData: FormData): Promise<ActionState> {
-  const contentRaw = String(formData.get("content") || "{}");
-  let content: Record<string, unknown>;
-  try {
-    content = JSON.parse(contentRaw);
-  } catch {
-    return { error: "Содержимое должно быть корректным JSON" };
-  }
+  const type = formData.get("type") as ExerciseType;
+  const built = buildExerciseContent(type, formData);
+  if ("error" in built) return { error: built.error };
   try {
     await apiFetch<QuestionBankItem>("/admin/content/questions", {
       method: "POST",
@@ -25,8 +22,8 @@ export async function createQuestion(_prev: ActionState, formData: FormData): Pr
         skill: formData.get("skill") as Skill,
         level: formData.get("level") as QuestionLevel,
         difficulty: Number(formData.get("difficulty") || 1),
-        type: formData.get("type") as ExerciseType,
-        content,
+        type,
+        content: built.content,
       }),
     });
   } catch (e) {

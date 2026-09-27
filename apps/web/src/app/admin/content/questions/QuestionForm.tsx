@@ -2,7 +2,7 @@
 
 import { useActionState, useState } from "react";
 import { createQuestion, type ActionState } from "./actions";
-import { EXERCISE_CONTENT_EXAMPLES } from "../contentExamples";
+import { ExerciseContentFields } from "../lessons/[id]/ExerciseContentFields";
 import type { ExerciseType, QuestionLevel, Skill } from "@/lib/types";
 
 const initial: ActionState = { error: null };
@@ -35,13 +35,7 @@ export function QuestionForm() {
             {TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
           </select>
         </div>
-        <textarea
-          name="content"
-          rows={5}
-          key={type}
-          defaultValue={EXERCISE_CONTENT_EXAMPLES[type]}
-          className="rounded-lg border border-line px-3 py-2 font-mono text-[13px]"
-        />
+        <ExerciseContentFields key={type} type={type} showSkill={false} />
         <button
           type="submit"
           disabled={pending}
