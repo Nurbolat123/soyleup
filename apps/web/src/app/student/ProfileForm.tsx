@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import { updateProfile, type ProfileFormState } from "./actions";
 import type { StudentProfile } from "@/lib/types";
 
@@ -10,6 +10,19 @@ const initialState: ProfileFormState = { error: null };
 
 export function ProfileForm({ profile }: { profile: StudentProfile }) {
   const [state, formAction, pending] = useActionState(updateProfile, initialState);
+  const [saved, setSaved] = useState(false);
+
+  const wasPending = useRef(false);
+  useEffect(() => {
+    if (wasPending.current && !pending && !state.error) setSaved(true);
+    wasPending.current = pending;
+  }, [pending, state]);
+
+  useEffect(() => {
+    if (!saved) return;
+    const timer = setTimeout(() => setSaved(false), 2500);
+    return () => clearTimeout(timer);
+  }, [saved]);
 
   return (
     <form action={formAction} className="flex flex-col gap-5">
@@ -64,13 +77,16 @@ export function ProfileForm({ profile }: { profile: StudentProfile }) {
 
       {state.error && <p className="text-[15px] font-semibold text-error">{state.error}</p>}
 
-      <button
-        type="submit"
-        disabled={pending}
-        className="h-[50px] self-start rounded-full bg-blue px-8 text-[16px] font-semibold text-white transition-colors hover:bg-blue-dark disabled:opacity-60"
-      >
-        {pending ? "Сохраняем…" : "Сохранить"}
-      </button>
+      <div className="flex items-center gap-3">
+        <button
+          type="submit"
+          disabled={pending}
+          className="h-[50px] self-start rounded-full bg-blue px-8 text-[16px] font-semibold text-white transition-colors hover:bg-blue-dark disabled:opacity-60"
+        >
+          {pending ? "Сохраняем…" : "Сохранить"}
+        </button>
+        {saved && <span className="text-[15px] font-semibold text-green-700">Сохранено ✓</span>}
+      </div>
     </form>
   );
 }
