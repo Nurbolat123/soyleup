@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useState, useTransition } from "react";
+import { useActionState, useEffect, useRef, useState, useTransition } from "react";
 import { AudioUploadField } from "../AudioUploadField";
 import { deleteWord, updateWord, type ActionState } from "./actions";
 import type { VocabularyWord } from "@/lib/types";
@@ -12,6 +12,12 @@ export function WordRow({ word }: { word: VocabularyWord }) {
   const [deleting, startDelete] = useTransition();
   const action = updateWord.bind(null, word.id);
   const [state, formAction, pending] = useActionState(action, initial);
+
+  const wasPending = useRef(false);
+  useEffect(() => {
+    if (wasPending.current && !pending && !state.error) setEditing(false);
+    wasPending.current = pending;
+  }, [pending, state]);
 
   if (editing) {
     return (

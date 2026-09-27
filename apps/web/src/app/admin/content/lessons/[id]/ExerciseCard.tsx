@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useState, useTransition } from "react";
+import { useActionState, useEffect, useRef, useState, useTransition } from "react";
 import { deleteExercise, updateExercise, type ActionState } from "../../actions";
 import type { Exercise } from "@/lib/types";
 
@@ -11,6 +11,12 @@ export function ExerciseCard({ lessonId, exercise }: { lessonId: string; exercis
   const [deleting, startDelete] = useTransition();
   const action = updateExercise.bind(null, lessonId, exercise.id);
   const [state, formAction, pending] = useActionState(action, initial);
+
+  const wasPending = useRef(false);
+  useEffect(() => {
+    if (wasPending.current && !pending && !state.error) setEditing(false);
+    wasPending.current = pending;
+  }, [pending, state]);
 
   return (
     <div className="rounded-xl border border-line bg-white p-3">

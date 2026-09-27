@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useState, useTransition } from "react";
+import { useActionState, useEffect, useRef, useState, useTransition } from "react";
 import { deleteBlock, updateBlock, type ActionState } from "../../actions";
 import type { LessonBlock, Exercise } from "@/lib/types";
 import { AddExerciseForm } from "./AddExerciseForm";
@@ -19,6 +19,12 @@ export function BlockCard({
   const [deleting, startDelete] = useTransition();
   const action = updateBlock.bind(null, lessonId, block.id);
   const [state, formAction, pending] = useActionState(action, initial);
+
+  const wasPending = useRef(false);
+  useEffect(() => {
+    if (wasPending.current && !pending && !state.error) setEditing(false);
+    wasPending.current = pending;
+  }, [pending, state]);
 
   return (
     <div className="rounded-2xl border border-line bg-card p-5">
