@@ -43,12 +43,23 @@ export function ImportQuestions() {
           Скачать шаблон Excel
         </button>
       </div>
-      <p className="mt-2 text-[13px] text-muted">
-        Заполните шаблон и загрузите файл обратно (.xlsx или .csv). Через импорт можно добавить только MULTIPLE_CHOICE и
-        FILL_BLANK — остальные типы добавляются формой выше. option1–option4 — варианты ответа (для FILL_BLANK не
-        нужны); correctAnswer — для MULTIPLE_CHOICE точный текст правильного варианта, для FILL_BLANK — допустимые
-        ответы через «;».
-      </p>
+      <div className="mt-2 flex flex-col gap-1.5 text-[13px] text-muted">
+        <p>Заполните шаблон и загрузите файл обратно (.xlsx или .csv).</p>
+        <p>
+          Так можно добавить два вида вопросов: <strong>«выбор ответа»</strong> и <strong>«заполнить пропуск»</strong>.
+          Остальные виды (говорение, свободный ответ, сопоставление, порядок слов) добавляются формой выше, по одному.
+        </p>
+        <p>
+          <strong>Для вопроса «выбор ответа»</strong> впишите варианты в колонки option1–option4 (четыре заполнять
+          не обязательно), а в колонку correctAnswer — тот вариант, который правильный, слово в слово так же, как он
+          написан в одной из колонок option1–option4.
+        </p>
+        <p>
+          <strong>Для вопроса «заполнить пропуск»</strong> колонки option1–option4 оставьте пустыми. В correctAnswer
+          впишите правильный ответ — а если подходит несколько вариантов ответа, перечислите их через точку с
+          запятой «;», например: <code>has worked;has been working</code>.
+        </p>
+      </div>
       <label className="mt-3 flex h-[46px] w-fit cursor-pointer items-center rounded-2xl border border-dashed border-line px-4 text-[14px] font-semibold text-ink hover:border-blue">
         {pending ? "Импортируем…" : fileName ?? "Выбрать файл…"}
         <input

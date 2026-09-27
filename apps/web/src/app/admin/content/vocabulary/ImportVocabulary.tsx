@@ -45,10 +45,14 @@ export function ImportVocabulary() {
           Скачать шаблон Excel
         </button>
       </div>
-      <p className="mt-2 text-[13px] text-muted">
-        Заполните шаблон и загрузите файл обратно (.xlsx или .csv). Несколько примеров/сочетаний в одной ячейке —
-        через «;».
-      </p>
+      <div className="mt-2 flex flex-col gap-1.5 text-[13px] text-muted">
+        <p>Заполните шаблон и загрузите файл обратно (.xlsx или .csv).</p>
+        <p>
+          Обязательны только слово, перевод на русский и уровень — остальные колонки можно оставить пустыми. Если для
+          слова нужно указать несколько примеров или словосочетаний в одной ячейке — перечислите их через точку с
+          запятой «;».
+        </p>
+      </div>
       <label className="mt-3 flex h-[46px] w-fit cursor-pointer items-center rounded-2xl border border-dashed border-line px-4 text-[14px] font-semibold text-ink hover:border-blue">
         {pending ? "Импортируем…" : fileName ?? "Выбрать файл…"}
         <input
