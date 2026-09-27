@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { DashboardShell } from "@/components/DashboardShell";
 import { apiFetch } from "@/lib/api";
 import type { MeResponse } from "@/lib/types";
-import { getMyHomework } from "../../homework-actions";
+import { getHomeworkMaterialUrls, getMyHomework } from "../../homework-actions";
 import { HomeworkDetail } from "./HomeworkDetail";
 
 export default async function HomeworkPage({ params }: { params: Promise<{ id: string }> }) {
@@ -11,10 +11,13 @@ export default async function HomeworkPage({ params }: { params: Promise<{ id: s
   const homework = list.find((h) => h.id === id);
   if (!homework) notFound();
   const hasVoiceConsent = user.activeConsents.some((c) => c.type === "VOICE_RECORDING");
+  const materialUrls = homework.materialFileKeys?.length
+    ? (await getHomeworkMaterialUrls(homework.id).catch(() => ({ urls: [] }))).urls
+    : [];
 
   return (
     <DashboardShell role="STUDENT" name={user.firstName}>
-      <HomeworkDetail homework={homework} hasVoiceConsent={hasVoiceConsent} />
+      <HomeworkDetail homework={homework} hasVoiceConsent={hasVoiceConsent} materialUrls={materialUrls} />
     </DashboardShell>
   );
 }

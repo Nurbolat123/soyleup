@@ -59,10 +59,17 @@ export class HomeworkService {
         instructions: dto.instructions,
         requiresIntegrityCheck: dto.requiresIntegrityCheck ?? false,
         dueAt: dto.dueAt ? new Date(dto.dueAt) : null,
+        materialFileKeys: dto.materialFileKeys ?? null,
       })
       .returning();
     await this.notifyAssigned(row.studentId, row.title);
     return row;
+  }
+
+  /** Presigned-загрузка материала к заданию — до создания самого ДЗ, поэтому привязка по studentId. */
+  async presignMaterial(actor: AuthUser, studentId: string, dto: PresignFileDto) {
+    await this.access.assertCanViewStudent(actor, studentId);
+    return this.speakingStorage.presign(dto, studentId);
   }
 
   private async notifyAssigned(studentId: string, title: string) {
@@ -164,6 +171,17 @@ export class HomeworkService {
     await this.access.assertCanViewStudent(actor, row.studentId);
     const keys = row.submissionFileKeys ?? [];
     if (!keys.length) throw new BadRequestException('No file submissions for this homework');
+
+    const urls = await Promise.all(keys.map((key) => this.speakingStorage.getListenUrl(key)));
+    return { urls };
+  }
+
+  async getMaterialUrls(actor: AuthUser, homeworkId: string) {
+    const row = await this.db.query.homework.findFirst({ where: eq(homework.id, homeworkId) });
+    if (!row) throw new NotFoundException('Homework not found');
+    await this.access.assertCanViewStudent(actor, row.studentId);
+    const keys = row.materialFileKeys ?? [];
+    if (!keys.length) throw new BadRequestException('No materials attached to this homework');
 
     const urls = await Promise.all(keys.map((key) => this.speakingStorage.getListenUrl(key)));
     return { urls };

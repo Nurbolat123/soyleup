@@ -427,6 +427,7 @@ export interface Homework {
   instructions: string | null;
   requiresIntegrityCheck: boolean;
   dueAt: string | null;
+  materialFileKeys: string[] | null;
   status: HomeworkStatus;
   submissionText: string | null;
   submissionAudioKey: string | null;

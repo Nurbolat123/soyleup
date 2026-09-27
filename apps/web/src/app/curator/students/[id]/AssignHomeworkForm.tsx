@@ -1,15 +1,29 @@
 "use client";
 
-import { useActionState } from "react";
-import { assignHomework, type AssignHomeworkState } from "../../curator-actions";
+import { useActionState, useEffect, useRef, useState } from "react";
+import { FileUploader } from "@/components/FileUploader";
+import { assignHomework, presignHomeworkMaterial, type AssignHomeworkState } from "../../curator-actions";
 
 const initialState: AssignHomeworkState = { error: null };
 
 export function AssignHomeworkForm({ studentId }: { studentId: string }) {
   const [state, formAction, pending] = useActionState(assignHomework.bind(null, studentId), initialState);
+  const [materialFileKeys, setMaterialFileKeys] = useState<string[]>([]);
+  const [uploaderKey, setUploaderKey] = useState(0);
+  const formRef = useRef<HTMLFormElement>(null);
+
+  const wasPending = useRef(false);
+  useEffect(() => {
+    if (wasPending.current && !pending && !state.error) {
+      formRef.current?.reset();
+      setMaterialFileKeys([]);
+      setUploaderKey((k) => k + 1);
+    }
+    wasPending.current = pending;
+  }, [pending, state]);
 
   return (
-    <form action={formAction} className="flex flex-col gap-4">
+    <form ref={formRef} action={formAction} className="flex flex-col gap-4">
       <div className="flex flex-col gap-2">
         <label htmlFor="hw-title" className="text-[14px] font-semibold">
           Название
@@ -35,6 +49,16 @@ export function AssignHomeworkForm({ studentId }: { studentId: string }) {
           rows={3}
           className="rounded-2xl border border-line px-4 py-3 text-[15px]"
         />
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <label className="text-[14px] font-semibold">Материалы для изучения (необязательно)</label>
+        <FileUploader
+          key={uploaderKey}
+          onPresign={(fileName, contentType) => presignHomeworkMaterial(studentId, fileName, contentType)}
+          onChange={setMaterialFileKeys}
+        />
+        <input type="hidden" name="materialFileKeys" value={JSON.stringify(materialFileKeys)} />
       </div>
 
       <div className="flex flex-wrap items-center gap-4">

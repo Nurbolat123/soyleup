@@ -21,6 +21,10 @@ export async function presignHomeworkFile(homeworkId: string, fileName: string, 
   });
 }
 
+export async function getHomeworkMaterialUrls(homeworkId: string) {
+  return apiFetch<{ urls: string[] }>(`/learning/homework/${homeworkId}/materials`);
+}
+
 export async function submitHomework(
   homeworkId: string,
   data: { text?: string; audioKey?: string; fileKeys?: string[]; integritySignals?: IntegritySignals },

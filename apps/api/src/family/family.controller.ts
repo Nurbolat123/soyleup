@@ -66,6 +66,12 @@ export class StudentsController {
   homeworkFiles(@CurrentUser() user: AuthUser, @Param() params: HomeworkFilesParamDto) {
     return this.homework.getFileUrls(user, params.hwId);
   }
+
+  /** Материалы к ДЗ, приложенные куратором */
+  @Get(':id/homework/:hwId/materials')
+  homeworkMaterials(@CurrentUser() user: AuthUser, @Param() params: HomeworkFilesParamDto) {
+    return this.homework.getMaterialUrls(user, params.hwId);
+  }
 }
 
 @ApiTags('parents')

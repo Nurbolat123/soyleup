@@ -30,6 +30,13 @@ export class AssignHomeworkDto {
   @IsOptional()
   @IsDateString()
   dueAt?: string;
+
+  /** Материалы для изучения (ключи из homework-material-presign) — PDF, картинки, Word, 1–10 штук */
+  @IsOptional()
+  @IsArray()
+  @ArrayMaxSize(10)
+  @IsString({ each: true })
+  materialFileKeys?: string[];
 }
 
 export class IntegritySignalsDto {

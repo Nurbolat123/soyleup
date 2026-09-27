@@ -79,9 +79,19 @@ export async function assignHomework(studentId: string, _prevState: AssignHomewo
   const instructions = formData.get("instructions");
   const dueAt = formData.get("dueAt");
   const requiresIntegrityCheck = formData.get("requiresIntegrityCheck") === "on";
+  const materialFileKeysRaw = formData.get("materialFileKeys");
 
   if (typeof title !== "string" || !title.trim()) {
     return { error: "Укажите название задания" };
+  }
+
+  let materialFileKeys: string[] | undefined;
+  if (typeof materialFileKeysRaw === "string" && materialFileKeysRaw) {
+    try {
+      materialFileKeys = JSON.parse(materialFileKeysRaw);
+    } catch {
+      materialFileKeys = undefined;
+    }
   }
 
   try {
@@ -93,6 +103,7 @@ export async function assignHomework(studentId: string, _prevState: AssignHomewo
         instructions: typeof instructions === "string" && instructions.trim() ? instructions.trim() : undefined,
         dueAt: typeof dueAt === "string" && dueAt ? new Date(dueAt).toISOString() : undefined,
         requiresIntegrityCheck,
+        materialFileKeys,
       }),
     });
   } catch (e) {
@@ -100,6 +111,13 @@ export async function assignHomework(studentId: string, _prevState: AssignHomewo
   }
   revalidatePath(`/curator/students/${studentId}`);
   return { error: null };
+}
+
+export async function presignHomeworkMaterial(studentId: string, fileName: string, contentType: string) {
+  return apiFetch<{ uploadUrl: string; key: string }>(`/curator/students/${studentId}/homework-material-presign`, {
+    method: "POST",
+    body: JSON.stringify({ fileName, contentType }),
+  });
 }
 
 export async function getLessonOptions() {

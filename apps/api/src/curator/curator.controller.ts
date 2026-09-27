@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthUser, CurrentUser, Roles } from '../common/auth.decorators';
-import { AssignHomeworkDto, HomeworkIdParamDto, ReviewHomeworkDto } from '../homework/dto/homework.dto';
+import { AssignHomeworkDto, HomeworkIdParamDto, PresignFileDto, ReviewHomeworkDto } from '../homework/dto/homework.dto';
 import { HomeworkService } from '../homework/homework.service';
 import { CuratorStudentsService } from './curator-students.service';
 import {
@@ -70,6 +70,11 @@ export class CuratorController {
     return this.students.unassignLesson(user, params.id);
   }
 
+  @Post('students/:id/homework-material-presign')
+  presignHomeworkMaterial(@CurrentUser() user: AuthUser, @Param() params: StudentIdParamDto, @Body() dto: PresignFileDto) {
+    return this.homework.presignMaterial(user, params.id, dto);
+  }
+
   @Post('homework')
   assignHomework(@CurrentUser() user: AuthUser, @Body() dto: AssignHomeworkDto) {
     return this.homework.assign(user, dto);
@@ -88,6 +93,11 @@ export class CuratorController {
   @Get('homework/:id/files')
   homeworkFiles(@CurrentUser() user: AuthUser, @Param() params: HomeworkIdParamDto) {
     return this.homework.getFileUrls(user, params.id);
+  }
+
+  @Get('homework/:id/materials')
+  homeworkMaterials(@CurrentUser() user: AuthUser, @Param() params: HomeworkIdParamDto) {
+    return this.homework.getMaterialUrls(user, params.id);
   }
 
   @Get('review-queue')

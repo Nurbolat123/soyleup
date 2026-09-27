@@ -538,6 +538,9 @@ export const homework = pgTable(
     // Контроль самостоятельной работы: сигналы браузера фиксируются только для помеченных заданий
     requiresIntegrityCheck: boolean('requires_integrity_check').notNull().default(false),
     dueAt: ts('due_at'),
+    // Материалы для изучения, которые куратор прикладывает к заданию (не ответ ученика).
+    // Ключи в том же приватном бакете, что и вложения к ответу.
+    materialFileKeys: jsonb('material_file_keys').$type<string[]>(),
     status: homeworkStatusEnum('status').notNull().default('ASSIGNED'),
     submissionText: text('submission_text'),
     submissionAudioKey: text('submission_audio_key'),

@@ -31,4 +31,9 @@ export class HomeworkController {
   submit(@CurrentUser() user: AuthUser, @Param() params: HomeworkIdParamDto, @Body() dto: SubmitHomeworkDto) {
     return this.homework.submit(user.id, params.id, dto);
   }
+
+  @Get(':id/materials')
+  materials(@CurrentUser() user: AuthUser, @Param() params: HomeworkIdParamDto) {
+    return this.homework.getMaterialUrls(user, params.id);
+  }
 }

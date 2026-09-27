@@ -21,7 +21,15 @@ const RUBRIC_LABEL: Record<string, string> = {
   pronunciation: "Произношение",
 };
 
-export function HomeworkDetail({ homework, hasVoiceConsent }: { homework: Homework; hasVoiceConsent: boolean }) {
+export function HomeworkDetail({
+  homework,
+  hasVoiceConsent,
+  materialUrls,
+}: {
+  homework: Homework;
+  hasVoiceConsent: boolean;
+  materialUrls: string[];
+}) {
   const [text, setText] = useState(homework.submissionText ?? "");
   const [audioKey, setAudioKey] = useState<string | null>(null);
   const [fileKeys, setFileKeys] = useState<string[]>([]);
@@ -96,6 +104,25 @@ export function HomeworkDetail({ homework, hasVoiceConsent }: { homework: Homewo
         {homework.instructions && <p className="mt-3 text-[16px] leading-relaxed">{homework.instructions}</p>}
         {homework.dueAt && (
           <p className="mt-2 text-[14px] text-muted">Срок: {new Date(homework.dueAt).toLocaleDateString("ru-RU")}</p>
+        )}
+
+        {materialUrls.length > 0 && (
+          <div className="mt-4">
+            <p className="text-[14px] font-semibold">Материалы для изучения</p>
+            <div className="mt-2 flex flex-wrap gap-2">
+              {materialUrls.map((url, i) => (
+                <a
+                  key={url}
+                  href={url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex h-[38px] items-center gap-1.5 rounded-xl border border-line bg-paper-2 px-3 text-[14px] font-semibold text-ink hover:border-blue"
+                >
+                  📎 Материал {i + 1}
+                </a>
+              ))}
+            </div>
+          </div>
         )}
 
         {homework.status === "RETURNED" && homework.reviewComment && (

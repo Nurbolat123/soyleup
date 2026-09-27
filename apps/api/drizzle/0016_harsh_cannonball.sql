@@ -1,0 +1,1 @@
+ALTER TABLE "homework" ADD COLUMN "material_file_keys" jsonb;
