@@ -208,19 +208,21 @@ req GET /placement/attempts/$AID2 404 "$OTOKEN" >/dev/null
 req GET /placement/attempts/$AID2 404 "" >/dev/null
 
 echo "▸ learning: план дня, урок, повторение слов"
-req PATCH /users/me 200 "$PTOKEN" '{"targetLevel":"B2"}' >/dev/null
+req PATCH /users/me 200 "$PTOKEN" '{"targetLevel":"B2","dailyMinutes":20}' >/dev/null
 
 CID=$(req POST /admin/content/courses 201 "$ADMIN" '{"title":"Learning smoke course","level":"B1","audience":"ADULTS"}' | json id)
 MID=$(req POST /admin/content/courses/$CID/modules 201 "$ADMIN" '{"title":"M1"}' | json id)
-LID=$(req POST /admin/content/modules/$MID/lessons 201 "$ADMIN" '{"title":"L1"}' | json id)
+LID=$(req POST /admin/content/modules/$MID/lessons 201 "$ADMIN" '{"title":"L1","order":0,"estimatedMinutes":30}' | json id)
+LID2=$(req POST /admin/content/modules/$MID/lessons 201 "$ADMIN" '{"title":"L2","order":1,"estimatedMinutes":10}' | json id)
 req POST /admin/content/vocabulary 201 "$ADMIN" "{\"word\":\"smokeword-$RUN\",\"translationRu\":\"тест\",\"level\":\"B1\"}" >/dev/null
 VBID=$(req POST /admin/content/lessons/$LID/blocks 201 "$ADMIN" "{\"type\":\"VOCABULARY\",\"order\":0,\"content\":{\"words\":[\"smokeword-$RUN\"]}}" | json id)
 MTBID=$(req POST /admin/content/lessons/$LID/blocks 201 "$ADMIN" '{"type":"MINI_TEST","order":1}' | json id)
 EID=$(req POST /admin/content/blocks/$MTBID/exercises 201 "$ADMIN" '{"type":"MULTIPLE_CHOICE","skill":"GRAMMAR","content":{"question":"2+2?","options":["3","4"],"correctIndex":1}}' | json id)
+L2BID=$(req POST /admin/content/lessons/$LID2/blocks 201 "$ADMIN" '{"type":"INTRO","order":0}' | json id)
 
 req GET /learning/today-plan 403 "$ADMIN" >/dev/null   # не ученик
 PLAN=$(req GET /learning/today-plan 200 "$PTOKEN")
-[[ $(echo "$PLAN" | json lesson.id) == "$LID" ]]   # единственный курс своей аудитории — назначился автоматически
+[[ $(echo "$PLAN" | json lesson.id) == "$LID" ]]   # единственный курс своей аудитории — назначился автоматически; первый урок дня (30 мин) выдан, хотя dailyMinutes=20
 [[ $(echo "$PLAN" | json prioritySkills | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>console.log(JSON.parse(s).length))') == 3 ]]
 
 L=$(req GET /learning/lessons/$LID 200 "$PTOKEN")
@@ -241,7 +243,18 @@ GRAMMAR_AFTER=$(req GET /users/me 200 "$PTOKEN" | json studentProfile.grammarSco
 
 req POST /learning/lessons/$LID/blocks/$MTBID/complete 201 "$PTOKEN" >/dev/null
 [[ $(req GET /learning/lessons/$LID 200 "$PTOKEN" | json progress.status) == COMPLETED ]]
-[[ $(req GET /learning/today-plan 200 "$PTOKEN" | json lesson) == null ]]   # курс пройден полностью
+
+echo "▸ learning: дневной лимит по времени (dailyMinutes)"
+DPLAN=$(req GET /learning/today-plan 200 "$PTOKEN")
+[[ $(echo "$DPLAN" | json lesson) == null ]]
+[[ $(echo "$DPLAN" | json lessonUnavailableReason) == DAILY_LIMIT_REACHED ]]   # 30 мин уже пройдено сегодня ≥ dailyMinutes=20, хотя L2 не пройден
+
+req PATCH /users/me 200 "$PTOKEN" '{"dailyMinutes":120}' >/dev/null
+[[ $(req GET /learning/today-plan 200 "$PTOKEN" | json lesson.id) == "$LID2" ]]   # подняли лимит — следующий урок снова доступен
+
+req POST /learning/lessons/$LID2/blocks/$L2BID/complete 201 "$PTOKEN" >/dev/null
+[[ $(req GET /learning/today-plan 200 "$PTOKEN" | json lesson) == null ]]
+[[ $(req GET /learning/today-plan 200 "$PTOKEN" | json lessonUnavailableReason) == COURSE_COMPLETED ]]   # курс пройден полностью
 
 echo "▸ learning: чужой прогресс недоступен"
 req POST /learning/vocabulary/$WVID/review 404 "$OTOKEN" '{"quality":4}' >/dev/null
@@ -255,7 +268,7 @@ req POST /admin/curator-assignments 201 "$ADMIN" "{\"curatorId\":\"$HWCID\",\"st
 
 echo "▸ куратор: назначение конкретного урока в план на день"
 [[ $(req GET /learning/today-plan 200 "$PTOKEN" | json lesson) == null ]]   # курс пройден, автоподбор ничего не даёт
-ALID=$(req POST /admin/content/modules/$MID/lessons 201 "$ADMIN" '{"title":"Назначенный вручную","order":1}' | json id)
+ALID=$(req POST /admin/content/modules/$MID/lessons 201 "$ADMIN" '{"title":"Назначенный вручную","order":2}' | json id)
 req POST /curator/students/$PID/assign-lesson 404 "$OTHERCURTOKEN" "{\"lessonId\":\"$ALID\"}" >/dev/null   # чужой ученик
 req POST /curator/students/$PID/assign-lesson 201 "$HWCUR" "{\"lessonId\":\"$ALID\"}" >/dev/null
 [[ $(req GET /learning/today-plan 200 "$PTOKEN" | json lesson.id) == "$ALID" ]]

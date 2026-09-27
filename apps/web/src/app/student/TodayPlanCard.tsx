@@ -10,6 +10,12 @@ const SKILL_LABELS: Record<Skill, string> = {
   SPEAKING: "Говорение",
 };
 
+const NO_LESSON_MESSAGE: Record<NonNullable<TodayPlan["lessonUnavailableReason"]>, string> = {
+  NO_COURSE: "Урок появится, когда куратор назначит курс.",
+  COURSE_COMPLETED: "Вы прошли все уроки курса — отличная работа! 🎉",
+  DAILY_LIMIT_REACHED: "На сегодня всё — дневная цель по времени выполнена. Новый урок будет доступен завтра.",
+};
+
 export function TodayPlanCard({ plan }: { plan: TodayPlan }) {
   return (
     <div className="rounded-2xl border border-line bg-card p-6">
@@ -35,7 +41,9 @@ export function TodayPlanCard({ plan }: { plan: TodayPlan }) {
           </Link>
         </div>
       ) : (
-        <p className="mt-4 text-muted">Урок появится, когда куратор назначит курс.</p>
+        <p className="mt-4 text-muted">
+          {plan.lessonUnavailableReason ? NO_LESSON_MESSAGE[plan.lessonUnavailableReason] : NO_LESSON_MESSAGE.NO_COURSE}
+        </p>
       )}
 
       {plan.vocabularyReview.total > 0 && (

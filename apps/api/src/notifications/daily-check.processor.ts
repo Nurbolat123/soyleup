@@ -2,13 +2,10 @@ import { Processor, WorkerHost } from '@nestjs/bullmq';
 import { Inject, Logger } from '@nestjs/common';
 import { and, eq, inArray, isNotNull, lt, max } from 'drizzle-orm';
 import { AccessService } from '../common/access.service';
+import { almatyDateStr } from '../common/utils';
 import { DB, Database } from '../db/db.module';
 import { homework, lessonProgress, users } from '../db/schema';
 import { NotificationEventsService } from './notification-events.service';
-
-function almatyDateStr(d: Date): string {
-  return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Almaty' }).format(d);
-}
 
 @Processor('daily-checks')
 export class DailyCheckProcessor extends WorkerHost {

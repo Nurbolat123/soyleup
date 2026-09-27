@@ -10,6 +10,11 @@ export function ageInYears(isoDate: string, now = new Date()): number {
   return age;
 }
 
+/** Календарная дата (YYYY-MM-DD) в часовом поясе Алматы — единая граница «дня» в приложении. */
+export function almatyDateStr(d: Date): string {
+  return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Almaty' }).format(d);
+}
+
 export const normalizeEmail = (email: string) => email.trim().toLowerCase();
 
 export const escapeLike = (s: string) => s.replace(/[\\%_]/g, '\\$&');

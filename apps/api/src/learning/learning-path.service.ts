@@ -1,5 +1,6 @@
 import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { and, asc, eq, inArray, lte, sql } from 'drizzle-orm';
+import { almatyDateStr } from '../common/utils';
 import { gradeAnswer, stripAnswer } from '../common/exerciseContent';
 import {
   buildEnglishProfile, COURSE_LEVELS, CourseLevel, priorityLearningPath, QUESTION_LEVELS, QuestionLevel,
@@ -10,6 +11,8 @@ import {
   Audience, courseModules, courses, lessonProgress, lessons, questionBank, Skill, studentProfiles, studentVocabulary,
 } from '../db/schema';
 import { SkillRecalcService } from './skill-recalc.service';
+
+export type LessonUnavailableReason = 'NO_COURSE' | 'COURSE_COMPLETED' | 'DAILY_LIMIT_REACHED';
 
 @Injectable()
 export class LearningPathService {
@@ -32,11 +35,18 @@ export class LearningPathService {
     const priority = priorityLearningPath(scores, profile.targetLevel as CourseLevel | null);
 
     const courseId = profile.courseId ?? (await this.assignCourse(userId, profile.birthDate, scores));
-    const lesson = profile.assignedLessonId
-      ? await this.findAssignedLesson(userId, profile.assignedLessonId)
-      : courseId
-        ? await this.findNextLesson(userId, courseId)
-        : null;
+    let lesson = null;
+    let lessonUnavailableReason: LessonUnavailableReason | null = null;
+    if (profile.assignedLessonId) {
+      // Куратор назначил конкретный урок вручную — дневной лимит по времени на него не действует.
+      lesson = await this.findAssignedLesson(userId, profile.assignedLessonId);
+    } else if (courseId) {
+      const picked = await this.findNextLesson(userId, courseId, profile.dailyMinutes);
+      lesson = picked.lesson;
+      lessonUnavailableReason = picked.reason;
+    } else {
+      lessonUnavailableReason = 'NO_COURSE';
+    }
 
     const dueWords = await this.db.query.studentVocabulary.findMany({
       where: and(eq(studentVocabulary.userId, userId), lte(studentVocabulary.dueAt, new Date())),
@@ -56,6 +66,7 @@ export class LearningPathService {
       prioritySkills: priority.slice(0, 3),
       dailyMinutes: profile.dailyMinutes,
       lesson,
+      lessonUnavailableReason,
       vocabularyReview: {
         total: dueWords.length,
         words: dueWords.map((w) => ({ id: w.word.id, word: w.word.word, translationRu: w.word.translationRu })),
@@ -94,13 +105,20 @@ export class LearningPathService {
     return 'ADULTS';
   }
 
-  private async findNextLesson(userId: string, courseId: string) {
+  /**
+   * Следующий урок курса + сколько минут ученик уже прошёл сегодня (см. CLAUDE.md:
+   * «день = урок (или часть урока) по dailyMinutes»). Первый урок дня выдаётся всегда,
+   * даже если сам по себе он длиннее дневного лимита — иначе при небольшом dailyMinutes
+   * ученик вообще не сможет заниматься. Лимит останавливает выдачу СЛЕДУЮЩЕГО урока только
+   * после того, как накопленное время уже достигло или превысило dailyMinutes.
+   */
+  private async findNextLesson(userId: string, courseId: string, dailyMinutes: number) {
     const course = await this.db.query.courses.findFirst({
       where: eq(courses.id, courseId),
       with: { modules: { orderBy: asc(courseModules.order), with: { lessons: { orderBy: asc(lessons.order) } } } },
     });
     const allLessons = course?.modules.flatMap((m) => m.lessons) ?? [];
-    if (!allLessons.length) return null;
+    if (!allLessons.length) return { lesson: null, reason: 'COURSE_COMPLETED' as const };
 
     const progressRows = await this.db.query.lessonProgress.findMany({
       where: and(eq(lessonProgress.userId, userId), inArray(lessonProgress.lessonId, allLessons.map((l) => l.id))),
@@ -108,15 +126,27 @@ export class LearningPathService {
     const progressByLesson = new Map(progressRows.map((p) => [p.lessonId, p]));
 
     const next = allLessons.find((l) => progressByLesson.get(l.id)?.status !== 'COMPLETED');
-    if (!next) return null; // курс пройден полностью
+    if (!next) return { lesson: null, reason: 'COURSE_COMPLETED' as const };
+
+    const today = almatyDateStr(new Date());
+    const estimatedById = new Map(allLessons.map((l) => [l.id, l.estimatedMinutes]));
+    const minutesToday = progressRows
+      .filter((p) => p.status === 'COMPLETED' && p.completedAt && almatyDateStr(p.completedAt) === today)
+      .reduce((sum, p) => sum + (estimatedById.get(p.lessonId) ?? 0), 0);
+    if (minutesToday > 0 && minutesToday >= dailyMinutes) {
+      return { lesson: null, reason: 'DAILY_LIMIT_REACHED' as const };
+    }
 
     const progress = progressByLesson.get(next.id);
     return {
-      id: next.id,
-      title: next.title,
-      estimatedMinutes: next.estimatedMinutes,
-      status: progress?.status ?? 'NOT_STARTED',
-      currentBlockOrder: progress?.currentBlockOrder ?? 0,
+      lesson: {
+        id: next.id,
+        title: next.title,
+        estimatedMinutes: next.estimatedMinutes,
+        status: progress?.status ?? 'NOT_STARTED',
+        currentBlockOrder: progress?.currentBlockOrder ?? 0,
+      },
+      reason: null,
     };
   }
 

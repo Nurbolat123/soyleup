@@ -354,10 +354,13 @@ export interface PracticeQuestion extends ExerciseItem {
   level: QuestionLevel;
 }
 
+export type LessonUnavailableReason = "NO_COURSE" | "COURSE_COMPLETED" | "DAILY_LIMIT_REACHED";
+
 export interface TodayPlan {
   prioritySkills: Skill[];
   dailyMinutes: number;
   lesson: TodayPlanLesson | null;
+  lessonUnavailableReason: LessonUnavailableReason | null;
   vocabularyReview: { total: number; words: { id: string; word: string; translationRu: string }[] };
   practiceQuestion: PracticeQuestion | null;
 }
