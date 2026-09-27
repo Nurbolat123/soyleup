@@ -99,6 +99,12 @@ req POST /admin/curator-assignments 400 "$ADMIN" "{\"curatorId\":\"$ADULT_ID\",\
 [[ $(req GET /curator/students 200 "$CURATOR" | json length) == 1 ]]
 req GET /students/$ADULT_ID 404 "$CURATOR" >/dev/null
 
+# В админке должно быть видно, кто уже назначен — иначе повторный визит на страницу выглядит так, будто назначение не сохранилось
+[[ $(req GET "/admin/users?search=minor$RUN" 200 "$ADMIN" | json 'items.0.curator.id') == "$CURATOR_ID" ]]
+req DELETE /admin/curator-assignments/$MINOR_ID 200 "$ADMIN" >/dev/null
+[[ $(req GET "/admin/users?search=minor$RUN" 200 "$ADMIN" | json 'items.0.curator') == null ]]
+req POST /admin/curator-assignments 201 "$ADMIN" "{\"curatorId\":\"$CURATOR_ID\",\"studentId\":\"$MINOR_ID\"}" >/dev/null
+
 echo "▸ доступ куратора к контенту (canManageContent)"
 req GET /admin/content/courses 403 "$CURATOR" >/dev/null   # доступ пока не выдан
 req PATCH /admin/users/$ADULT_ID/content-access 400 "$ADMIN" '{"canManageContent":true}' >/dev/null   # не куратор

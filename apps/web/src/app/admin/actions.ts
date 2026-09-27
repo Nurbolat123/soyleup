@@ -56,3 +56,8 @@ export async function assignCurator(formData: FormData) {
   });
   revalidatePath("/admin");
 }
+
+export async function unassignCurator(studentId: string) {
+  await apiFetch(`/admin/curator-assignments/${studentId}`, { method: "DELETE" });
+  revalidatePath("/admin");
+}

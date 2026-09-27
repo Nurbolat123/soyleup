@@ -3,7 +3,7 @@ import { apiFetch } from "@/lib/api";
 import { DashboardShell } from "@/components/DashboardShell";
 import { StatusBadge } from "@/components/StatusBadge";
 import type { PublicUser, Role, UserListResponse } from "@/lib/types";
-import { assignCurator, setContentAccess, setUserStatus } from "./actions";
+import { assignCurator, setContentAccess, setUserStatus, unassignCurator } from "./actions";
 import { CreateStaffForm } from "./CreateStaffForm";
 
 const ROLE_LABEL: Record<Role, string> = {
@@ -163,29 +163,48 @@ export default async function AdminPage({
                   </td>
                   <td className="px-5 py-3">
                     {user.role === "STUDENT" ? (
-                      <form action={assignCurator} className="flex items-center gap-2">
-                        <input type="hidden" name="studentId" value={user.id} />
-                        <select
-                          name="curatorId"
-                          defaultValue=""
-                          className="h-[38px] rounded-lg border border-line bg-white px-2 text-[14px]"
-                        >
-                          <option value="" disabled>
-                            Выбрать…
-                          </option>
-                          {curators.map((c: PublicUser) => (
-                            <option key={c.id} value={c.id}>
-                              {c.firstName} {c.lastName ?? ""}
+                      <div className="flex flex-col gap-1.5">
+                        {user.curator && (
+                          <div className="flex items-center gap-2 text-[13px]">
+                            <span>
+                              Назначен: <strong>{user.curator.firstName} {user.curator.lastName ?? ""}</strong>
+                            </span>
+                            <form
+                              action={async () => {
+                                "use server";
+                                await unassignCurator(user.id);
+                              }}
+                            >
+                              <button type="submit" className="font-semibold text-error hover:underline">
+                                Снять
+                              </button>
+                            </form>
+                          </div>
+                        )}
+                        <form action={assignCurator} className="flex items-center gap-2">
+                          <input type="hidden" name="studentId" value={user.id} />
+                          <select
+                            name="curatorId"
+                            defaultValue=""
+                            className="h-[38px] rounded-lg border border-line bg-white px-2 text-[14px]"
+                          >
+                            <option value="" disabled>
+                              {user.curator ? "Сменить на…" : "Выбрать…"}
                             </option>
-                          ))}
-                        </select>
-                        <button
-                          type="submit"
-                          className="rounded-lg border border-ink px-3 py-1.5 text-[13px] font-semibold text-ink hover:bg-ink hover:text-paper"
-                        >
-                          Назначить
-                        </button>
-                      </form>
+                            {curators.map((c: PublicUser) => (
+                              <option key={c.id} value={c.id}>
+                                {c.firstName} {c.lastName ?? ""}
+                              </option>
+                            ))}
+                          </select>
+                          <button
+                            type="submit"
+                            className="rounded-lg border border-ink px-3 py-1.5 text-[13px] font-semibold text-ink hover:bg-ink hover:text-paper"
+                          >
+                            {user.curator ? "Сменить" : "Назначить"}
+                          </button>
+                        </form>
+                      </div>
                     ) : (
                       <span className="text-muted">—</span>
                     )}

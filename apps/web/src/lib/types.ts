@@ -15,6 +15,8 @@ export interface PublicUser {
   canManageContent: boolean;
   lastLoginAt: string | null;
   createdAt: string;
+  /** Только в списке /admin/users, только для роли STUDENT — текущий назначенный куратор. */
+  curator?: { id: string; firstName: string; lastName: string | null } | null;
 }
 
 export interface StudentProfile {
