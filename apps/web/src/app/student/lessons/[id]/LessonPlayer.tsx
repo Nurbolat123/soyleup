@@ -116,6 +116,7 @@ export function LessonPlayer({
   const gradableExercises = block.exercises.filter((ex) => ex.type !== "SPEAKING" && ex.type !== "FREE_RESPONSE");
   const speakingExercises = block.exercises.filter((ex) => ex.type === "SPEAKING");
   const allAnswered = block.exercises.every((ex) => answered[ex.id]);
+  const isLastBlock = initialLesson.blocks[initialLesson.blocks.length - 1]?.id === block.id;
 
   return (
     <main className="min-h-screen bg-paper px-5 py-10">
@@ -164,6 +165,14 @@ export function LessonPlayer({
                   </li>
                 ))}
               </ul>
+            )}
+
+            {block.type === "HOMEWORK" && (
+              <div className="rounded-2xl border border-line bg-paper-2 p-4 text-[14px] text-muted">
+                Выполнять это задание сейчас не нужно. Как только вы нажмёте кнопку ниже, оно появится
+                в разделе «Задания от куратора» в вашем кабинете — сможете написать ответ, приложить
+                файлы или записать голос там в любое удобное время.
+              </div>
             )}
 
             {gradableExercises.map((ex) => (
@@ -215,7 +224,7 @@ export function LessonPlayer({
               onClick={handleContinue}
               className="h-[52px] rounded-2xl bg-ink text-[16px] font-semibold text-paper disabled:opacity-40"
             >
-              {advancing ? "Сохраняем…" : "Продолжить"}
+              {advancing ? "Сохраняем…" : isLastBlock ? "Завершить урок" : "Продолжить"}
             </button>
           </div>
         </div>
