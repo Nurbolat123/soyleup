@@ -17,5 +17,12 @@ export default async function LessonPage({ params }: { params: Promise<{ id: str
   const user = await apiFetch<MeResponse>("/users/me");
   const hasVoiceConsent = user.activeConsents.some((c) => c.type === "VOICE_RECORDING");
 
-  return <LessonPlayer lessonId={id} initialLesson={lesson} hasVoiceConsent={hasVoiceConsent} />;
+  return (
+    <LessonPlayer
+      lessonId={id}
+      initialLesson={lesson}
+      hasVoiceConsent={hasVoiceConsent}
+      hasCurator={user.hasCurator}
+    />
+  );
 }

@@ -67,6 +67,7 @@ export interface MeResponse extends PublicUser {
   englishProfile: EnglishProfile | null;
   activeConsents: ActiveConsent[];
   requiresParentConsent: boolean;
+  hasCurator: boolean;
 }
 
 export interface LinkCode {

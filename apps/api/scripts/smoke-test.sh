@@ -259,12 +259,22 @@ req POST /learning/lessons/$LID2/blocks/$L2BID/complete 201 "$PTOKEN" >/dev/null
 echo "▸ learning: чужой прогресс недоступен"
 req POST /learning/vocabulary/$WVID/review 404 "$OTOKEN" '{"quality":4}' >/dev/null
 
+echo "▸ learning: ДЗ из урока при самостоятельном обучении (без куратора)"
+[[ $(req GET /users/me 200 "$PTOKEN" | json hasCurator) == false ]]
+HWLID=$(req POST /admin/content/modules/$MID/lessons 201 "$ADMIN" '{"title":"Урок с ДЗ","order":3}' | json id)
+HWBID=$(req POST /admin/content/lessons/$HWLID/blocks 201 "$ADMIN" '{"type":"HOMEWORK","order":0,"content":{"text":"Напишите 5 предложений"}}' | json id)
+req POST /learning/lessons/$HWLID/blocks/$HWBID/complete 201 "$PTOKEN" >/dev/null
+[[ $(req GET /learning/homework 200 "$PTOKEN" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>console.log(JSON.parse(s).some(h=>h.lessonBlockId==="'"$HWBID"'")))') == false ]]   # без куратора проверять некому — ДЗ не создаётся
+
 echo "▸ куратор: домашние задания и проверка speaking"
 HWCID=$(req POST /admin/users 201 "$ADMIN" "{\"email\":\"hwcur$RUN@t.kz\",\"password\":\"curator-pass-123\",\"firstName\":\"Homework\",\"role\":\"CURATOR\"}" | json id)
 HWCUR=$(req POST /auth/login 200 "" "{\"email\":\"hwcur$RUN@t.kz\",\"password\":\"curator-pass-123\"}" | json accessToken)
 OTHERCUR=$(req POST /admin/users 201 "$ADMIN" "{\"email\":\"othercur$RUN@t.kz\",\"password\":\"curator-pass-123\",\"firstName\":\"Other\",\"role\":\"CURATOR\"}" | json id)
 OTHERCURTOKEN=$(req POST /auth/login 200 "" "{\"email\":\"othercur$RUN@t.kz\",\"password\":\"curator-pass-123\"}" | json accessToken)
 req POST /admin/curator-assignments 201 "$ADMIN" "{\"curatorId\":\"$HWCID\",\"studentId\":\"$PID\"}" >/dev/null
+[[ $(req GET /users/me 200 "$PTOKEN" | json hasCurator) == true ]]
+req POST /learning/lessons/$HWLID/blocks/$HWBID/complete 201 "$PTOKEN" >/dev/null   # тот же блок ещё раз — теперь куратор есть
+[[ $(req GET /learning/homework 200 "$PTOKEN" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>console.log(JSON.parse(s).some(h=>h.lessonBlockId==="'"$HWBID"'")))') == true ]]   # теперь с куратором ДЗ создаётся
 
 echo "▸ куратор: назначение конкретного урока в план на день"
 [[ $(req GET /learning/today-plan 200 "$PTOKEN" | json lesson) == null ]]   # курс пройден, автоподбор ничего не даёт

@@ -5,7 +5,7 @@ import { buildEnglishProfile } from '../common/levels';
 import { definedOnly } from '../common/utils';
 import { ConsentsService } from '../consents/consents.service';
 import { DB, Database } from '../db/db.module';
-import { consents, ConsentType, studentProfiles, users } from '../db/schema';
+import { consents, ConsentType, curatorStudents, studentProfiles, users } from '../db/schema';
 import { UpdateMeDto } from './dto/users.dto';
 import { toPublicUser } from './user.mapper';
 
@@ -40,12 +40,22 @@ export class UsersService {
           SPEAKING: studentProfile.speakingScore,
         })
       : null;
+    // Самостоятельное обучение (без куратора) — задания, требующие проверки человеком,
+    // ученику не назначаются (см. HomeworkService.autoAssignFromBlock); фронтенду нужно
+    // знать это заранее, чтобы объяснить блок «Домашнее задание» в уроке правильно.
+    const hasCurator = studentProfile
+      ? !!(await this.db.query.curatorStudents.findFirst({
+          where: and(eq(curatorStudents.studentId, userId), eq(curatorStudents.active, true)),
+          columns: { id: true },
+        }))
+      : false;
     return {
       ...toPublicUser(rest as typeof user),
       studentProfile: studentProfile ?? null,
       englishProfile,
       activeConsents,
       requiresParentConsent: user.status === 'PENDING_CONSENT',
+      hasCurator,
     };
   }
 

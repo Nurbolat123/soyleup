@@ -29,10 +29,12 @@ export function LessonPlayer({
   lessonId,
   initialLesson,
   hasVoiceConsent,
+  hasCurator,
 }: {
   lessonId: string;
   initialLesson: LessonPlayerData;
   hasVoiceConsent: boolean;
+  hasCurator: boolean;
 }) {
   const [blockOrder, setBlockOrder] = useState(initialLesson.progress.currentBlockOrder);
   const [finished, setFinished] = useState(initialLesson.progress.status === "COMPLETED");
@@ -169,9 +171,9 @@ export function LessonPlayer({
 
             {block.type === "HOMEWORK" && (
               <div className="rounded-2xl border border-line bg-paper-2 p-4 text-[14px] text-muted">
-                Выполнять это задание сейчас не нужно. Как только вы нажмёте кнопку ниже, оно появится
-                в разделе «Задания от куратора» в вашем кабинете — сможете написать ответ, приложить
-                файлы или записать голос там в любое удобное время.
+                {hasCurator
+                  ? "Выполнять это задание сейчас не нужно. Как только вы нажмёте кнопку ниже, оно появится в разделе «Задания от куратора» в вашем кабинете — сможете написать ответ, приложить файлы или записать голос там в любое удобное время."
+                  : "Это задание — просто для самостоятельной практики: куратора, который мог бы его проверить, в вашем плане обучения нет, поэтому отправлять ответ не нужно."}
               </div>
             )}
 

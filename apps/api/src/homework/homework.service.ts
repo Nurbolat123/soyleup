@@ -26,12 +26,21 @@ export class HomeworkService {
     private readonly events: NotificationEventsService,
   ) {}
 
-  /** Автоматическое ДЗ из блока урока HOMEWORK — вызывается при завершении блока (идемпотентно). */
+  /**
+   * Автоматическое ДЗ из блока урока HOMEWORK — вызывается при завершении блока (идемпотентно).
+   * Без куратора проверять такое задание некому: оно бы зависло в статусе «на проверке»
+   * навсегда, ни в чьей очереди не появляясь. Поэтому при самостоятельном обучении (куратор
+   * не назначен) ДЗ, требующее проверки человеком, ученику не создаётся вовсе — как у блоков,
+   * которые умеет проверить только сервер (мини-тесты, упражнения).
+   */
   async autoAssignFromBlock(studentId: string, lessonId: string, block: LessonBlock) {
     const existing = await this.db.query.homework.findFirst({
       where: and(eq(homework.studentId, studentId), eq(homework.lessonBlockId, block.id)),
     });
     if (existing) return existing;
+
+    const curatorIds = await this.access.getActiveCuratorIds(studentId);
+    if (!curatorIds.length) return null;
 
     const content = block.content as Record<string, unknown> | null;
     const [row] = await this.db
