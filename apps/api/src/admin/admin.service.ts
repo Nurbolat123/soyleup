@@ -1,11 +1,11 @@
 import { BadRequestException, ConflictException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import * as argon2 from 'argon2';
-import { and, desc, eq, ilike, isNull, or, SQL } from 'drizzle-orm';
+import { and, desc, eq, ilike, inArray, isNull, or, SQL } from 'drizzle-orm';
 import { TokenService } from '../auth/token.service';
 import { AuditService } from '../common/audit.service';
 import { escapeLike, isUniqueViolation, normalizeEmail } from '../common/utils';
 import { DB, Database } from '../db/db.module';
-import { consents, curatorStudents, users } from '../db/schema';
+import { consents, curatorStudents, studentProfiles, users } from '../db/schema';
 import { publicUserColumns, toPublicUser } from '../users/user.mapper';
 import { AssignCuratorDto, CreateStaffDto, ListUsersQueryDto } from './dto/admin.dto';
 
@@ -37,7 +37,43 @@ export class AdminService {
         .offset((q.page - 1) * q.pageSize),
       this.db.$count(users, where),
     ]);
-    return { items, total, page: q.page, pageSize: q.pageSize };
+
+    // Текущий назначенный куратор для учеников на этой странице — иначе в админке
+    // не видно, кто уже назначен, и повторное назначение выглядит так, будто ничего не сохранилось.
+    const studentIds = items.filter((u) => u.role === 'STUDENT').map((u) => u.id);
+    const curatorByStudent = new Map<string, { id: string; firstName: string; lastName: string | null }>();
+    if (studentIds.length) {
+      const rows = await this.db
+        .select({
+          studentId: curatorStudents.studentId,
+          curatorId: users.id,
+          firstName: users.firstName,
+          lastName: users.lastName,
+        })
+        .from(curatorStudents)
+        .innerJoin(users, eq(curatorStudents.curatorId, users.id))
+        .where(and(inArray(curatorStudents.studentId, studentIds), eq(curatorStudents.active, true)));
+      rows.forEach((r) => curatorByStudent.set(r.studentId, { id: r.curatorId, firstName: r.firstName, lastName: r.lastName }));
+    }
+
+    // Что ученик выбрал при регистрации (самостоятельно / с куратором) — помогает админу
+    // увидеть, кому куратор ещё нужен назначить.
+    const trackByStudent = new Map<string, string>();
+    if (studentIds.length) {
+      const rows = await this.db
+        .select({ userId: studentProfiles.userId, desiredLearningTrack: studentProfiles.desiredLearningTrack })
+        .from(studentProfiles)
+        .where(inArray(studentProfiles.userId, studentIds));
+      rows.forEach((r) => trackByStudent.set(r.userId, r.desiredLearningTrack));
+    }
+
+    const itemsWithCurator = items.map((u) => ({
+      ...u,
+      curator: u.role === 'STUDENT' ? (curatorByStudent.get(u.id) ?? null) : undefined,
+      desiredLearningTrack: u.role === 'STUDENT' ? (trackByStudent.get(u.id) ?? null) : undefined,
+    }));
+
+    return { items: itemsWithCurator, total, page: q.page, pageSize: q.pageSize };
   }
 
   async createStaff(adminId: string, dto: CreateStaffDto, ip?: string) {
@@ -81,6 +117,17 @@ export class AdminService {
 
     await this.audit.log({ actorId: adminId, action: 'admin.update_status', entity: 'user', entityId: userId, meta: { from: user.status, to: status }, ip });
     return { id: userId, status };
+  }
+
+  async setContentAccess(adminId: string, userId: string, canManageContent: boolean, ip?: string) {
+    const user = await this.db.query.users.findFirst({ where: eq(users.id, userId), columns: { role: true } });
+    if (user?.role !== 'CURATOR') throw new BadRequestException('Content access applies to curators only');
+
+    await this.db.update(users).set({ canManageContent }).where(eq(users.id, userId));
+    await this.audit.log({
+      actorId: adminId, action: 'admin.set_content_access', entity: 'user', entityId: userId, meta: { canManageContent }, ip,
+    });
+    return { id: userId, canManageContent };
   }
 
   async assignCurator(adminId: string, dto: AssignCuratorDto, ip?: string) {

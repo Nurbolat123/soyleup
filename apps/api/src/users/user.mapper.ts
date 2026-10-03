@@ -10,6 +10,7 @@ export const publicUserColumns = {
   firstName: users.firstName,
   lastName: users.lastName,
   locale: users.locale,
+  canManageContent: users.canManageContent,
   lastLoginAt: users.lastLoginAt,
   createdAt: users.createdAt,
 };

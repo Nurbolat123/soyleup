@@ -1,0 +1,2 @@
+CREATE TYPE "public"."learning_track" AS ENUM('SELF_STUDY', 'WITH_CURATOR');--> statement-breakpoint
+ALTER TABLE "student_profiles" ADD COLUMN "desired_learning_track" "learning_track" DEFAULT 'SELF_STUDY' NOT NULL;

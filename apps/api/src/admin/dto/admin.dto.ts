@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsEmail, IsIn, IsInt, IsNotEmpty, IsOptional, IsString, IsUUID, Max, MaxLength, Min, MinLength } from 'class-validator';
+import { IsBoolean, IsEmail, IsIn, IsInt, IsNotEmpty, IsOptional, IsString, IsUUID, Max, MaxLength, Min, MinLength } from 'class-validator';
 import { Role, roleEnum, UserStatus, userStatusEnum } from '../../db/schema';
 
 export class ListUsersQueryDto {
@@ -39,6 +39,11 @@ export class CreateStaffDto {
 export class UpdateStatusDto {
   @IsIn(['ACTIVE', 'BLOCKED'])
   status: 'ACTIVE' | 'BLOCKED';
+}
+
+export class UpdateContentAccessDto {
+  @IsBoolean()
+  canManageContent: boolean;
 }
 
 export class UserIdParamDto {
