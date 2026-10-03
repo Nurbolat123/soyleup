@@ -461,7 +461,7 @@ export const a2: CourseSpec = {
           title: 'A Trip to Paris',
           content: {
             text:
-              "Last month, Tom planned a trip to Paris. He booked his flight two weeks before the trip and packed his suitcase the night before. He arrived at the airport early and waited for his flight. The journey took two hours. When Tom arrived in Paris, he visited the Eiffel Tower and walked along the river. He didn't lose his passport, and he had a great time. He returned home with happy memories.",
+              "Tom always wanted to visit Paris, so last spring he finally made a plan. First, he booked his flight online, but the website was slow and he almost lost his seat. Two weeks before the trip, he checked his passport and saw that it was still valid. The night before, he packed his suitcase with clothes, shoes and a small gift for his cousin, who lives in Paris. On the day of the journey, Tom woke up very early and took a taxi to the airport. At the check-in desk, he couldn't find his ticket on his phone for a few minutes, and his heart beat fast. Luckily, he found it just in time, and the journey took only two hours. When Tom arrived in Paris, his cousin was waiting with a big smile. They walked to the Eiffel Tower together and took photos until it got dark. That evening, Tom called his mother and told her about his exciting day. He already wants to book another trip next year.",
           },
         },
         {
@@ -556,7 +556,7 @@ export const a2: CourseSpec = {
           title: 'Shopping for a New Phone',
           content: {
             text:
-              'Last Saturday, Jack went shopping for a new phone. In the first shop, the price was very high. In the second shop, he found a phone that was cheaper and smaller. The shop assistant gave him a ten percent discount. Jack asked for a receipt before leaving. He decided that the second shop had the cheapest and the best phones in town.',
+              "Mia needed a new winter jacket, so on Saturday she went to the big shopping centre in town. In the first shop, she found a nice red jacket, but the price was too high for her budget. The shop assistant said the jacket was expensive because it was part of a new collection. Mia didn't give up, so she walked to a smaller shop near the corner. There, she found a similar jacket in her size, and it was much cheaper. The shop assistant checked the computer and told her about a special discount for new customers. With the discount, the jacket cost twenty dollars less than in the first shop. Mia tried it on, and it fit perfectly. She paid at the counter and asked for a receipt, just in case she needed to return it later. On her way home, she felt happy, because she had found the cheapest and the most comfortable jacket in town.",
           },
         },
         {
@@ -652,7 +652,7 @@ export const a2: CourseSpec = {
           title: 'How Do I Get to the Museum?',
           content: {
             text:
-              'Excuse me, how do I get to the museum? Go straight on past the supermarket. Then turn left at the corner. Walk along the river until you reach the bridge. Cross the bridge, and you will see a roundabout. The museum is just after the roundabout, on your right.',
+              "Last weekend, Anna visited a new city for the first time and got lost near the old market. She stopped a friendly local man and asked him how to get to the city museum. The man smiled and said, 'It's not far, don't worry.' He told her to go straight on past the bakery until she reached a big crossroads. Then she had to turn left and walk along the river for five minutes. After that, she would see a busy roundabout with a fountain in the middle. He explained that the museum was just after the roundabout, on the corner of a quiet street. Anna also had to cross a small bridge before reaching the entrance. She thanked the man and started walking, repeating the directions in her head. To her surprise, she found the museum exactly where he said, right on the corner. Inside, she spent three happy hours looking at old paintings and photographs. Anna was glad she had asked for help instead of using her phone.",
           },
         },
         {
@@ -747,7 +747,7 @@ export const a2: CourseSpec = {
           title: 'Have You Ever Been Abroad?',
           content: {
             text:
-              'Have you ever been abroad? My friend Elena has visited many countries. She has been to France, Italy and Egypt. Last year, she went to Egypt for two weeks. She stayed at a beach resort and visited the pyramids. She also bought a beautiful souvenir for her sister. It was an unforgettable trip.',
+              'Elena has always loved travelling abroad, and she often tells her friends exciting stories about her holidays. Two years ago, she went on a trip to Egypt with her sister, and it became one of her best experiences. They stayed at a beautiful resort close to the Red Sea, where they could see the beach from their window every morning. One day, they visited the pyramids, but the bus was late and they almost missed the tour. Luckily, the guide waited for them, and Elena never forgot his kindness. In the evenings, she walked along the beach and talked to people from other countries. Before going home, she bought a small souvenir for her mother at a local market, while her sister chose a colourful scarf for their grandmother. Have you ever been abroad? Elena says that every trip teaches her something new about the world, and now she is already planning her next adventure, maybe somewhere in Asia this time.',
           },
         },
         {
@@ -844,7 +844,7 @@ export const a2: CourseSpec = {
           title: "At the Doctor's",
           content: {
             text:
-              "Peter woke up with a headache and a high fever. He decided to make an appointment with the doctor. The doctor checked his symptoms and said, 'You have a cold. You should rest and drink a lot of water. You don't have to take antibiotics, but I will give you a prescription for some medicine.' Peter followed the doctor's advice and felt better in two days.",
+              "On Monday morning, Peter woke up feeling terrible. He had a bad headache, and his whole body felt hot and tired. He checked his temperature and saw that he had a fever, so he decided not to go to work that day. His colleague told him to call the clinic immediately and make an appointment. At the clinic, the doctor asked Peter about his symptoms and listened to his chest carefully. 'You have a bad cold,' the doctor said, 'but don't worry, it isn't serious.' She explained that he should rest at home and drink plenty of warm water. She also gave him a prescription for some medicine to help with the fever. Peter went straight to the pharmacy and bought the medicine before going home. For the next two days, he stayed in bed and slept a lot. By Wednesday, his headache was gone, and he felt much stronger. Peter was grateful that he hadn't ignored his symptoms and had seen the doctor quickly.",
           },
         },
         {
@@ -939,7 +939,7 @@ export const a2: CourseSpec = {
           title: "Linda's Working Day",
           content: {
             text:
-              "Linda works as a manager in a big company. Every day, she gets to the office at half past eight and checks her emails. At the moment, she is preparing for an important meeting with a new colleague. Her shift usually finishes at six, but today she is working late because of the deadline. She doesn't usually complain about her salary, but she wants a promotion next year.",
+              "Linda works as a manager in a busy marketing office in the city centre. Every morning, she arrives at half past eight and checks her emails before her colleagues arrive. She usually enjoys her job, but this week has been more stressful than usual because of a big deadline on Friday. Yesterday, she had an important meeting with a new colleague who just joined the team, and they discussed a new project for a client. Linda felt proud of her team's ideas during the meeting. Her normal shift finishes at six o'clock, but today she is staying later to finish her report. She doesn't complain about staying late, because her company pays a generous salary and treats its workers well. At lunchtime, she usually eats with her colleagues in a small café near the office. Right now, Linda is preparing slides for tomorrow's presentation and drinking her third cup of coffee. She hopes that after this busy week, she will finally get some rest at the weekend.",
           },
         },
         {
@@ -1035,7 +1035,7 @@ export const a2: CourseSpec = {
           title: 'My Best Friend',
           content: {
             text:
-              'My best friend, Olga, is a generous, patient woman who always listens to my problems. She has curly brown hair and a bright smile. Unlike her, her brother is quite selfish; he rarely shares anything. But both of them are honest people who never lie. I trust them because they are reliable friends.',
+              'My best friend Olga is one of the kindest people I know. She has curly brown hair and always wears a warm smile, even on difficult days. Olga works as a nurse, and her patients love her because she is so patient and gentle with them. Once, a young patient was scared before an operation, and Olga sat with him for an hour just to calm him down. She is also extremely generous; she often buys small gifts for her colleagues without any reason. Her brother, Igor, is quite different from her. He is intelligent, but sometimes selfish, and he rarely thinks about other people\'s feelings. Still, both of them are honest and never lie, even about small things. Last month, Olga lent me some money when my car broke down, and she never asked when I would return it. That is why I always say she is the most reliable friend I have, and I feel lucky to have someone like her in my life.',
           },
         },
         {
@@ -1129,7 +1129,7 @@ export const a2: CourseSpec = {
           title: "Daniel's Career Plans",
           content: {
             text:
-              'Next year, Daniel is going to finish university and start his career. His goal is to become an engineer. He has already made his decision about which company to apply to. I think he will achieve his goal because he always works hard. According to the forecast, there will be more jobs in technology in the future, so Daniel feels positive about his plans.',
+              'Daniel is a university student who is thinking seriously about his future career. His main goal has always been to become a civil engineer, and now he intends to make that dream come true. Last week, he had to make an important decision about which company to apply to for his first job. After talking to his professor, he decided to apply to a company that builds bridges and roads. According to the forecast, the construction industry will grow a lot in the next ten years, which made Daniel feel confident. He is going to finish his final exams in June, and then he will start looking for a job seriously. His parents believe he will achieve his goal, because he always works hard and never gives up. In the evenings, Daniel studies extra English lessons, since many international companies require good English skills. He knows the next few months will be busy, but he is excited about his future career.',
           },
         },
         {
@@ -1224,7 +1224,7 @@ export const a2: CourseSpec = {
           title: 'Two Sofas',
           content: {
             text:
-              'In the furniture shop, there were two sofas. The first one was old-fashioned, but it was as comfortable as the modern one. The second sofa was more modern and had a similar colour to the first. The shop assistant said the second sofa was the best quality in the shop, although it was a little more expensive. In the end, the customer chose the more comfortable sofa, even though it was old-fashioned.',
+              'Last weekend, Sara decided to buy a new sofa for her living room, so she visited a large furniture shop in the city. The shop assistant showed her two sofas that looked quite similar from a distance, but they were actually very different. The first sofa had an old-fashioned design with wooden legs and a simple, dark colour. The second one was more modern, with a soft grey fabric and a sleek, comfortable shape. Sara sat on both sofas for a few minutes to compare them carefully. She noticed that the modern sofa felt softer, but the old-fashioned one seemed to have better quality material. The shop assistant explained that the old-fashioned sofa was handmade and would probably last longer. In the end, Sara chose the old-fashioned sofa, because comfort and quality mattered more to her than modern style. Her husband was surprised by her choice, but he agreed it looked beautiful in their living room. A week later, Sara said it was the most comfortable sofa she had ever owned.',
           },
         },
         {
@@ -1319,7 +1319,7 @@ export const a2: CourseSpec = {
           title: 'Dinner at the Restaurant',
           content: {
             text:
-              "At the restaurant, the waiter brought the menu. There were many starters and a few desserts to choose from. We ordered some soup and a salad. The waiter asked, 'Would you like any bread with your meal?' We said yes, and he brought a basket of bread. There wasn't much time before closing, so we asked for the bill quickly. The portions were large, and we didn't finish everything.",
+              "For their anniversary, Mark took his wife to a new Italian restaurant in the city centre. A friendly waiter welcomed them and gave them the menu, which had many delicious options. They couldn't decide what to order, so they asked the waiter for his recommendation. He suggested a seafood starter and said the portions in the restaurant were usually quite large. Mark ordered pasta, while his wife chose a dish with chicken and vegetables. While they were waiting, they shared a basket of warm bread and talked about their first date many years ago. When the food arrived, the portion was so big that they couldn't finish everything. For dessert, they ordered a chocolate cake and ate it slowly, enjoying every bite. At the end of the evening, the waiter brought the bill, and Mark was happy to see a special discount for their anniversary. They left the restaurant feeling full and happy, already planning to return next year.",
           },
         },
         {
