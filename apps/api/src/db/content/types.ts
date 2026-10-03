@@ -29,13 +29,24 @@ export interface VocabEntry {
   example: string;
 }
 
+export interface ModuleSpec {
+  title: string;
+  lessons: LessonSpec[];
+}
+
+/** Один файл модуля экспортирует это: свой словарь + свои уроки. */
+export interface ModuleContent {
+  title: string;
+  vocabulary: VocabEntry[];
+  lessons: LessonSpec[];
+}
+
 export interface CourseSpec {
   title: string;
   description: string;
   level: string;
   audience: 'KIDS' | 'TEENS' | 'ADULTS';
-  moduleTitle: string;
-  /** Весь словарь уровня — лексика, на которую ссылаются блоки VOCABULARY уроков этого курса. */
+  /** Весь словарь уровня — объединение словарей всех модулей. */
   vocabulary: VocabEntry[];
-  lessons: LessonSpec[];
+  modules: ModuleSpec[];
 }

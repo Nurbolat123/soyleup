@@ -20,40 +20,43 @@ export async function seedCourse(db: NodePgDatabase, spec: CourseSpec) {
     audience: spec.audience,
   }).returning();
 
-  const [module] = await db.insert(courseModules).values({
-    courseId: course.id,
-    title: spec.moduleTitle,
-    order: 0,
-  }).returning();
-
-  for (let li = 0; li < spec.lessons.length; li++) {
-    const l = spec.lessons[li];
-    const [lesson] = await db.insert(lessons).values({
-      moduleId: module.id,
-      title: l.title,
-      description: l.description,
-      order: li,
-      estimatedMinutes: l.estimatedMinutes,
+  for (let mi = 0; mi < spec.modules.length; mi++) {
+    const moduleSpec = spec.modules[mi];
+    const [module] = await db.insert(courseModules).values({
+      courseId: course.id,
+      title: moduleSpec.title,
+      order: mi,
     }).returning();
 
-    for (let bi = 0; bi < l.blocks.length; bi++) {
-      const b = l.blocks[bi];
-      const [block] = await db.insert(lessonBlocks).values({
-        lessonId: lesson.id,
-        type: b.type,
-        order: bi,
-        title: b.title,
-        content: b.content ?? {},
+    for (let li = 0; li < moduleSpec.lessons.length; li++) {
+      const l = moduleSpec.lessons[li];
+      const [lesson] = await db.insert(lessons).values({
+        moduleId: module.id,
+        title: l.title,
+        description: l.description,
+        order: li,
+        estimatedMinutes: l.estimatedMinutes,
       }).returning();
 
-      if (b.exercises?.length) {
-        await db.insert(exercises).values(b.exercises.map((e, ei) => ({
-          lessonBlockId: block.id,
-          type: e.type,
-          order: ei,
-          content: e.content,
-          skill: e.skill,
-        })));
+      for (let bi = 0; bi < l.blocks.length; bi++) {
+        const b = l.blocks[bi];
+        const [block] = await db.insert(lessonBlocks).values({
+          lessonId: lesson.id,
+          type: b.type,
+          order: bi,
+          title: b.title,
+          content: b.content ?? {},
+        }).returning();
+
+        if (b.exercises?.length) {
+          await db.insert(exercises).values(b.exercises.map((e, ei) => ({
+            lessonBlockId: block.id,
+            type: e.type,
+            order: ei,
+            content: e.content,
+            skill: e.skill,
+          })));
+        }
       }
     }
   }
