@@ -36,7 +36,7 @@ npm run dev                            # API: http://localhost:3001/api/v1, docs
 npm run db:generate                    # после изменения src/db/schema.ts
 npm run db:migrate
 npm run db:seed                        # админ из .env
-npm run db:seed:demo                   # демо-контент: курс/уроки/словарь/банк вопросов (не настоящий учебный контент)
+npm run db:seed:content                # настоящие уроки (взрослые, A1–C1): 5 курсов по 10 уроков; повторный запуск не трогает уже созданные курсы
 npm run typecheck
 NODE_ENV=test npm run dev && npm run test:smoke
 ```
