@@ -6,7 +6,7 @@
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { eq } from 'drizzle-orm';
 import { Pool } from 'pg';
-import { courses } from './schema';
+import { courses, questionBank, vocabularyWords } from './schema';
 import { seedCourse } from './content/engine';
 import { a1 } from './content/a1';
 import { a2 } from './content/a2';
@@ -22,6 +22,8 @@ async function main() {
 
   console.log('Удаляю прежний демо-контент (если есть)…');
   await db.delete(courses).where(eq(courses.isDemo, true)); // модули/уроки/блоки/упражнения — каскадом
+  await db.delete(vocabularyWords).where(eq(vocabularyWords.isDemo, true));
+  await db.delete(questionBank).where(eq(questionBank.isDemo, true));
 
   console.log('Создаю настоящие учебные курсы (взрослые, A1–C1)…');
   for (const spec of [a1, a2, b1, b2, c1]) {
