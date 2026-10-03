@@ -460,7 +460,7 @@ export const a1: CourseSpec = {
           type: 'READING',
           title: 'Знакомство',
           content: {
-            text: 'Hello! My name is Alex. I am from Almaty. I am a student. This is my friend. Her name is Dina. She is from Astana. Nice to meet you!',
+            text: "Hello! My name is Alex. I am from Almaty, and today is my first day at a new school. I am a little nervous. In the classroom, I meet a girl. Her name is Dina. 'Hello! Nice to meet you,' she says with a smile. 'Hello! Nice to meet you too,' I answer. Dina is very friendly, and soon she is my friend. At the end of the day, we say goodbye. 'Goodbye, Alex! Please don't forget your book tomorrow,' says Dina. I smile and say goodbye too.",
           },
         },
         {
@@ -559,7 +559,7 @@ export const a1: CourseSpec = {
           type: 'READING',
           title: 'Утро Анны',
           content: {
-            text: 'This is Anna. She has a big family: her mother, her father and her brother. Anna gets up at seven o’clock. Her mother makes breakfast. Her father goes to work at eight. In the evening, the family eats dinner together.',
+            text: "This is Anna. She has a big family: her mother, her father, her sister and her brother. Every morning, Anna gets up at seven o'clock. But today is different! Her alarm clock doesn't ring, so she gets up at eight o'clock. 'Oh no, I'm late!' she says. Her mother makes breakfast very quickly, and her sister finds her shoes. Her father waits by the door, but her brother just laughs: 'You sleep too much, Anna!' Anna eats fast and runs to catch the bus. In the evening, the family eats dinner together and laughs about her funny morning.",
           },
         },
         {
@@ -659,7 +659,7 @@ export const a1: CourseSpec = {
           type: 'READING',
           title: 'На кухне',
           content: {
-            text: "Look in the kitchen. There is some bread on the table. There are two apples in the bowl. There is some milk in the fridge. Is there any coffee? Yes, there is! There isn't any water in the bottle.",
+            text: "Tom is hungry, so he looks in the kitchen. There is some bread on the table and there are two eggs in a bowl. 'Good, I can make breakfast,' he thinks. There isn't any coffee, but there is some milk in the fridge. Is there any water? Yes, there is, in a big bottle on the shelf. Tom cooks the eggs and eats them with bread and milk. Then he takes an apple for later. 'Perfect breakfast,' he says with a smile, and he feels happy and ready for the day.",
           },
         },
         {
@@ -757,7 +757,7 @@ export const a1: CourseSpec = {
           type: 'READING',
           title: 'Моя комната',
           content: {
-            text: 'This is my room. There is a bed next to the window. There is a table in the room. My books are on the table. My shoes are under the bed. A small lamp is behind the books.',
+            text: "Mia has a new house with a small, cosy room. In her room, there is a bed next to the window, and she likes to look outside in the morning. There is a wooden table in the corner, and a chair is next to it. One day, Mia loses her favourite book. She looks on the table, but it isn't there. Then she looks under the bed — and there it is! A small lamp is behind the books too. Now Mia's room feels like home, and she reads happily next to the window.",
           },
         },
         {
@@ -856,7 +856,7 @@ export const a1: CourseSpec = {
           type: 'READING',
           title: 'Расписание Марата',
           content: {
-            text: 'Marat has English lessons on Monday and Friday. The lesson starts at six o’clock in the evening. He gets up early in the morning. On Monday, he works until five o’clock. There are seven days in a week.',
+            text: "Marat has English lessons on Monday and Friday, and he loves these two days very much. Every morning, he gets up early and studies new words before work. On Monday, he works until five o'clock, and then he goes home. His English lesson starts at six o'clock in the evening. One Friday, Marat is very tired after work, and he almost falls asleep! But he remembers his lesson and drinks some coffee quickly. 'Seven days in a week, and I love Mondays and Fridays the most,' he says with a smile. He is never late for English.",
           },
         },
         {
@@ -955,7 +955,7 @@ export const a1: CourseSpec = {
           type: 'READING',
           title: 'В магазине одежды',
           content: {
-            text: "Look at this shirt. It's blue. What colour is that dress? It's green. These shoes are red. I like those shoes — they are nice and cheap.",
+            text: "Lena is going to a party tonight, so she looks in her wardrobe. 'What should I wear?' she thinks. She sees this blue shirt, but it looks too simple for a party. Then she finds that green dress in the corner. 'This is perfect!' she says happily. Now she needs shoes. These red shoes are nice, but those black ones look better with the dress. Lena puts on the dress and the black shoes, looks in the mirror and smiles. 'Now I am ready for the party!' she says.",
           },
         },
         {
@@ -1054,7 +1054,7 @@ export const a1: CourseSpec = {
           type: 'READING',
           title: 'Хобби Сауле',
           content: {
-            text: 'Saule has an interesting hobby. She usually reads books in the evening. She sometimes listens to music. Her brother likes sport. He always plays football on Friday. He never watches TV.',
+            text: "Saule has an interesting hobby: she loves books. She usually reads in the evening, after dinner. Last week, she started a new book about the sea, and now she reads it every day, even at breakfast! Her brother laughs and says, 'You read everywhere, Saule!' Her brother has a different hobby — he always plays football on Friday with his friends. He never dances, but he sometimes listens to music after the game. Saule sometimes watches his matches, but she never plays football herself. 'My book is more exciting,' she says, and turns the page.",
           },
         },
         {
@@ -1158,7 +1158,7 @@ export const a1: CourseSpec = {
           type: 'READING',
           title: 'Погода в разные сезоны',
           content: {
-            text: "In summer, the weather is hot and sunny. In winter, it is cold, and there is a lot of snow. Today it is raining. Look out of the window — it's raining now! I don't like rainy days.",
+            text: "Aidana loves summer because the weather is hot and sunny then. She often goes to the lake with her friends. But today is a rainy day in spring, and Aidana feels a little sad. 'I don't like rainy days,' she says, looking out the window. Suddenly, she remembers something good: winter is coming soon, and she loves the snow! Every winter, she makes a big snowman in the yard. Look — it's raining now, but soon the sky will be blue again. 'Every season has something nice,' Aidana thinks, and she smiles.",
           },
         },
         {
@@ -1262,7 +1262,7 @@ export const a1: CourseSpec = {
           type: 'READING',
           title: 'Профессии',
           content: {
-            text: 'My father is a doctor. He can help sick people. My mother is a teacher. She can explain difficult things well. My uncle is a driver. He can drive a big bus. What do you do? I work in an office.',
+            text: "Aset is a young boy who loves asking people about their jobs. His father is a doctor, and he can help sick people very well. His mother is a teacher, and she can explain difficult things easily. 'What do you do?' Aset asks his neighbour one day. 'I am a bus driver,' the man answers, 'I can drive a big bus through the whole city!' At the hospital, Aset also meets a kind nurse, and his aunt, who works in a busy office downtown. 'I want an interesting job too,' Aset says. His mother smiles: 'You can be anything you want, Aset — but first, finish your homework!'",
           },
         },
         {
@@ -1355,7 +1355,7 @@ export const a1: CourseSpec = {
           type: 'READING',
           title: 'В магазине',
           content: {
-            text: 'I am in a shop. How much is this bag? It\'s cheap — only two thousand tenge. How much is that dress? It\'s expensive! How many apples do you want? I want three apples, please.',
+            text: "Zarina goes to a small shop near her house to buy a birthday present. She sees a nice bag on the shelf. 'How much is this bag?' she asks the shop assistant. 'It's five thousand tenge,' the woman says. 'That's expensive!' Zarina thinks, looking at her money. Then she finds a smaller bag nearby. 'How much is this one?' 'Only two thousand tenge — it's cheap!' the assistant says with a smile. Zarina counts her money carefully and buys the cheap bag. 'Just in time for the birthday,' she thinks happily.",
           },
         },
         {
