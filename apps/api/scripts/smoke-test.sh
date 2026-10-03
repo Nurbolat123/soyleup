@@ -46,6 +46,13 @@ req POST /auth/register 409 "" "{\"email\":\"ADULT$RUN@t.kz\",\"password\":\"pas
 req PATCH /users/me 200 "$ADULT" '{"targetLevel":"B2","dailyMinutes":30}' >/dev/null
 req POST /users/me/consents 201 "$ADULT" '{"type":"VOICE_RECORDING"}' >/dev/null
 req DELETE /users/me/consents/DATA_PROCESSING 400 "$ADULT" >/dev/null
+[[ $(req GET /users/me 200 "$ADULT" | json studentProfile.desiredLearningTrack) == SELF_STUDY ]]   # по умолчанию, не указывали при регистрации
+
+echo "▸ learningTrack: выбор при регистрации (пожелание, не тариф с оплатой)"
+TR=$(req POST /auth/register 201 "" "{\"email\":\"track$RUN@t.kz\",\"password\":\"password123\",\"firstName\":\"T\",\"role\":\"STUDENT\",\"acceptTerms\":true,\"birthDate\":\"2000-01-01\",\"learningTrack\":\"WITH_CURATOR\"}")
+TRACK_TOKEN=$(echo "$TR" | json accessToken)
+[[ $(req GET /users/me 200 "$TRACK_TOKEN" | json studentProfile.desiredLearningTrack) == WITH_CURATOR ]]
+[[ $(req GET "/admin/users?search=track$RUN" 200 "$ADMIN" | json items.0.desiredLearningTrack) == WITH_CURATOR ]]   # видно админу в списке
 
 echo "▸ password reset"
 req POST /auth/forgot-password 200 "" '{"email":"no-such-user@t.kz"}' >/dev/null   # не выдаёт, есть ли такой email

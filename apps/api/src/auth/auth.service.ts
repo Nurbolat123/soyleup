@@ -62,7 +62,12 @@ export class AuthService {
           .returning();
 
         if (dto.role === 'STUDENT') {
-          await tx.insert(studentProfiles).values({ userId: created.id, birthDate: dto.birthDate!, isMinor });
+          await tx.insert(studentProfiles).values({
+            userId: created.id,
+            birthDate: dto.birthDate!,
+            isMinor,
+            desiredLearningTrack: dto.learningTrack ?? 'SELF_STUDY',
+          });
         }
         if (!isMinor) {
           await tx.insert(consents).values({

@@ -164,6 +164,11 @@ export default async function AdminPage({
                   <td className="px-5 py-3">
                     {user.role === "STUDENT" ? (
                       <div className="flex flex-col gap-1.5">
+                        {!user.curator && user.desiredLearningTrack === "WITH_CURATOR" && (
+                          <span className="w-fit rounded-full bg-lime px-2 py-0.5 text-[12px] font-semibold text-ink">
+                            Хочет куратора
+                          </span>
+                        )}
                         {user.curator && (
                           <div className="flex items-center gap-2 text-[13px]">
                             <span>

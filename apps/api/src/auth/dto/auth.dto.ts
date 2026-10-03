@@ -33,6 +33,11 @@ export class RegisterDto {
   @Matches(/^\d{4}-\d{2}-\d{2}$/)
   birthDate?: string;
 
+  /** Пожелание ученика при регистрации — не тариф с оплатой, куратора всё равно назначает админ */
+  @IsOptional()
+  @IsIn(['SELF_STUDY', 'WITH_CURATOR'])
+  learningTrack?: 'SELF_STUDY' | 'WITH_CURATOR';
+
   @IsOptional()
   @IsIn(['ru', 'kk', 'en'])
   locale?: 'ru' | 'kk' | 'en';

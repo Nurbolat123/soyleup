@@ -6,6 +6,7 @@ import { useState, type FormEvent } from "react";
 import { translateApiError } from "@/lib/errorMessages";
 
 type RoleChoice = "STUDENT" | "PARENT";
+type LearningTrackChoice = "SELF_STUDY" | "WITH_CURATOR";
 
 const ROLE_HOME: Record<RoleChoice, string> = {
   STUDENT: "/student",
@@ -29,6 +30,7 @@ export function RegisterForm() {
   const attemptId = searchParams.get("attempt");
   const [role, setRole] = useState<RoleChoice>("STUDENT");
   const [birthDate, setBirthDate] = useState("");
+  const [learningTrack, setLearningTrack] = useState<LearningTrackChoice>("SELF_STUDY");
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
@@ -54,7 +56,10 @@ export function RegisterForm() {
     };
     const lastName = form.get("lastName");
     if (lastName) payload.lastName = lastName;
-    if (role === "STUDENT") payload.birthDate = form.get("birthDate");
+    if (role === "STUDENT") {
+      payload.birthDate = form.get("birthDate");
+      payload.learningTrack = learningTrack;
+    }
     if (attemptId) payload.attemptId = attemptId;
 
     setSubmitting(true);
@@ -153,6 +158,37 @@ export function RegisterForm() {
               />
               <span className="text-[13px] text-muted">
                 Для учеников младше 18 лет доступ откроется после согласия родителя.
+              </span>
+            </div>
+          )}
+
+          {role === "STUDENT" && (
+            <div className="flex flex-col gap-2">
+              <span className="text-sm font-semibold">Как хотите заниматься?</span>
+              <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                <button
+                  type="button"
+                  onClick={() => setLearningTrack("SELF_STUDY")}
+                  className={`h-[50px] rounded-2xl border text-[15px] font-semibold transition-colors ${
+                    learningTrack === "SELF_STUDY" ? "border-ink bg-ink text-paper" : "border-line bg-white text-ink"
+                  }`}
+                >
+                  Самостоятельно
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setLearningTrack("WITH_CURATOR")}
+                  className={`h-[50px] rounded-2xl border text-[15px] font-semibold transition-colors ${
+                    learningTrack === "WITH_CURATOR" ? "border-ink bg-ink text-paper" : "border-line bg-white text-ink"
+                  }`}
+                >
+                  С куратором
+                </button>
+              </div>
+              <span className="text-[13px] text-muted">
+                {learningTrack === "WITH_CURATOR"
+                  ? "Куратора подберёт администратор платформы после регистрации."
+                  : "Можно будет попросить куратора позже — это не блокирует доступ к урокам."}
               </span>
             </div>
           )}

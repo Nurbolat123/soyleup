@@ -17,7 +17,11 @@ export interface PublicUser {
   createdAt: string;
   /** Только в списке /admin/users, только для роли STUDENT — текущий назначенный куратор. */
   curator?: { id: string; firstName: string; lastName: string | null } | null;
+  /** Только в списке /admin/users, только для роли STUDENT — что ученик выбрал при регистрации. */
+  desiredLearningTrack?: LearningTrack | null;
 }
+
+export type LearningTrack = "SELF_STUDY" | "WITH_CURATOR";
 
 export interface StudentProfile {
   birthDate: string;
@@ -30,6 +34,7 @@ export interface StudentProfile {
   readingScore: number | null;
   listeningScore: number | null;
   speakingScore: number | null;
+  desiredLearningTrack: LearningTrack;
 }
 
 export interface EnglishProfileSkill {

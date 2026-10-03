@@ -24,6 +24,7 @@ export class UsersService {
           columns: {
             birthDate: true, isMinor: true, targetLevel: true, goal: true, dailyMinutes: true,
             grammarScore: true, vocabularyScore: true, readingScore: true, listeningScore: true, speakingScore: true,
+            desiredLearningTrack: true,
           },
         },
         consents: { where: isNull(consents.revokedAt), columns: { type: true, version: true, grantedAt: true } },

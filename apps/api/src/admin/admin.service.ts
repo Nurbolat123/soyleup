@@ -5,7 +5,7 @@ import { TokenService } from '../auth/token.service';
 import { AuditService } from '../common/audit.service';
 import { escapeLike, isUniqueViolation, normalizeEmail } from '../common/utils';
 import { DB, Database } from '../db/db.module';
-import { consents, curatorStudents, users } from '../db/schema';
+import { consents, curatorStudents, studentProfiles, users } from '../db/schema';
 import { publicUserColumns, toPublicUser } from '../users/user.mapper';
 import { AssignCuratorDto, CreateStaffDto, ListUsersQueryDto } from './dto/admin.dto';
 
@@ -56,9 +56,21 @@ export class AdminService {
       rows.forEach((r) => curatorByStudent.set(r.studentId, { id: r.curatorId, firstName: r.firstName, lastName: r.lastName }));
     }
 
+    // Что ученик выбрал при регистрации (самостоятельно / с куратором) — помогает админу
+    // увидеть, кому куратор ещё нужен назначить.
+    const trackByStudent = new Map<string, string>();
+    if (studentIds.length) {
+      const rows = await this.db
+        .select({ userId: studentProfiles.userId, desiredLearningTrack: studentProfiles.desiredLearningTrack })
+        .from(studentProfiles)
+        .where(inArray(studentProfiles.userId, studentIds));
+      rows.forEach((r) => trackByStudent.set(r.userId, r.desiredLearningTrack));
+    }
+
     const itemsWithCurator = items.map((u) => ({
       ...u,
       curator: u.role === 'STUDENT' ? (curatorByStudent.get(u.id) ?? null) : undefined,
+      desiredLearningTrack: u.role === 'STUDENT' ? (trackByStudent.get(u.id) ?? null) : undefined,
     }));
 
     return { items: itemsWithCurator, total, page: q.page, pageSize: q.pageSize };

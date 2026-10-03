@@ -8,6 +8,9 @@ export const roleEnum = pgEnum('role', ['STUDENT', 'PARENT', 'CURATOR', 'ADMIN']
 // PENDING_CONSENT: несовершеннолетний ждёт согласия родителя на обработку ПД
 export const userStatusEnum = pgEnum('user_status', ['ACTIVE', 'PENDING_CONSENT', 'BLOCKED']);
 export const linkStatusEnum = pgEnum('link_status', ['ACTIVE', 'REVOKED']);
+// Что ученик выбрал при регистрации — пожелание, а не реальный тариф с оплатой (её в MVP нет).
+// Куратора фактически назначает админ; это поле только подсказывает, кому он нужен.
+export const learningTrackEnum = pgEnum('learning_track', ['SELF_STUDY', 'WITH_CURATOR']);
 export const consentTypeEnum = pgEnum('consent_type', [
   'DATA_PROCESSING', // обработка персональных данных (обязательное)
   'VOICE_RECORDING', // запись голоса для speaking
@@ -19,6 +22,7 @@ export const consentTypeEnum = pgEnum('consent_type', [
 export type Role = (typeof roleEnum.enumValues)[number];
 export type UserStatus = (typeof userStatusEnum.enumValues)[number];
 export type ConsentType = (typeof consentTypeEnum.enumValues)[number];
+export type LearningTrack = (typeof learningTrackEnum.enumValues)[number];
 
 // Рубрика оценки Speaking куратором (1–5 по каждому параметру) — CLAUDE.md, этап 5
 export interface SpeakingRubric {
@@ -57,6 +61,8 @@ export const studentProfiles = pgTable('student_profiles', {
   userId: uuid('user_id').primaryKey().references(() => users.id, { onDelete: 'cascade' }),
   birthDate: date('birth_date', { mode: 'string' }).notNull(),
   isMinor: boolean('is_minor').notNull(),
+  // Выбор при регистрации — см. learningTrackEnum выше.
+  desiredLearningTrack: learningTrackEnum('desired_learning_track').notNull().default('SELF_STUDY'),
   targetLevel: text('target_level'),
   goal: text('goal'),
   dailyMinutes: integer('daily_minutes').notNull().default(20),
