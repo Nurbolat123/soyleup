@@ -46,6 +46,134 @@ const VOCAB_B1: {
   { word: 'workload', ru: 'нагрузка (рабочая)', def: 'the amount of work to be done', transcription: '/ˈwɜːkləʊd/', example: 'His workload increased this month.' },
 ];
 
+const VOCAB_A1: {
+  word: string; ru: string; def: string; transcription: string; example: string;
+}[] = [
+  { word: 'family', ru: 'семья', def: 'a group of people related to each other, such as parents and children', transcription: '/ˈfæməli/', example: 'I love my family.' },
+  { word: 'mother', ru: 'мама', def: 'a female parent', transcription: '/ˈmʌðə/', example: 'My mother is a teacher.' },
+  { word: 'father', ru: 'папа', def: 'a male parent', transcription: '/ˈfɑːðə/', example: 'My father works in a hospital.' },
+  { word: 'brother', ru: 'брат', def: 'a boy or man with the same parents as you', transcription: '/ˈbrʌðə/', example: 'I have one brother.' },
+  { word: 'morning', ru: 'утро', def: 'the early part of the day', transcription: '/ˈmɔːnɪŋ/', example: 'I wake up in the morning.' },
+  { word: 'school', ru: 'школа', def: 'a place where children go to learn', transcription: '/skuːl/', example: 'She goes to school every day.' },
+  { word: 'friend', ru: 'друг', def: 'a person you know well and like', transcription: '/frend/', example: 'He is my best friend.' },
+  { word: 'house', ru: 'дом', def: 'a building where people live', transcription: '/haʊs/', example: 'We live in a small house.' },
+  { word: 'happy', ru: 'счастливый', def: 'feeling or showing pleasure', transcription: '/ˈhæpi/', example: 'The children are happy.' },
+  { word: 'apple', ru: 'яблоко', def: 'a round fruit with red or green skin', transcription: '/ˈæpl/', example: 'I eat an apple every day.' },
+  { word: 'water', ru: 'вода', def: 'a clear liquid that people drink', transcription: '/ˈwɔːtə/', example: 'Please give me some water.' },
+  { word: 'like', ru: 'нравиться', def: 'to enjoy something or someone', transcription: '/laɪk/', example: 'I like pizza.' },
+];
+
+const VOCAB_A2: {
+  word: string; ru: string; def: string; transcription: string; example: string;
+}[] = [
+  { word: 'ticket', ru: 'билет', def: 'a piece of paper that lets you travel or enter a place', transcription: '/ˈtɪkɪt/', example: 'I bought a ticket for the train.' },
+  { word: 'airport', ru: 'аэропорт', def: 'a place where planes take off and land', transcription: '/ˈeəpɔːt/', example: 'We arrived at the airport early.' },
+  { word: 'luggage', ru: 'багаж', def: 'the bags you take when you travel', transcription: '/ˈlʌɡɪdʒ/', example: 'Her luggage was very heavy.' },
+  { word: 'passport', ru: 'паспорт', def: 'an official document you need to travel to another country', transcription: '/ˈpɑːspɔːt/', example: "Don't forget your passport." },
+  { word: 'journey', ru: 'поездка', def: 'the act of travelling from one place to another', transcription: '/ˈdʒɜːni/', example: 'The journey took five hours.' },
+  { word: 'price', ru: 'цена', def: 'the amount of money something costs', transcription: '/praɪs/', example: 'What is the price of this shirt?' },
+  { word: 'expensive', ru: 'дорогой', def: 'costing a lot of money', transcription: '/ɪkˈspensɪv/', example: 'This hotel is too expensive.' },
+  { word: 'cheap', ru: 'дешёвый', def: 'costing little money', transcription: '/tʃiːp/', example: 'I found a cheap flight.' },
+  { word: 'receipt', ru: 'чек', def: 'a piece of paper that proves you paid for something', transcription: '/rɪˈsiːt/', example: 'Keep your receipt, please.' },
+  { word: 'discount', ru: 'скидка', def: 'a reduction in the usual price', transcription: '/ˈdɪskaʊnt/', example: 'We got a 20% discount.' },
+  { word: 'suitcase', ru: 'чемодан', def: 'a bag used for carrying clothes when travelling', transcription: '/ˈsuːtkeɪs/', example: 'My suitcase is red.' },
+  { word: 'souvenir', ru: 'сувенир', def: 'an object you buy to remember a place you visited', transcription: '/ˌsuːvəˈnɪə/', example: 'She bought a souvenir for her friend.' },
+];
+
+const VOCAB_B2: {
+  word: string; ru: string; def: string; transcription: string; example: string;
+}[] = [
+  { word: 'innovation', ru: 'инновация', def: 'a new idea, method or invention', transcription: '/ˌɪnəˈveɪʃn/', example: 'The company is known for innovation.' },
+  { word: 'artificial', ru: 'искусственный', def: 'made by people, not occurring naturally', transcription: '/ˌɑːtɪˈfɪʃl/', example: 'Artificial intelligence is changing many industries.' },
+  { word: 'convenient', ru: 'удобный', def: 'useful, easy or suitable for a particular purpose', transcription: '/kənˈviːniənt/', example: 'Online shopping is very convenient.' },
+  { word: 'privacy', ru: 'приватность', def: 'the state of being free from public attention', transcription: '/ˈprɪvəsi/', example: 'People worry about their privacy online.' },
+  { word: 'dependent', ru: 'зависимый', def: 'needing someone or something for support', transcription: '/dɪˈpendənt/', example: 'Many teenagers are dependent on their phones.' },
+  { word: 'efficient', ru: 'эффективный', def: 'working well without wasting time or energy', transcription: '/ɪˈfɪʃnt/', example: 'The new system is much more efficient.' },
+  { word: 'widespread', ru: 'широко распространённый', def: 'existing or happening in many places', transcription: '/ˈwaɪdspred/', example: 'Smartphone use is widespread nowadays.' },
+  { word: 'impact', ru: 'воздействие', def: 'a powerful effect on someone or something', transcription: '/ˈɪmpækt/', example: 'Technology has a huge impact on daily life.' },
+  { word: 'concern', ru: 'озабоченность', def: 'a feeling of worry about something', transcription: '/kənˈsɜːn/', example: 'There is growing concern about screen time.' },
+  { word: 'accessible', ru: 'доступный', def: 'able to be easily reached, used or obtained', transcription: '/əkˈsesəbl/', example: 'Information is now more accessible than ever.' },
+];
+
+const VOCAB_C1: {
+  word: string; ru: string; def: string; transcription: string; example: string;
+}[] = [
+  { word: 'sustainability', ru: 'устойчивость', def: 'the ability to continue over time without causing harm', transcription: '/səˌsteɪnəˈbɪləti/', example: 'Sustainability is now a key business priority.' },
+  { word: 'mitigate', ru: 'смягчать', def: 'to make something less severe or serious', transcription: '/ˈmɪtɪɡeɪt/', example: 'Governments must act to mitigate climate change.' },
+  { word: 'unprecedented', ru: 'беспрецедентный', def: 'never having happened or existed before', transcription: '/ʌnˈpresɪdentɪd/', example: 'The region faced unprecedented flooding this year.' },
+  { word: 'biodiversity', ru: 'биоразнообразие', def: 'the variety of plant and animal life in an area', transcription: '/ˌbaɪəʊdaɪˈvɜːsəti/', example: 'Deforestation threatens biodiversity worldwide.' },
+  { word: 'discrepancy', ru: 'несоответствие', def: 'a difference between things that should be the same', transcription: '/dɪˈskrepənsi/', example: 'There is a discrepancy between the two reports.' },
+  { word: 'jeopardize', ru: 'подвергать риску', def: 'to put something at risk of being harmed or lost', transcription: '/ˈdʒepədaɪz/', example: 'Pollution jeopardizes marine life.' },
+  { word: 'resilience', ru: 'устойчивость, стойкость', def: 'the ability to recover quickly from difficulties', transcription: '/rɪˈzɪliəns/', example: 'Coastal cities need resilience against rising seas.' },
+  { word: 'advocate', ru: 'сторонник; отстаивать', def: 'to publicly support an idea, or a person who does this', transcription: '/ˈædvəkeɪt/', example: 'She advocates for renewable energy.' },
+  { word: 'compelling', ru: 'убедительный', def: 'very convincing, making you want to agree', transcription: '/kəmˈpelɪŋ/', example: 'The report presents compelling evidence.' },
+  { word: 'inevitable', ru: 'неизбежный', def: 'certain to happen and impossible to avoid', transcription: '/ɪˈnevɪtəbl/', example: 'Automation seems inevitable in many sectors.' },
+];
+
+const GRAMMAR_A1: { q: string; options: string[]; correct: number; explanation: string }[] = [
+  { q: 'I ___ a student.', options: ['am', 'is', 'are', 'be'], correct: 0, explanation: 'To be, 1-е лицо ед. числа: I am.' },
+  { q: 'She ___ happy today.', options: ['am', 'is', 'are', 'be'], correct: 1, explanation: 'To be, 3-е лицо ед. числа: she/he/it is.' },
+  { q: 'They ___ from Kazakhstan.', options: ['am', 'is', 'are', 'be'], correct: 2, explanation: 'To be, множественное число: we/you/they are.' },
+  { q: 'This is ___ apple.', options: ['a', 'an', 'the', '—'], correct: 1, explanation: 'Неопределённый артикль an — перед словом, начинающимся с гласного звука.' },
+  { q: 'I have two ___.', options: ['book', 'books', 'bookes', 'a book'], correct: 1, explanation: 'Множественное число существительных обычно образуется через -s.' },
+];
+
+const GRAMMAR_C1: { q: string; options: string[]; correct: number; explanation: string }[] = [
+  { q: 'Not only ___ late, but he also forgot the documents.', options: ['he arrived', 'did he arrive', 'he did arrive', 'arrived he'], correct: 1, explanation: 'Инверсия после "Not only" в начале предложения: вспомогательный глагол перед подлежащим.' },
+  { q: 'Had I known about the traffic, I ___ earlier.', options: ['would leave', 'would have left', 'left', 'will leave'], correct: 1, explanation: 'Mixed/Third Conditional: Had + подлежащее..., would have + причастие прошедшего времени.' },
+  { q: 'It was not until midnight ___ she finished the report.', options: ['when', 'that', 'then', 'which'], correct: 1, explanation: 'Cleft sentence "It was not until... that..." — конструкция для эмфазы.' },
+  { q: 'Rarely ___ such dedication in a new employee.', options: ['I have seen', 'have I seen', 'I saw', 'did I saw'], correct: 1, explanation: 'Инверсия после отрицательных наречий частоты (rarely, seldom, never) в начале предложения.' },
+  { q: '___ for his support, the project would have failed.', options: ['Had it not been', 'If it was not', 'Was it not', 'If it has not been'], correct: 0, explanation: '"Had it not been for" — формальная инверсия вместо "If it had not been for".' },
+];
+
+const VOCAB_MC_A1: { q: string; options: string[]; correct: number; explanation: string }[] = [
+  { q: "Choose the opposite of 'happy'.", options: ['sad', 'big', 'fast', 'old'], correct: 0, explanation: '"Sad" — противоположность "happy".' },
+  { q: "My mother's son is my ___.", options: ['father', 'brother', 'uncle', 'cousin'], correct: 1, explanation: 'Сын матери (не вы) — это ваш brother.' },
+  { q: 'We eat breakfast in the ___.', options: ['morning', 'night', 'week', 'year'], correct: 0, explanation: 'Breakfast едят утром — in the morning.' },
+  { q: "Choose the correct word: 'This is my ___.' (a place where you live)", options: ['house', 'book', 'car', 'dog'], correct: 0, explanation: '"House" — место, где живут.' },
+  { q: "Choose the opposite of 'big'.", options: ['small', 'tall', 'long', 'new'], correct: 0, explanation: '"Small" — противоположность "big".' },
+];
+
+const VOCAB_MC_C1: { q: string; options: string[]; correct: number; explanation: string }[] = [
+  { q: "'Inevitable' is closest in meaning to ___.", options: ['avoidable', 'unavoidable', 'unlikely', 'optional'], correct: 1, explanation: 'Inevitable = unavoidable, неизбежный.' },
+  { q: "'To mitigate' means ___.", options: ['to make worse', 'to reduce the severity of', 'to ignore', 'to celebrate'], correct: 1, explanation: 'Mitigate — смягчать, уменьшать серьёзность.' },
+  { q: "'Discrepancy' refers to ___.", options: ['agreement', 'a difference between things that should match', 'a type of document', 'a celebration'], correct: 1, explanation: 'Discrepancy — несоответствие, расхождение.' },
+  { q: "Choose closest in meaning to 'compelling'.", options: ['boring', 'convincing', 'confusing', 'short'], correct: 1, explanation: 'Compelling = convincing, убедительный.' },
+  { q: "'To jeopardize' means ___.", options: ['to protect', 'to put at risk', 'to celebrate', 'to ignore'], correct: 1, explanation: 'Jeopardize — подвергать риску, ставить под угрозу.' },
+];
+
+const READING_A1: { passage: string; q: string; options: string[]; correct: number }[] = [
+  { passage: 'Anna is a student. She is ten years old. She likes cats.', q: 'How old is Anna?', options: ['8', '9', '10', '11'], correct: 2 },
+  { passage: 'Tom has a red car. He drives to work every day.', q: "What colour is Tom's car?", options: ['Red', 'Blue', 'Green', 'Black'], correct: 0 },
+  { passage: 'My sister is a teacher. She works at a big school.', q: "What is my sister's job?", options: ['Doctor', 'Teacher', 'Nurse', 'Cook'], correct: 1 },
+  { passage: 'We have breakfast at seven o\'clock every morning.', q: 'What time do they have breakfast?', options: ['6', '7', '8', '9'], correct: 1 },
+  { passage: 'The cat is black and white. It sleeps all day.', q: 'What colour is the cat?', options: ['Black and white', 'Brown', 'Grey', 'Orange'], correct: 0 },
+];
+
+const READING_C1: { passage: string; q: string; options: string[]; correct: number }[] = [
+  { passage: 'While proponents of automation argue it enhances productivity, critics contend that the resulting job displacement warrants urgent policy intervention.', q: 'What do critics argue?', options: ['Automation always helps', 'Job displacement needs policy action', 'Automation should be banned', 'Productivity will decrease'], correct: 1 },
+  { passage: "The committee's reluctance to adopt the proposal stemmed not from its merits, but from concerns over its long-term fiscal implications.", q: 'Why was the committee reluctant?', options: ['The proposal had no merit', 'Concerns over fiscal implications', 'Lack of time', 'Political disagreement'], correct: 1 },
+  { passage: 'Notwithstanding the setbacks encountered during the initial phase, the research team remained resolute in pursuing their hypothesis.', q: 'How did the team react to setbacks?', options: ['They gave up', 'They remained determined', 'They changed their hypothesis', 'They asked for more funding'], correct: 1 },
+  { passage: 'The discrepancy between projected and actual outcomes prompted a thorough reassessment of the underlying methodology.', q: 'What prompted the reassessment?', options: ['A discrepancy between projections and actual results', 'A change in staff', 'A lack of funding', 'A new regulation'], correct: 0 },
+  { passage: 'Far from being a peripheral concern, biodiversity loss is increasingly recognised as central to global economic stability.', q: 'How is biodiversity loss now seen?', options: ['As unimportant', 'As central to economic stability', 'As a local issue only', 'As solved'], correct: 1 },
+];
+
+const LISTENING_A1: { transcript: string; q: string; options: string[]; correct: number }[] = [
+  { transcript: 'Hello, my name is Ben. I am seven years old.', q: 'How old is Ben?', options: ['6', '7', '8', '9'], correct: 1 },
+  { transcript: 'This is my dog. His name is Max.', q: "What is the dog's name?", options: ['Max', 'Rex', 'Buddy', 'Spot'], correct: 0 },
+  { transcript: 'I like apples and bananas.', q: 'What fruit does the speaker like?', options: ['Apples and bananas', 'Oranges and grapes', 'Apples only', 'Bananas only'], correct: 0 },
+  { transcript: 'We go to school by bus.', q: 'How do they go to school?', options: ['By car', 'By bus', 'By bike', 'On foot'], correct: 1 },
+  { transcript: 'My favourite colour is blue.', q: "What is the speaker's favourite colour?", options: ['Red', 'Blue', 'Green', 'Yellow'], correct: 1 },
+];
+
+const LISTENING_C1: { transcript: string; q: string; options: string[]; correct: number }[] = [
+  { transcript: "Notwithstanding the committee's initial reservations, the proposal was ultimately ratified following extensive deliberation.", q: 'What happened to the proposal?', options: ['It was rejected', 'It was ratified', 'It was postponed', 'It was withdrawn'], correct: 1 },
+  { transcript: 'The speaker underscored the imperative of fostering interdisciplinary collaboration to address increasingly complex global challenges.', q: 'What did the speaker emphasise?', options: ['Working in isolation', 'Interdisciplinary collaboration', 'Avoiding challenges', 'Reducing funding'], correct: 1 },
+  { transcript: 'Despite mounting evidence, a vocal minority continues to dispute the scientific consensus on the matter.', q: 'What does the minority do?', options: ['Accept the consensus', 'Dispute the consensus', 'Ignore the matter', 'Fund more research'], correct: 1 },
+  { transcript: 'The ramifications of the policy extend far beyond its immediate economic impact.', q: 'What does the speaker say about the ramifications?', options: ['They are limited to economics', 'They extend beyond economic impact', 'They are minimal', 'They are unknown'], correct: 1 },
+  { transcript: 'It would be remiss not to acknowledge the contribution of the entire team to this endeavor.', q: 'What does the speaker want to acknowledge?', options: ['Only their own effort', "The entire team's contribution", 'A single person', 'External partners'], correct: 1 },
+];
+
 const GRAMMAR_B1: { q: string; options: string[]; correct: number; explanation: string }[] = [
   { q: 'She ___ in this company for five years.', options: ['works', 'is working', 'has worked', 'worked'], correct: 2, explanation: 'Present Perfect для действия, длящегося до настоящего момента.' },
   { q: 'If I ___ more free time, I would learn Spanish.', options: ['have', 'had', 'will have', 'having'], correct: 1, explanation: 'Second Conditional: if + Past Simple, would + infinitive.' },
@@ -283,19 +411,340 @@ async function main() {
   });
   void lesson2VocabBlock; void introBlock; void vocabBlock; void grammarBlock; void readingBlock;
 
-  console.log('Заполняю словарь (30 слов)…');
-  await db.insert(vocabularyWords).values(VOCAB_B1.map((w) => ({
-    word: w.word,
-    translationRu: w.ru,
-    definition: w.def,
-    level: 'B1',
-    transcription: w.transcription,
-    examples: [w.example],
+  console.log('Создаю курс A1…');
+  const [courseA1] = await db.insert(courses).values({
+    title: 'Daily Life — демо-курс (A1)',
+    description: 'Демонстрационный курс уровня A1. Не настоящая учебная программа.',
+    level: 'A1',
+    audience: 'ADULTS',
     isDemo: true,
-  })));
+  }).returning();
+  const [moduleA1] = await db.insert(courseModules).values({
+    courseId: courseA1.id, title: 'Модуль 1: Повседневная жизнь', order: 0,
+  }).returning();
 
-  console.log('Заполняю банк вопросов (90 штук, уровни A2/B1/B2)…');
+  const [lesson1A1] = await db.insert(lessons).values({
+    moduleId: moduleA1.id, title: 'My Family and Daily Routine',
+    description: 'Семья, утренний распорядок, простые предложения.', order: 0, estimatedMinutes: 20,
+  }).returning();
+  await db.insert(lessonBlocks).values({
+    lessonId: lesson1A1.id, type: 'INTRO', order: 0, title: 'Введение',
+    content: { text: 'Сегодня говорим о семье и повседневных делах: новая лексика и Present Simple.' },
+  });
+  await db.insert(lessonBlocks).values({
+    lessonId: lesson1A1.id, type: 'VOCABULARY', order: 1, title: 'Новые слова',
+    content: { words: ['family', 'mother', 'father', 'brother', 'morning'] },
+  });
+  await db.insert(lessonBlocks).values({
+    lessonId: lesson1A1.id, type: 'GRAMMAR', order: 2, title: 'Present Simple',
+    content: { explanation: 'Present Simple: I/you/we/they + глагол, he/she/it + глагол+s. Пример: She works every day. I live in Almaty.' },
+  });
+  await db.insert(lessonBlocks).values({
+    lessonId: lesson1A1.id, type: 'READING', order: 3, title: 'Текст про Анну',
+    content: { text: READING_A1[0].passage },
+  });
+  const exBlockA1 = (await db.insert(lessonBlocks).values({
+    lessonId: lesson1A1.id, type: 'EXERCISE', order: 4, title: 'Упражнения',
+  }).returning())[0];
+  await db.insert(exercises).values([
+    { lessonBlockId: exBlockA1.id, type: 'MULTIPLE_CHOICE', order: 0, content: { question: GRAMMAR_A1[0].q, options: GRAMMAR_A1[0].options, correctIndex: GRAMMAR_A1[0].correct, explanation: GRAMMAR_A1[0].explanation } },
+    { lessonBlockId: exBlockA1.id, type: 'FILL_BLANK', order: 1, content: { text: 'My father ___ (work) in a hospital.', answers: ['works'] } },
+  ]);
+  const speakingA1 = (await db.insert(lessonBlocks).values({
+    lessonId: lesson1A1.id, type: 'SPEAKING', order: 5, title: 'Говорение',
+  }).returning())[0];
+  await db.insert(exercises).values({
+    lessonBlockId: speakingA1.id, type: 'SPEAKING', order: 0,
+    content: { prompt: 'Talk about your family.', rubric: 'vocabulary, grammar, fluency, pronunciation — 1–5' },
+  });
+  const miniTestA1 = (await db.insert(lessonBlocks).values({
+    lessonId: lesson1A1.id, type: 'MINI_TEST', order: 6, title: 'Мини-тест',
+  }).returning())[0];
+  await db.insert(exercises).values({
+    lessonBlockId: miniTestA1.id, type: 'MULTIPLE_CHOICE', order: 0, skill: 'VOCABULARY',
+    content: { question: VOCAB_MC_A1[1].q, options: VOCAB_MC_A1[1].options, correctIndex: VOCAB_MC_A1[1].correct, explanation: VOCAB_MC_A1[1].explanation },
+  });
+  await db.insert(lessonBlocks).values({
+    lessonId: lesson1A1.id, type: 'HOMEWORK', order: 7, title: 'Домашнее задание',
+    content: { text: 'Напишите 5 предложений о своей семье, используя новые слова.' },
+  });
+
+  const [lesson2A1] = await db.insert(lessons).values({
+    moduleId: moduleA1.id, title: 'Food and Drinks', description: 'Короткий второй урок.', order: 1, estimatedMinutes: 15,
+  }).returning();
+  await db.insert(lessonBlocks).values({
+    lessonId: lesson2A1.id, type: 'INTRO', order: 0, title: 'Введение',
+    content: { text: 'Простая лексика про еду и напитки.' },
+  });
+  await db.insert(lessonBlocks).values({
+    lessonId: lesson2A1.id, type: 'VOCABULARY', order: 1, title: 'Лексика',
+    content: { words: ['apple', 'water', 'like', 'house', 'happy'] },
+  });
+  const miniTest2A1 = (await db.insert(lessonBlocks).values({
+    lessonId: lesson2A1.id, type: 'MINI_TEST', order: 2, title: 'Мини-тест',
+  }).returning())[0];
+  await db.insert(exercises).values({
+    lessonBlockId: miniTest2A1.id, type: 'MULTIPLE_CHOICE', order: 0, skill: 'VOCABULARY',
+    content: { question: VOCAB_MC_A1[4].q, options: VOCAB_MC_A1[4].options, correctIndex: VOCAB_MC_A1[4].correct, explanation: VOCAB_MC_A1[4].explanation },
+  });
+
+  console.log('Создаю курс A2…');
+  const [courseA2] = await db.insert(courses).values({
+    title: 'Travel & Shopping — демо-курс (A2)',
+    description: 'Демонстрационный курс уровня A2. Не настоящая учебная программа.',
+    level: 'A2',
+    audience: 'ADULTS',
+    isDemo: true,
+  }).returning();
+  const [moduleA2] = await db.insert(courseModules).values({
+    courseId: courseA2.id, title: 'Модуль 1: Путешествия и покупки', order: 0,
+  }).returning();
+
+  const [lesson1A2] = await db.insert(lessons).values({
+    moduleId: moduleA2.id, title: 'Planning a Trip',
+    description: 'Лексика путешествий, Past Simple.', order: 0, estimatedMinutes: 25,
+  }).returning();
+  await db.insert(lessonBlocks).values({
+    lessonId: lesson1A2.id, type: 'INTRO', order: 0, title: 'Введение',
+    content: { text: 'Сегодня говорим о планировании поездки: лексика и Past Simple.' },
+  });
+  await db.insert(lessonBlocks).values({
+    lessonId: lesson1A2.id, type: 'VOCABULARY', order: 1, title: 'Новые слова',
+    content: { words: ['ticket', 'airport', 'luggage', 'passport', 'journey'] },
+  });
+  await db.insert(lessonBlocks).values({
+    lessonId: lesson1A2.id, type: 'GRAMMAR', order: 2, title: 'Past Simple',
+    content: { explanation: 'Past Simple для завершённых действий в прошлом: правильные глаголы +ed (travelled), неправильные — особые формы (went, bought). Пример: We travelled to Istanbul last year.' },
+  });
+  await db.insert(lessonBlocks).values({
+    lessonId: lesson1A2.id, type: 'READING', order: 3, title: 'Текст про магазин',
+    content: { text: READING_A2[2].passage },
+  });
+  const exBlockA2 = (await db.insert(lessonBlocks).values({
+    lessonId: lesson1A2.id, type: 'EXERCISE', order: 4, title: 'Упражнения',
+  }).returning())[0];
+  await db.insert(exercises).values([
+    { lessonBlockId: exBlockA2.id, type: 'MULTIPLE_CHOICE', order: 0, content: { question: GRAMMAR_A2[1].q, options: GRAMMAR_A2[1].options, correctIndex: GRAMMAR_A2[1].correct, explanation: GRAMMAR_A2[1].explanation } },
+    { lessonBlockId: exBlockA2.id, type: 'FILL_BLANK', order: 1, content: { text: 'We ___ (travel) to Istanbul last year.', answers: ['travelled', 'traveled'] } },
+  ]);
+  const speakingA2 = (await db.insert(lessonBlocks).values({
+    lessonId: lesson1A2.id, type: 'SPEAKING', order: 5, title: 'Говорение',
+  }).returning())[0];
+  await db.insert(exercises).values({
+    lessonBlockId: speakingA2.id, type: 'SPEAKING', order: 0,
+    content: { prompt: 'Describe a trip you would like to take.', rubric: 'vocabulary, grammar, fluency, pronunciation — 1–5' },
+  });
+  const miniTestA2 = (await db.insert(lessonBlocks).values({
+    lessonId: lesson1A2.id, type: 'MINI_TEST', order: 6, title: 'Мини-тест',
+  }).returning())[0];
+  await db.insert(exercises).values({
+    lessonBlockId: miniTestA2.id, type: 'MULTIPLE_CHOICE', order: 0, skill: 'VOCABULARY',
+    content: { question: VOCAB_MC_A2[1].q, options: VOCAB_MC_A2[1].options, correctIndex: VOCAB_MC_A2[1].correct, explanation: VOCAB_MC_A2[1].explanation },
+  });
+  await db.insert(lessonBlocks).values({
+    lessonId: lesson1A2.id, type: 'HOMEWORK', order: 7, title: 'Домашнее задание',
+    content: { text: 'Напишите короткий текст о планировании поездки, используя новые слова.' },
+  });
+
+  const [lesson2A2] = await db.insert(lessons).values({
+    moduleId: moduleA2.id, title: 'At the Shop', description: 'Короткий второй урок.', order: 1, estimatedMinutes: 15,
+  }).returning();
+  await db.insert(lessonBlocks).values({
+    lessonId: lesson2A2.id, type: 'INTRO', order: 0, title: 'Введение',
+    content: { text: 'Лексика для похода в магазин: цена, скидка, чек.' },
+  });
+  await db.insert(lessonBlocks).values({
+    lessonId: lesson2A2.id, type: 'VOCABULARY', order: 1, title: 'Лексика',
+    content: { words: ['price', 'expensive', 'cheap', 'receipt', 'discount'] },
+  });
+  const miniTest2A2 = (await db.insert(lessonBlocks).values({
+    lessonId: lesson2A2.id, type: 'MINI_TEST', order: 2, title: 'Мини-тест',
+  }).returning())[0];
+  await db.insert(exercises).values({
+    lessonBlockId: miniTest2A2.id, type: 'MULTIPLE_CHOICE', order: 0, skill: 'VOCABULARY',
+    content: { question: VOCAB_MC_A2[4].q, options: VOCAB_MC_A2[4].options, correctIndex: VOCAB_MC_A2[4].correct, explanation: VOCAB_MC_A2[4].explanation },
+  });
+
+  console.log('Создаю курс B2…');
+  const [courseB2] = await db.insert(courses).values({
+    title: 'Technology & Society — демо-курс (B2)',
+    description: 'Демонстрационный курс уровня B2. Не настоящая учебная программа.',
+    level: 'B2',
+    audience: 'ADULTS',
+    isDemo: true,
+  }).returning();
+  const [moduleB2] = await db.insert(courseModules).values({
+    courseId: courseB2.id, title: 'Модуль 1: Технологии и общество', order: 0,
+  }).returning();
+
+  const [lesson1B2] = await db.insert(lessons).values({
+    moduleId: moduleB2.id, title: 'The Impact of Technology',
+    description: 'Passive Voice, Reported Speech, лексика о технологиях.', order: 0, estimatedMinutes: 30,
+  }).returning();
+  await db.insert(lessonBlocks).values({
+    lessonId: lesson1B2.id, type: 'INTRO', order: 0, title: 'Введение',
+    content: { text: 'Сегодня говорим о влиянии технологий на общество: Passive Voice, Reported Speech и новая лексика.' },
+  });
+  await db.insert(lessonBlocks).values({
+    lessonId: lesson1B2.id, type: 'VOCABULARY', order: 1, title: 'Новые слова',
+    content: { words: ['innovation', 'artificial', 'convenient', 'impact', 'efficient'] },
+  });
+  await db.insert(lessonBlocks).values({
+    lessonId: lesson1B2.id, type: 'GRAMMAR', order: 2, title: 'Passive Voice и Reported Speech',
+    content: { explanation: 'Passive Voice и Reported Speech помогают описывать технологии объективно и пересказывать чужие слова: "Many jobs are being automated." / "She said that AI was changing everything."' },
+  });
+  await db.insert(lessonBlocks).values({
+    lessonId: lesson1B2.id, type: 'READING', order: 3, title: 'Текст про стартап',
+    content: { text: READING_B2[0].passage },
+  });
+  const exBlockB2 = (await db.insert(lessonBlocks).values({
+    lessonId: lesson1B2.id, type: 'EXERCISE', order: 4, title: 'Упражнения',
+  }).returning())[0];
+  await db.insert(exercises).values([
+    { lessonBlockId: exBlockB2.id, type: 'MULTIPLE_CHOICE', order: 0, content: { question: GRAMMAR_B2[1].q, options: GRAMMAR_B2[1].options, correctIndex: GRAMMAR_B2[1].correct, explanation: GRAMMAR_B2[1].explanation } },
+    { lessonBlockId: exBlockB2.id, type: 'FILL_BLANK', order: 1, content: { text: 'Many jobs ___ (replace) by automation in the next decade.', answers: ['will be replaced'] } },
+  ]);
+  const speakingB2 = (await db.insert(lessonBlocks).values({
+    lessonId: lesson1B2.id, type: 'SPEAKING', order: 5, title: 'Говорение',
+  }).returning())[0];
+  await db.insert(exercises).values({
+    lessonBlockId: speakingB2.id, type: 'SPEAKING', order: 0,
+    content: { prompt: 'Do you think technology makes life better or worse? Why?', rubric: 'vocabulary, grammar, fluency, pronunciation — 1–5' },
+  });
+  const miniTestB2 = (await db.insert(lessonBlocks).values({
+    lessonId: lesson1B2.id, type: 'MINI_TEST', order: 6, title: 'Мини-тест',
+  }).returning())[0];
+  await db.insert(exercises).values({
+    lessonBlockId: miniTestB2.id, type: 'MULTIPLE_CHOICE', order: 0, skill: 'VOCABULARY',
+    content: { question: VOCAB_MC_B2[1].q, options: VOCAB_MC_B2[1].options, correctIndex: VOCAB_MC_B2[1].correct, explanation: VOCAB_MC_B2[1].explanation },
+  });
+  await db.insert(lessonBlocks).values({
+    lessonId: lesson1B2.id, type: 'HOMEWORK', order: 7, title: 'Домашнее задание',
+    content: { text: 'Напишите абзац о влиянии технологий на общество, используя новые слова.' },
+  });
+
+  const [lesson2B2] = await db.insert(lessons).values({
+    moduleId: moduleB2.id, title: 'Social Media Debate', description: 'Короткий второй урок.', order: 1, estimatedMinutes: 20,
+  }).returning();
+  await db.insert(lessonBlocks).values({
+    lessonId: lesson2B2.id, type: 'INTRO', order: 0, title: 'Введение',
+    content: { text: 'Споры о социальных сетях: приватность и зависимость от технологий.' },
+  });
+  await db.insert(lessonBlocks).values({
+    lessonId: lesson2B2.id, type: 'VOCABULARY', order: 1, title: 'Лексика',
+    content: { words: ['privacy', 'dependent', 'widespread', 'concern', 'accessible'] },
+  });
+  const miniTest2B2 = (await db.insert(lessonBlocks).values({
+    lessonId: lesson2B2.id, type: 'MINI_TEST', order: 2, title: 'Мини-тест',
+  }).returning())[0];
+  await db.insert(exercises).values({
+    lessonBlockId: miniTest2B2.id, type: 'MULTIPLE_CHOICE', order: 0, skill: 'VOCABULARY',
+    content: { question: VOCAB_MC_B2[3].q, options: VOCAB_MC_B2[3].options, correctIndex: VOCAB_MC_B2[3].correct, explanation: VOCAB_MC_B2[3].explanation },
+  });
+
+  console.log('Создаю курс C1…');
+  const [courseC1] = await db.insert(courses).values({
+    title: 'Global Issues — демо-курс (C1)',
+    description: 'Демонстрационный курс уровня C1. Не настоящая учебная программа.',
+    level: 'C1',
+    audience: 'ADULTS',
+    isDemo: true,
+  }).returning();
+  const [moduleC1] = await db.insert(courseModules).values({
+    courseId: courseC1.id, title: 'Модуль 1: Глобальные проблемы', order: 0,
+  }).returning();
+
+  const [lesson1C1] = await db.insert(lessons).values({
+    moduleId: moduleC1.id, title: 'Climate Change and Sustainability',
+    description: 'Mixed Conditionals, инверсия, академическая лексика.', order: 0, estimatedMinutes: 35,
+  }).returning();
+  await db.insert(lessonBlocks).values({
+    lessonId: lesson1C1.id, type: 'INTRO', order: 0, title: 'Введение',
+    content: { text: 'Сегодня говорим об изменении климата и устойчивом развитии: Mixed Conditionals, инверсия и академическая лексика.' },
+  });
+  await db.insert(lessonBlocks).values({
+    lessonId: lesson1C1.id, type: 'VOCABULARY', order: 1, title: 'Новые слова',
+    content: { words: ['sustainability', 'mitigate', 'biodiversity', 'jeopardize', 'resilience'] },
+  });
+  await db.insert(lessonBlocks).values({
+    lessonId: lesson1C1.id, type: 'GRAMMAR', order: 2, title: 'Mixed Conditionals и инверсия',
+    content: { explanation: 'Mixed Conditionals и инверсия используются в формальном/академическом стиле: "Had governments acted sooner, the crisis would be less severe."' },
+  });
+  await db.insert(lessonBlocks).values({
+    lessonId: lesson1C1.id, type: 'READING', order: 3, title: 'Текст про биоразнообразие',
+    content: { text: READING_C1[4].passage },
+  });
+  const exBlockC1 = (await db.insert(lessonBlocks).values({
+    lessonId: lesson1C1.id, type: 'EXERCISE', order: 4, title: 'Упражнения',
+  }).returning())[0];
+  await db.insert(exercises).values([
+    { lessonBlockId: exBlockC1.id, type: 'MULTIPLE_CHOICE', order: 0, content: { question: GRAMMAR_C1[1].q, options: GRAMMAR_C1[1].options, correctIndex: GRAMMAR_C1[1].correct, explanation: GRAMMAR_C1[1].explanation } },
+    { lessonBlockId: exBlockC1.id, type: 'FILL_BLANK', order: 1, content: { text: 'Had the policy ___ (implement) earlier, the outcome would have been different.', answers: ['been implemented'] } },
+  ]);
+  const speakingC1 = (await db.insert(lessonBlocks).values({
+    lessonId: lesson1C1.id, type: 'SPEAKING', order: 5, title: 'Говорение',
+  }).returning())[0];
+  await db.insert(exercises).values({
+    lessonBlockId: speakingC1.id, type: 'SPEAKING', order: 0,
+    content: { prompt: 'What should governments do to address climate change?', rubric: 'vocabulary, grammar, fluency, pronunciation — 1–5' },
+  });
+  const miniTestC1 = (await db.insert(lessonBlocks).values({
+    lessonId: lesson1C1.id, type: 'MINI_TEST', order: 6, title: 'Мини-тест',
+  }).returning())[0];
+  await db.insert(exercises).values({
+    lessonBlockId: miniTestC1.id, type: 'MULTIPLE_CHOICE', order: 0, skill: 'VOCABULARY',
+    content: { question: VOCAB_MC_C1[1].q, options: VOCAB_MC_C1[1].options, correctIndex: VOCAB_MC_C1[1].correct, explanation: VOCAB_MC_C1[1].explanation },
+  });
+  await db.insert(lessonBlocks).values({
+    lessonId: lesson1C1.id, type: 'HOMEWORK', order: 7, title: 'Домашнее задание',
+    content: { text: 'Напишите эссе (100–150 слов) о путях смягчения последствий изменения климата, используя новые слова.' },
+  });
+
+  const [lesson2C1] = await db.insert(lessons).values({
+    moduleId: moduleC1.id, title: 'The Future of Work', description: 'Короткий второй урок.', order: 1, estimatedMinutes: 25,
+  }).returning();
+  await db.insert(lessonBlocks).values({
+    lessonId: lesson2C1.id, type: 'INTRO', order: 0, title: 'Введение',
+    content: { text: 'Автоматизация и будущее рынка труда: ключевая лексика.' },
+  });
+  await db.insert(lessonBlocks).values({
+    lessonId: lesson2C1.id, type: 'VOCABULARY', order: 1, title: 'Лексика',
+    content: { words: ['unprecedented', 'advocate', 'compelling', 'inevitable', 'discrepancy'] },
+  });
+  const miniTest2C1 = (await db.insert(lessonBlocks).values({
+    lessonId: lesson2C1.id, type: 'MINI_TEST', order: 2, title: 'Мини-тест',
+  }).returning())[0];
+  await db.insert(exercises).values({
+    lessonBlockId: miniTest2C1.id, type: 'MULTIPLE_CHOICE', order: 0, skill: 'VOCABULARY',
+    content: { question: VOCAB_MC_C1[3].q, options: VOCAB_MC_C1[3].options, correctIndex: VOCAB_MC_C1[3].correct, explanation: VOCAB_MC_C1[3].explanation },
+  });
+
+  console.log('Заполняю словарь (84 слова, уровни A1–C1)…');
+  const vocabByLevel: { level: string; words: typeof VOCAB_B1 }[] = [
+    { level: 'A1', words: VOCAB_A1 },
+    { level: 'A2', words: VOCAB_A2 },
+    { level: 'B1', words: VOCAB_B1 },
+    { level: 'B2', words: VOCAB_B2 },
+    { level: 'C1', words: VOCAB_C1 },
+  ];
+  await db.insert(vocabularyWords).values(
+    vocabByLevel.flatMap(({ level, words }) => words.map((w) => ({
+      word: w.word,
+      translationRu: w.ru,
+      definition: w.def,
+      level,
+      transcription: w.transcription,
+      examples: [w.example],
+      isDemo: true,
+    }))),
+  );
+
+  console.log('Заполняю банк вопросов (уровни A1–C1)…');
   await db.insert(questionBank).values([
+    ...GRAMMAR_A1.map((item, i) => ({
+      skill: 'GRAMMAR' as const, level: 'A1', difficulty: (i % 5) + 1, type: 'MULTIPLE_CHOICE' as const,
+      content: { question: item.q, options: item.options, correctIndex: item.correct, explanation: item.explanation }, isDemo: true,
+    })),
     ...GRAMMAR_A2.map((item, i) => ({
       skill: 'GRAMMAR' as const, level: 'A2', difficulty: (i % 5) + 1, type: 'MULTIPLE_CHOICE' as const,
       content: { question: item.q, options: item.options, correctIndex: item.correct, explanation: item.explanation }, isDemo: true,
@@ -306,6 +755,14 @@ async function main() {
     })),
     ...GRAMMAR_B2.map((item, i) => ({
       skill: 'GRAMMAR' as const, level: 'B2', difficulty: (i % 5) + 1, type: 'MULTIPLE_CHOICE' as const,
+      content: { question: item.q, options: item.options, correctIndex: item.correct, explanation: item.explanation }, isDemo: true,
+    })),
+    ...GRAMMAR_C1.map((item, i) => ({
+      skill: 'GRAMMAR' as const, level: 'C1', difficulty: (i % 5) + 1, type: 'MULTIPLE_CHOICE' as const,
+      content: { question: item.q, options: item.options, correctIndex: item.correct, explanation: item.explanation }, isDemo: true,
+    })),
+    ...VOCAB_MC_A1.map((item, i) => ({
+      skill: 'VOCABULARY' as const, level: 'A1', difficulty: (i % 5) + 1, type: 'MULTIPLE_CHOICE' as const,
       content: { question: item.q, options: item.options, correctIndex: item.correct, explanation: item.explanation }, isDemo: true,
     })),
     ...VOCAB_MC_A2.map((item, i) => ({
@@ -320,6 +777,14 @@ async function main() {
       skill: 'VOCABULARY' as const, level: 'B2', difficulty: (i % 5) + 1, type: 'MULTIPLE_CHOICE' as const,
       content: { question: item.q, options: item.options, correctIndex: item.correct, explanation: item.explanation }, isDemo: true,
     })),
+    ...VOCAB_MC_C1.map((item, i) => ({
+      skill: 'VOCABULARY' as const, level: 'C1', difficulty: (i % 5) + 1, type: 'MULTIPLE_CHOICE' as const,
+      content: { question: item.q, options: item.options, correctIndex: item.correct, explanation: item.explanation }, isDemo: true,
+    })),
+    ...READING_A1.map((item, i) => ({
+      skill: 'READING' as const, level: 'A1', difficulty: (i % 5) + 1, type: 'MULTIPLE_CHOICE' as const,
+      content: { passage: item.passage, question: item.q, options: item.options, correctIndex: item.correct }, isDemo: true,
+    })),
     ...READING_A2.map((item, i) => ({
       skill: 'READING' as const, level: 'A2', difficulty: (i % 5) + 1, type: 'MULTIPLE_CHOICE' as const,
       content: { passage: item.passage, question: item.q, options: item.options, correctIndex: item.correct }, isDemo: true,
@@ -331,6 +796,14 @@ async function main() {
     ...READING_B2.map((item, i) => ({
       skill: 'READING' as const, level: 'B2', difficulty: (i % 5) + 1, type: 'MULTIPLE_CHOICE' as const,
       content: { passage: item.passage, question: item.q, options: item.options, correctIndex: item.correct }, isDemo: true,
+    })),
+    ...READING_C1.map((item, i) => ({
+      skill: 'READING' as const, level: 'C1', difficulty: (i % 5) + 1, type: 'MULTIPLE_CHOICE' as const,
+      content: { passage: item.passage, question: item.q, options: item.options, correctIndex: item.correct }, isDemo: true,
+    })),
+    ...LISTENING_A1.map((item, i) => ({
+      skill: 'LISTENING' as const, level: 'A1', difficulty: (i % 5) + 1, type: 'MULTIPLE_CHOICE' as const,
+      content: { transcript: item.transcript, question: item.q, options: item.options, correctIndex: item.correct }, isDemo: true,
     })),
     ...LISTENING_A2.map((item, i) => ({
       skill: 'LISTENING' as const, level: 'A2', difficulty: (i % 5) + 1, type: 'MULTIPLE_CHOICE' as const,
@@ -345,6 +818,10 @@ async function main() {
       skill: 'LISTENING' as const, level: 'B2', difficulty: (i % 5) + 1, type: 'MULTIPLE_CHOICE' as const,
       content: { transcript: item.transcript, question: item.q, options: item.options, correctIndex: item.correct }, isDemo: true,
     })),
+    ...LISTENING_C1.map((item, i) => ({
+      skill: 'LISTENING' as const, level: 'C1', difficulty: (i % 5) + 1, type: 'MULTIPLE_CHOICE' as const,
+      content: { transcript: item.transcript, question: item.q, options: item.options, correctIndex: item.correct }, isDemo: true,
+    })),
     ...SPEAKING_B1.map((prompt, i) => ({
       skill: 'SPEAKING' as const, level: 'B1', difficulty: (i % 5) + 1, type: 'SPEAKING' as const,
       content: { prompt, rubric: 'vocabulary, grammar, fluency, pronunciation — 1–5' }, isDemo: true,
@@ -352,7 +829,7 @@ async function main() {
   ]);
 
   await pool.end();
-  console.log('Демо-контент готов: 1 курс, 1 модуль, 2 урока, 30 слов, 90 вопросов (A2/B1/B2).');
+  console.log('Демо-контент готов: 5 курсов (A1–C1), 10 уроков, 84 слова, банк вопросов на все уровни A1–C1.');
 }
 
 main().catch((e) => { console.error(e); process.exit(1); });
