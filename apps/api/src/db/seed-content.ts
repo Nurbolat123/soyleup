@@ -4,9 +4,9 @@
  * куратора/админа через конструктор не затираются при повторном запуске.
  */
 import { drizzle } from 'drizzle-orm/node-postgres';
-import { eq } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 import { Pool } from 'pg';
-import { courses, questionBank, vocabularyWords } from './schema';
+import { courses, placementAnswers, questionBank, vocabularyWords } from './schema';
 import { seedCourse } from './content/engine';
 import { a1 } from './content/a1';
 import { a2 } from './content/a2';
@@ -33,6 +33,11 @@ async function main() {
   console.log('Удаляю прежний демо-контент (если есть)…');
   await db.delete(courses).where(eq(courses.isDemo, true)); // модули/уроки/блоки/упражнения — каскадом
   await db.delete(vocabularyWords).where(eq(vocabularyWords.isDemo, true));
+  // Старые попытки placement test могли отвечать на демо-вопросы — без этого
+  // удаление демо-вопросов упирается в внешний ключ placement_answers.
+  await db.delete(placementAnswers).where(
+    sql`${placementAnswers.questionId} in (select id from question_bank where is_demo = true)`,
+  );
   await db.delete(questionBank).where(eq(questionBank.isDemo, true));
 
   console.log('Создаю настоящие учебные курсы (взрослые, подростки и дети, A1–C1)…');
