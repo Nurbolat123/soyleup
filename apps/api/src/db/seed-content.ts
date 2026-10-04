@@ -1,5 +1,5 @@
 /**
- * Настоящие учебные уроки: взрослые и дети, A1–C1.
+ * Настоящие учебные уроки: взрослые, подростки, дети, A1–C1.
  * Идемпотентно: курс с таким же названием не создаётся повторно — ручные правки
  * куратора/админа через конструктор не затираются при повторном запуске.
  */
@@ -18,6 +18,11 @@ import { kidsA2 } from './content/kids-a2';
 import { kidsB1 } from './content/kids-b1';
 import { kidsB2 } from './content/kids-b2';
 import { kidsC1 } from './content/kids-c1';
+import { teensA1 } from './content/teens-a1';
+import { teensA2 } from './content/teens-a2';
+import { teensB1 } from './content/teens-b1';
+import { teensB2 } from './content/teens-b2';
+import { teensC1 } from './content/teens-c1';
 
 try { process.loadEnvFile(); } catch { /* optional */ }
 
@@ -30,8 +35,12 @@ async function main() {
   await db.delete(vocabularyWords).where(eq(vocabularyWords.isDemo, true));
   await db.delete(questionBank).where(eq(questionBank.isDemo, true));
 
-  console.log('Создаю настоящие учебные курсы (взрослые и дети, A1–C1)…');
-  for (const spec of [a1, a2, b1, b2, c1, kidsA1, kidsA2, kidsB1, kidsB2, kidsC1]) {
+  console.log('Создаю настоящие учебные курсы (взрослые, подростки и дети, A1–C1)…');
+  for (const spec of [
+    a1, a2, b1, b2, c1,
+    kidsA1, kidsA2, kidsB1, kidsB2, kidsC1,
+    teensA1, teensA2, teensB1, teensB2, teensC1,
+  ]) {
     const existing = await db.select({ id: courses.id }).from(courses).where(eq(courses.title, spec.title)).limit(1);
     if (existing.length > 0) {
       console.log(`  Пропускаю «${spec.title}» — уже существует.`);
@@ -42,7 +51,7 @@ async function main() {
   }
 
   await pool.end();
-  console.log('Готово: 10 курсов (взрослые + дети, A1–C1).');
+  console.log('Готово: 15 курсов (взрослые + подростки + дети, A1–C1).');
 }
 
 main().catch((e) => { console.error(e); process.exit(1); });
