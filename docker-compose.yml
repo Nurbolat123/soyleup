@@ -17,19 +17,18 @@ services:
     image: redis:7-alpine
     ports: ["6379:6379"]
 
-  # S3-совместимое хранилище для аудио (записи речи, домашние задания)
+  # S3-совместимое хранилище для аудио (записи речи, домашние задания).
+  # MinIO перестал бесплатно раздавать готовые образы (Docker Hub — с 23.10.2025,
+  # quay.io — требует логин с 24.09.2025). Используем пересборку от Chainguard —
+  # тот же MinIO, раздаётся свободно и без ограничений.
   minio:
-    image: minio/minio:latest
+    image: cgr.dev/chainguard/minio:latest
     environment:
       MINIO_ROOT_USER: soyleup
       MINIO_ROOT_PASSWORD: soyleup-minio
     ports: ["9000:9000", "9001:9001"]
     volumes: [miniodata:/data]
     command: server /data --console-address ":9001"
-    healthcheck:
-      test: ["CMD", "mc", "ready", "local"]
-      interval: 5s
-      retries: 10
 
   api:
     build: ./apps/api
