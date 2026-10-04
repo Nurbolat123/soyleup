@@ -13,6 +13,7 @@
     "db:seed": "tsx src/db/seed.ts",
     "db:seed:prod": "node dist/db/seed.js",
     "db:seed:content": "tsx src/db/seed-content.ts",
+    "db:seed:audio": "tsx src/db/generate-audio.ts",
     "db:studio": "drizzle-kit studio",
     "test:smoke": "bash scripts/smoke-test.sh"
   },
