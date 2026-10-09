@@ -1240,14 +1240,14 @@ export const module1: ModuleContent = {
           "type": "GRAMMAR",
           "title": "The more..., the more...",
           "content": {
-            "explanation": "Мы уже знаем сравнительную степень прилагательных: faster, more difficult, better. В этом уроке добавим особую конструкцию 'the + сравнительная степень..., the + сравнительная степень...', которая показывает, что два изменения происходят одновременно и связаны друг с другом: чем больше одно, тем больше другое. Например: 'The more you train, the stronger you become.' (Чем больше ты тренируешься, тем сильнее становишься.) 'The harder you work, the better your results will be.' Если прилагательное короткое, добавляем -er: 'the faster, the better'; если длинное — используем 'more': 'the more difficult, the more interesting'. Эта конструкция часто используется для советов и наблюдений о жизни и спорте."
+            "explanation": "Мы уже знаем сравнительную степень прилагательных: faster, more difficult, better. В этом уроке добавим особую конструкцию 'the + сравнительная степень..., the + сравнительная степень...', которая показывает, что два изменения происходят одновременно и связаны друг с другом: чем больше одно, тем больше другое. Например: 'The more you train, the stronger you become.' (Чем больше ты тренируешься, тем сильнее становишься.) 'The harder you work, the better your results will be.' Если прилагательное короткое, добавляем -er: 'the faster, the better'; если длинное — используем 'more': 'the more difficult, the more interesting'. Та же структура работает и в обратную сторону, со словом 'less': 'The less you rest, the higher your risk of injury becomes.' 'The more sleep you get, the quicker you recover after training.' Эта конструкция часто используется для советов и наблюдений о жизни и спорте."
           }
         },
         {
           "type": "READING",
           "title": "Small habits, big results",
           "content": {
-            "text": "Two years ago, Timur could barely run for ten minutes without stopping to catch his breath. He decided to start a simple fitness routine, promising himself he would run just a little further each week rather than aiming for anything dramatic. At first, progress felt painfully slow, and he often wondered whether the effort was even worth it. His trainer told him something that stuck in his mind: the more consistent he was, the better his results would be, even if each individual run felt unremarkable. Timur also had to relearn his approach to nutrition, since he used to skip breakfast and then feel exhausted by midday during training. The healthier his diet became, the faster his body seemed to recover after each session. About six months in, he pushed himself too hard during one particularly ambitious run and suffered a minor knee injury that forced him to rest for three weeks. Frustrated at first, he eventually realized that the harder he trained without proper rest, the greater his risk of injury had become, and that recovery was not optional. Once he returned to his routine, he balanced intense training days with lighter recovery sessions, something his trainer had been recommending from the very beginning. His endurance improved steadily: the more often he trained sensibly, the longer the distances he found himself able to cover without feeling truly tired. Last month, Timur finished his very first half-marathon, something he would never have believed possible two years earlier. His story is proof that small, repeated habits, not occasional bursts of effort, are what actually improve long-term fitness."
+            "text": "Two years ago, Timur could barely run for ten minutes without stopping to catch his breath. He decided to start a simple fitness routine, promising himself he would run just a little further each week rather than aiming for anything dramatic. At first, progress felt painfully slow, and he often wondered whether the effort was even worth it. His trainer told him something that stuck in his mind: the more consistent he was, the better his results would be, even if each individual run felt unremarkable. 'The more sleep you get,' she added, 'the quicker you recover after training, so don't ignore that part of the routine either.' Timur also had to relearn his approach to nutrition, since he used to skip breakfast and then feel exhausted by midday during training. The healthier his diet became, the faster his body seemed to recover after each session. He started keeping a simple log of his meals, and the more carefully he planned them, the easier training became the next morning. About six months in, he pushed himself too hard during one particularly ambitious run and suffered a minor knee injury that forced him to rest for three weeks. Frustrated at first, he eventually realized that the harder he trained without proper rest, the greater his risk of injury had become, and that recovery was not optional. 'The less you rest,' his trainer reminded him once he returned, 'the higher your risk of injury becomes, and you've already learned that the hard way.' Once he returned to his routine, he balanced intense training days with lighter recovery sessions, something his trainer had been recommending from the very beginning. His endurance improved steadily: the more often he trained sensibly, the longer the distances he found himself able to cover without feeling truly tired. A friend who joined him for a short run one weekend was amazed at how far Timur could now run without stopping. Last month, Timur finished his very first half-marathon, something he would never have believed possible two years earlier. Standing at the finish line, he told a nervous first-time runner standing nearby that the more patient she was with her own progress, the more likely she was to actually enjoy the process. His story is proof that small, repeated habits, not occasional bursts of effort, are what actually improve long-term fitness, and that the more honestly you listen to your own body, the fewer injuries you are likely to suffer along the way."
           }
         },
         {
@@ -1269,11 +1269,57 @@ export const module1: ModuleContent = {
               }
             },
             {
+              "type": "MULTIPLE_CHOICE",
+              "content": {
+                "question": "Choose the sentence that uses 'nutrition' correctly.",
+                "options": [
+                  "Good nutrition is just as important as exercise.",
+                  "Good nutrition means running for a long time.",
+                  "Nutrition is a type of sports injury.",
+                  "She improved her nutrition by sleeping more."
+                ],
+                "correctIndex": 0,
+                "explanation": "'Nutrition' — питание, процесс правильного приёма пищи для здоровья."
+              }
+            },
+            {
+              "type": "MULTIPLE_CHOICE",
+              "content": {
+                "question": "Choose the correct comparative structure with 'less'.",
+                "options": [
+                  "The less you rest, the higher your risk of injury becomes.",
+                  "The less you rest, higher your risk of injury becomes.",
+                  "Less you rest, the higher your risk of injury becomes.",
+                  "The less you rest, the high your risk of injury becomes."
+                ],
+                "correctIndex": 0,
+                "explanation": "Конструкция требует 'the' перед обеими сравнительными частями: 'the less..., the higher...'"
+              }
+            },
+            {
               "type": "FILL_BLANK",
               "content": {
                 "text": "The more often you exercise, the ___ (strong) your muscles become.",
                 "answers": [
                   "stronger"
+                ]
+              }
+            },
+            {
+              "type": "FILL_BLANK",
+              "content": {
+                "text": "The more regularly you train, the better your ___ becomes, allowing you to run longer distances.",
+                "answers": [
+                  "endurance"
+                ]
+              }
+            },
+            {
+              "type": "FILL_BLANK",
+              "content": {
+                "text": "He twisted his ankle during the match and suffered a minor ___.",
+                "answers": [
+                  "injury"
                 ]
               }
             }
@@ -1309,6 +1355,111 @@ export const module1: ModuleContent = {
                 ],
                 "correctIndex": 1,
                 "explanation": "Перед наречием 'carefully' используется 'more', а структура повторяется в обеих частях: 'the more carefully..., the healthier...'."
+              }
+            },
+            {
+              "type": "MULTIPLE_CHOICE",
+              "skill": "VOCABULARY",
+              "content": {
+                "question": "What does 'fitness' mean?",
+                "options": [
+                  "The condition of being physically healthy and strong",
+                  "A type of injury caused by overtraining",
+                  "A strict diet plan",
+                  "A sports competition"
+                ],
+                "correctIndex": 0,
+                "explanation": "'Fitness' — физическая форма, состояние здоровья и силы тела."
+              }
+            },
+            {
+              "type": "MULTIPLE_CHOICE",
+              "skill": "GRAMMAR",
+              "content": {
+                "question": "Choose the correct sentence.",
+                "options": [
+                  "The faster you run, the more calories you burn.",
+                  "The fast you run, the more calories you burn.",
+                  "The faster you run, more calories you burn.",
+                  "Faster you run, the more calories you burn."
+                ],
+                "correctIndex": 0,
+                "explanation": "С короткими прилагательными добавляется -er, и 'the' ставится перед обеими частями: 'the faster..., the more...'"
+              }
+            },
+            {
+              "type": "MULTIPLE_CHOICE",
+              "skill": "VOCABULARY",
+              "content": {
+                "question": "What does 'endurance' mean?",
+                "options": [
+                  "The ability to keep doing something difficult for a long time",
+                  "A sudden injury during exercise",
+                  "A type of healthy meal",
+                  "A short period of rest"
+                ],
+                "correctIndex": 0,
+                "explanation": "'Endurance' — выносливость, способность долго выполнять трудное действие."
+              }
+            },
+            {
+              "type": "MULTIPLE_CHOICE",
+              "skill": "VOCABULARY",
+              "content": {
+                "question": "What does 'routine' mean?",
+                "options": [
+                  "A fixed and regular way of doing things",
+                  "An unexpected sports injury",
+                  "A type of competitive race",
+                  "A single, one-time workout"
+                ],
+                "correctIndex": 0,
+                "explanation": "'Routine' — распорядок, регулярный и фиксированный способ что-то делать."
+              }
+            },
+            {
+              "type": "MULTIPLE_CHOICE",
+              "skill": "VOCABULARY",
+              "content": {
+                "question": "What does 'improve' mean?",
+                "options": [
+                  "To become better, or to make something better",
+                  "To stop doing an activity completely",
+                  "To injure a part of the body",
+                  "To eat more than necessary"
+                ],
+                "correctIndex": 0,
+                "explanation": "'Improve' — улучшать(ся), становиться лучше."
+              }
+            },
+            {
+              "type": "MULTIPLE_CHOICE",
+              "skill": "GRAMMAR",
+              "content": {
+                "question": "Choose the correct sentence using 'the more... the less...'",
+                "options": [
+                  "The more you train, the less tired you feel after a while.",
+                  "The more you train, less tired you feel after a while.",
+                  "More you train, the less tired you feel after a while.",
+                  "The more you train, the less tired you are feeling after a while is true."
+                ],
+                "correctIndex": 0,
+                "explanation": "Обе части конструкции должны начинаться с 'the': 'the more..., the less...'"
+              }
+            },
+            {
+              "type": "MULTIPLE_CHOICE",
+              "skill": "VOCABULARY",
+              "content": {
+                "question": "Which sentence correctly uses both 'injury' and 'routine'?",
+                "options": [
+                  "After the injury, she had to change her training routine completely.",
+                  "After the routine, she had to change her training injury completely.",
+                  "An injury means following a strict routine every day.",
+                  "A routine is a type of sports injury."
+                ],
+                "correctIndex": 0,
+                "explanation": "'Injury' — травма, 'routine' — распорядок; после травмы часто приходится менять привычный распорядок тренировок."
               }
             }
           ]

@@ -456,14 +456,14 @@ export const module1: ModuleContent = {
           title: 'Present Simple для привычных действий',
           content: {
             explanation:
-              'Present Simple используется, когда мы говорим о том, что происходит каждый день, обычно или всегда. С I/you/we/they глагол остаётся без изменений: "I go to school at eight."  С he/she/it добавляем окончание -s: "She goes to school at eight." Примеры: "I pack my backpack every morning." "My classmate sits next to me." "We have a break at eleven o\'clock."',
+              'Present Simple используется, когда мы говорим о том, что происходит каждый день, обычно или всегда. С I/you/we/they глагол остаётся без изменений: "I go to school at eight."  С he/she/it добавляем окончание -s: "She goes to school at eight." Примеры: "I pack my backpack every morning." "My classmate sits next to me." "We have a break at eleven o\'clock." "My teacher checks our homework every day." "The bell rings at the end of every lesson."',
           },
         },
         {
           type: 'READING',
           title: 'Lily\'s Busy Morning',
           content: {
-            text: "Lily always wakes up at seven o\'clock and gets ready for school very quickly. She puts her books, her pencil case and her lunchbox into her backpack. Lily checks her timetable on the fridge: today she has Maths, Science and Art. At school, her classmate Noor waits for her at the gate every morning, and they walk to class together. The first two lessons go by fast, and then the bell rings for break. At break, Lily and Noor run to the playground and play with a big orange ball. After break, the class does more lessons until lunchtime. In the afternoon, the teacher gives everyone homework for the next day. Lily doesn\'t mind homework because she does it with her little brother at the kitchen table. On the way home, Lily tells her mum about her funny day at school. She can\'t wait to see Noor again tomorrow morning.",
+            text: "Lily always wakes up at seven o\'clock and gets ready for school very quickly, because she likes to have time for a big breakfast. Every morning, she packs her books, her pencil case and her lunchbox into her backpack by the door. Before she leaves the house, Lily checks her timetable on the fridge: today she has Maths, Science and Art. \"What do you have today?\" asks her little brother Adam, who is still too young for school. \"I have three lessons and then some fun at the playground,\" Lily answers with a happy smile. At school, her classmate Noor waits for her at the gate every single morning, and they walk to class together and talk about cartoons. The first two lessons go by quickly, and then the bell rings loudly for break. At break, Lily and Noor run straight to the playground and play with a big orange ball near the fence. Some other classmates join them, and soon ten children are laughing and shouting happily in the sunshine. After break, the class does more lessons until lunchtime, and everyone listens carefully to their teacher. In the afternoon, the teacher checks everybody\'s work and gives the class homework for the next day. Lily doesn\'t mind homework because she does it with her little brother at the kitchen table after a small snack. They sometimes argue about who uses the red pencil, but they always finish the work together in the end. On the way home, Lily tells her mum about her funny day at school and about the new game at the playground. Before bed, she checks her timetable again, so she knows exactly which books to pack for tomorrow. She can\'t wait to see Noor again tomorrow morning and show her a new trick with the orange ball.",
           },
         },
         {
@@ -480,10 +480,42 @@ export const module1: ModuleContent = {
               },
             },
             {
+              type: 'MULTIPLE_CHOICE',
+              content: {
+                question: 'What do you put your books and pencil case into before school?',
+                options: ['a timetable', 'a backpack', 'a break', 'a classmate'],
+                correctIndex: 1,
+                explanation: '"Backpack" — рюкзак, в него кладут книги и пенал.',
+              },
+            },
+            {
+              type: 'MULTIPLE_CHOICE',
+              content: {
+                question: 'Choose the correct sentence.',
+                options: ['My classmate sit next to me.', 'My classmate sits next to me.', 'My classmate sitting next to me.', 'My classmate is sits next to me.'],
+                correctIndex: 1,
+                explanation: 'С he/she/it (и с именем или словом classmate) добавляется -s: sits.',
+              },
+            },
+            {
               type: 'FILL_BLANK',
               content: {
                 text: 'We ___ (have) a break at eleven o\'clock.',
                 answers: ['have'],
+              },
+            },
+            {
+              type: 'FILL_BLANK',
+              content: {
+                text: 'I ___ (pack) my backpack every morning.',
+                answers: ['pack'],
+              },
+            },
+            {
+              type: 'FILL_BLANK',
+              content: {
+                text: 'She ___ (check) her timetable before school.',
+                answers: ['checks'],
               },
             },
           ],

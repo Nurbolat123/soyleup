@@ -1045,12 +1045,59 @@ export const module1: ModuleContent = {
               }
             },
             {
+              "type": "MULTIPLE_CHOICE",
+              "content": {
+                "question": "Which sentence correctly uses 'in light of' to introduce a reason for a decision?",
+                "options": [
+                  "In light of rising burnout rates, companies have introduced wellbeing programmes.",
+                  "In light rising burnout rates, companies have introduced wellbeing programmes.",
+                  "In the light of rising burnout rates companies, have introduced wellbeing programmes.",
+                  "Light of rising burnout rates, in companies have introduced wellbeing programmes."
+                ],
+                "correctIndex": 0,
+                "explanation": "\"In light of\" + существительная фраза вводит основание или причину вывода: \"in light of rising burnout rates\"."
+              }
+            },
+            {
+              "type": "MULTIPLE_CHOICE",
+              "content": {
+                "question": "Which marker correctly introduces a contrasting idea of the opposite direction, as in 'informal support is free; ___, professional therapy is expensive'?",
+                "options": [
+                  "by contrast",
+                  "moreover",
+                  "consequently",
+                  "in light of"
+                ],
+                "correctIndex": 0,
+                "explanation": "\"By contrast\" вводит противоположную мысль, в отличие от moreover (добавление того же направления) или consequently (следствие)."
+              }
+            },
+            {
               "type": "FILL_BLANK",
               "content": {
                 "text": "The programme was expensive to run; ___, it was discontinued after one year.",
                 "answers": [
                   "consequently",
                   "as a result"
+                ]
+              }
+            },
+            {
+              "type": "FILL_BLANK",
+              "content": {
+                "text": "Awareness has grown considerably; ___, stigma persists in many communities.",
+                "answers": [
+                  "nevertheless",
+                  "that said"
+                ]
+              }
+            },
+            {
+              "type": "FILL_BLANK",
+              "content": {
+                "text": "Access to support remains unequal. ___, informal coping strategies are cheap but routinely overlooked.",
+                "answers": [
+                  "By contrast"
                 ]
               }
             }

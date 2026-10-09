@@ -1334,6 +1334,51 @@ export const module1: ModuleContent = {
           exercises: [
             {
               type: 'MULTIPLE_CHOICE',
+              skill: 'GRAMMAR',
+              content: {
+                question: 'Choose the correct sentence about a fixed plan.',
+                options: [
+                  'We going to visit the mountains next week.',
+                  'We are going to visit the mountains next week.',
+                  'We will going to visit the mountains next week.',
+                  'We are go to visit the mountains next week.',
+                ],
+                correctIndex: 1,
+                explanation: '"Going to" формула: am/is/are + going to + инфинитив: are going to visit.',
+              },
+            },
+            {
+              type: 'MULTIPLE_CHOICE',
+              skill: 'GRAMMAR',
+              content: {
+                question: 'Choose the sentence that makes a promise.',
+                options: [
+                  'I promise I am calling you every Sunday.',
+                  'I promise I will call you every Sunday.',
+                  'I promise I call you every Sunday.',
+                  'I promise I going to call you every Sunday.',
+                ],
+                correctIndex: 1,
+                explanation: 'Обещания обычно выражаются через will: I will call you.',
+              },
+            },
+            {
+              type: 'MULTIPLE_CHOICE',
+              skill: 'GRAMMAR',
+              content: {
+                question: 'Choose the sentence that compares an idea with no fixed plan to a fixed one.',
+                options: [
+                  'I will probably visit my cousin. / We are going to visit the mountains — it is booked.',
+                  'I am going to probably visit my cousin. / We will visit the mountains — it is booked.',
+                  'I will visit my cousin — it is booked. / We are probably going to visit the mountains.',
+                  'I going to visit my cousin. / We will the mountains.',
+                ],
+                correctIndex: 0,
+                explanation: '"Will" — идея без твёрдого плана, "going to" — уже решённый, забронированный план.',
+              },
+            },
+            {
+              type: 'MULTIPLE_CHOICE',
               skill: 'VOCABULARY',
               content: {
                 question: 'What does "disappointed" mean?',
@@ -1345,6 +1390,66 @@ export const module1: ModuleContent = {
                 ],
                 correctIndex: 0,
                 explanation: '"Disappointed" — расстроенный, грустный из-за того, что что-то не произошло, как хотелось.',
+              },
+            },
+            {
+              type: 'MULTIPLE_CHOICE',
+              skill: 'VOCABULARY',
+              content: {
+                question: 'What is a "camp"?',
+                options: [
+                  'A place with tents or simple buildings where people stay outdoors',
+                  'A kind of weather forecast',
+                  'A long walk through the countryside',
+                  'A promise between two friends',
+                ],
+                correctIndex: 0,
+                explanation: '"Camp" — лагерь, место с палатками или простыми постройками для отдыха на природе.',
+              },
+            },
+            {
+              type: 'MULTIPLE_CHOICE',
+              skill: 'VOCABULARY',
+              content: {
+                question: 'What does "journey" mean?',
+                options: [
+                  'An act of travelling from one place to another',
+                  'A short rest after lunch',
+                  'A type of summer camp',
+                  'A weather report',
+                ],
+                correctIndex: 0,
+                explanation: '"Journey" — путешествие, поездка из одного места в другое.',
+              },
+            },
+            {
+              type: 'MULTIPLE_CHOICE',
+              skill: 'VOCABULARY',
+              content: {
+                question: 'What does "promise" mean?',
+                options: [
+                  'A statement that you will definitely do something',
+                  'A guess about the weather',
+                  'A plan that already failed',
+                  'A feeling of disappointment',
+                ],
+                correctIndex: 0,
+                explanation: '"Promise" — обещание, утверждение, что ты точно что-то сделаешь.',
+              },
+            },
+            {
+              type: 'MULTIPLE_CHOICE',
+              skill: 'VOCABULARY',
+              content: {
+                question: 'What does "achieve" mean?',
+                options: [
+                  'To successfully complete something or reach a goal',
+                  'To cancel a summer plan',
+                  'To feel disappointed about a trip',
+                  'To write a letter to a friend',
+                ],
+                correctIndex: 0,
+                explanation: '"Achieve" — достигать, успешно завершить что-то или дойти до цели.',
               },
             },
           ],

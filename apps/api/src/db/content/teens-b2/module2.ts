@@ -673,10 +673,47 @@ export const module2: ModuleContent = {
               },
             },
             {
+              type: "MULTIPLE_CHOICE",
+              content: {
+                question: "Which sentence correctly uses the passive gerund 'being + V3' after despite?",
+                options: [
+                  "Despite being carefully retouched, the image still felt fake.",
+                  "Despite be carefully retouched, the image still felt fake.",
+                  "Despite retouched carefully, the image still felt fake.",
+                  "Despite being carefully retouch, the image still felt fake.",
+                ],
+                correctIndex: 0,
+                explanation: "\"Despite being + V3\" — пассивный герундий после despite: \"despite being retouched\".",
+              },
+            },
+            {
+              type: "MULTIPLE_CHOICE",
+              content: {
+                question: "Which word best completes: \"The result looked less like a real teenager and more like a ___ version of one\"?",
+                options: ["curated", "unrealistic", "insecurity", "self-image"],
+                correctIndex: 0,
+                explanation: "\"Curated\" — подобранный, тщательно отфильтрованный.",
+              },
+            },
+            {
               type: "FILL_BLANK",
               content: {
                 text: "___ the photo had barely been touched, she still didn't believe it was really her.",
                 answers: ["Although"],
+              },
+            },
+            {
+              type: "FILL_BLANK",
+              content: {
+                text: "Constant exposure to ___ images can quietly reshape how people see themselves.",
+                answers: ["unrealistic"],
+              },
+            },
+            {
+              type: "FILL_BLANK",
+              content: {
+                text: "Her ___ of a normal body had been shaped by edited photos.",
+                answers: ["perception"],
               },
             },
           ],
@@ -706,6 +743,76 @@ export const module2: ModuleContent = {
                 options: ["curated", "airbrushed", "unrealistic", "perception"],
                 correctIndex: 1,
                 explanation: "\"Airbrushed\" — отретушированный, цифровым способом избавленный от недостатков.",
+              },
+            },
+            {
+              type: "MULTIPLE_CHOICE",
+              skill: "VOCABULARY",
+              content: {
+                question: "Which word means 'the mental picture someone has of their own appearance or character'?",
+                options: ["self-image", "insecurity", "curated", "unrealistic"],
+                correctIndex: 0,
+                explanation: "\"Self-image\" — самовосприятие, образ себя.",
+              },
+            },
+            {
+              type: "MULTIPLE_CHOICE",
+              skill: "VOCABULARY",
+              content: {
+                question: "Which word means 'a feeling of uncertainty or lack of confidence'?",
+                options: ["insecurity", "perception", "airbrushed", "curated"],
+                correctIndex: 0,
+                explanation: "\"Insecurity\" — неуверенность в себе.",
+              },
+            },
+            {
+              type: "MULTIPLE_CHOICE",
+              skill: "VOCABULARY",
+              content: {
+                question: "Which word means 'not based on what is true or achievable'?",
+                options: ["unrealistic", "curated", "airbrushed", "self-image"],
+                correctIndex: 0,
+                explanation: "\"Unrealistic\" — нереалистичный.",
+              },
+            },
+            {
+              type: "MULTIPLE_CHOICE",
+              skill: "VOCABULARY",
+              content: {
+                question: "Which word means 'the way someone understands or interprets something'?",
+                options: ["perception", "insecurity", "curated", "self-image"],
+                correctIndex: 0,
+                explanation: "\"Perception\" — восприятие.",
+              },
+            },
+            {
+              type: "MULTIPLE_CHOICE",
+              skill: "GRAMMAR",
+              content: {
+                question: "Which sentence correctly combines passive voice with a modal inside concession?",
+                options: [
+                  "Although filters can be removed easily, most users never bother.",
+                  "Although filters can removed easily, most users never bother.",
+                  "Although filters can be remove easily, most users never bother.",
+                  "Although filters can being removed easily, most users never bother.",
+                ],
+                correctIndex: 0,
+                explanation: "Пассив с модальным глаголом: modal + be + V3 — \"can be removed\".",
+              },
+            },
+            {
+              type: "MULTIPLE_CHOICE",
+              skill: "GRAMMAR",
+              content: {
+                question: "Which sentence correctly uses the passive voice in a past perfect form?",
+                options: [
+                  "The photo had been heavily edited before it was posted.",
+                  "The photo had heavily edited before it was posted.",
+                  "The photo was heavily edit before it posted.",
+                  "The photo had been heavily editing before it was posted.",
+                ],
+                correctIndex: 0,
+                explanation: "Пассив в Past Perfect: had been + V3 — \"had been edited\".",
               },
             },
           ],

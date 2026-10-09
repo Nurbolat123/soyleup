@@ -448,14 +448,14 @@ export const module1: ModuleContent = {
           "type": "GRAMMAR",
           "title": "Эмфатические конструкции (cleft sentences)",
           "content": {
-            "explanation": "Чтобы выделить самую важную часть предложения, используем конструкции «What...is/was...» и «It is/was...that/who...». Например: «What drives explorers is curiosity, not the hope of treasure» — здесь на первом месте стоит именно то, что по-настоящему важно. Сравните: «It was curiosity that drove the explorer forward» — а здесь мы выделяем словом «it», что именно сыграло решающую роль. Такие конструкции звучат более выразительно, чем простое «Explorers are driven by curiosity»."
+            "explanation": "Чтобы выделить самую важную часть предложения, используем конструкции «What...is/was...» и «It is/was...that/who...». Например: «What drives explorers is curiosity, not the hope of treasure» — здесь на первом месте стоит именно то, что по-настоящему важно. Сравните: «It was curiosity that drove the explorer forward» — а здесь мы выделяем словом «it», что именно сыграло решающую роль. Такие конструкции звучат более выразительно, чем простое «Explorers are driven by curiosity». Ещё пример с «what»: «What fascinated the young explorer was the uncharted cave itself, not the rumour of treasure inside it» — на первом месте стоит именно источник восхищения. А если нужно выделить человека, а не причину, используем «It was... who...»: «It was the explorer, not the scientists back home, who first noticed the strange markings on the cave wall» — здесь мы подчёркиваем, кто именно сделал открытие."
           }
         },
         {
           "type": "READING",
           "title": "The Itch of Not Knowing",
           "content": {
-            "text": "Long before anyone had built a telescope or a submarine, people were already staring at the horizon and wondering what lay beyond it. What drives explorers is not always the hope of finding treasure or fame; often, it is simply the itch of not knowing. Think about Alexandra, a nine-year-old from Norway who spent a whole summer mapping the caves behind her grandmother's farm. Nobody paid her to do it, and no map needed drawing again, so why did she bother? It was curiosity, not necessity, that pushed her forward. Scientists who study the brain have noticed something similar: when we discover a gap in our knowledge, a part of the brain lights up in almost the same way it does when we are hungry. In other words, not knowing something can feel a little like missing a meal. This might explain why Ernest Shackleton kept sailing toward Antarctica even after his ship had been crushed by ice. It was not stubbornness alone that kept his crew going; it was the belief that somewhere ahead, an answer was waiting. Of course, exploring is not only about distant oceans and mountains. What counts as exploring for a seven-year-old might be the attic, the back of a library, or a strange insect on the windowsill. Some people argue that curiosity is a luxury, something we can only afford once our basic needs are met. Yet history suggests the opposite: even in the hardest times, humans have always found room to wonder. Perhaps that is because exploring is not really a choice we make. It is simply who we are."
+            "text": "Long before anyone had built a telescope, a submarine, or even a decent map, people were already standing at the edge of a forest or a cliff, staring into the distance, and wondering what lay beyond it. What drives explorers is not always the hope of finding treasure or fame; often, it is simply the itch of not knowing, a small, stubborn curiosity that refuses to be ignored. Think about Alexandra, a nine-year-old from a small town in Norway, who spent an entire summer mapping the cave system behind her grandmother's farm. Nobody paid her to do it, and nobody needed the map, since the caves had already been explored by geologists decades earlier. So why did she bother climbing through cold, dripping tunnels with nothing but a torch and a notebook? It was curiosity, not necessity, that pushed her forward, lesson after lesson, weekend after weekend, until she had filled three notebooks with sketches of rock shapes nobody else had bothered to draw.\n\nScientists who study the brain have noticed something strange: when we discover a gap in our own knowledge, a part of the brain lights up in almost the same way it does when we are hungry. In other words, not knowing something can feel uncomfortably similar to missing a meal, which may explain why curiosity can feel less like a polite interest and more like a genuine itch that must be scratched. This might also explain why Ernest Shackleton kept sailing toward Antarctica even after his ship had been slowly crushed by pack ice. It was not stubbornness alone that kept his crew moving forward across the frozen wasteland; it was the quiet, shared belief that somewhere ahead, beyond the next ridge of ice, an answer, or at least a way home, was waiting to be found.\n\nOf course, exploring the unknown does not always mean sailing to the ends of the earth. What counts as a genuine discovery for a seven-year-old might simply be the dusty attic, the back shelf of a library, or a strange insect balanced on the kitchen windowsill. A young explorer does not need uncharted oceans; an unfamiliar corner of the garden can produce exactly the same thrill of wonder. What matters is not the size of the mystery but the willingness to venture toward it instead of walking past it, which is precisely why curiosity, more than courage or cleverness, tends to separate explorers from everyone else.\n\nSome people argue that curiosity is a luxury, something we can only properly afford once our basic needs, food, shelter, safety, have already been met. Yet history suggests almost the opposite: even during the hardest, hungriest periods in human history, people have always found room, somehow, to wonder. Cave paintings tens of thousands of years old show animals that early humans had clearly watched with fascinated attention, long before anyone had the comfort or free time that modern explorers often enjoy. It was curiosity, arguably, that helped our ancestors survive at all, since noticing a new plant, a new path, or a new source of water often made the difference between hunger and safety.\n\nWhat also deserves attention is how curiosity spreads from one person to another. A single explorer's discovery rarely stays private for long; it is usually shared, discussed, and passed along until somebody else feels the same itch and sets off to venture a little further than before. It was Alexandra's notebooks, eventually shown to her entire class, that convinced two of her classmates to explore the old quarry behind their school, a place they had walked past a thousand times without a second glance. What changed was not the quarry itself, which had sat there, uninteresting, for years; what changed was that somebody had finally decided to wonder about it out loud.\n\nModern explorers prove that this itch has not faded with age or technology. Deep-sea divers now venture into trenches so dark and uncharted that more people have walked on the moon than have visited their floors, while young astronomers scan the night sky in search of discoveries that professional scientists have not yet noticed. What unites a nine-year-old with a notebook and a scientist piloting a submarine thousands of metres underwater is exactly the same restless wonder: a refusal to accept that everything interesting has already been found. If anything, each new discovery tends to reveal an even larger uncharted space behind it, which is perhaps the strangest and most wonderful part of exploring at all.\n\nIt is worth remembering that not every venture ends in success. Alexandra's early maps were full of mistakes, tunnels marked twice, distances guessed wrongly in the dark, and Shackleton's own expedition never reached the pole he had originally planned to find. Yet neither failure dimmed the curiosity that had started the journey in the first place. What truly defines an explorer, then, is not a perfect record of discoveries but a willingness to keep wondering, venturing, and occasionally failing, long after a more cautious person would have quietly gone home."
           }
         },
         {
@@ -477,10 +477,47 @@ export const module1: ModuleContent = {
               }
             },
             {
+              "type": "MULTIPLE_CHOICE",
+              "content": {
+                "question": "Which sentence correctly uses \"It was... who...\" to emphasise a person?",
+                "options": [
+                  "It was the explorer who first noticed the strange markings on the cave wall.",
+                  "It was the explorer first noticed the strange markings on the cave wall.",
+                  "The explorer it was who first noticed the strange markings.",
+                  "It the explorer was who first noticed the strange markings."
+                ],
+                "correctIndex": 0,
+                "explanation": "«It was + человек + who...» — эмфатическая конструкция, выделяющая, кто совершил действие."
+              }
+            },
+            {
+              "type": "MULTIPLE_CHOICE",
+              "content": {
+                "question": "Which word best completes: \"The divers decided to ___ into the deepest, most uncharted part of the cave.\"",
+                "options": ["venture", "wonder", "discovery", "curiosity"],
+                "correctIndex": 0,
+                "explanation": "Venture — отважиться пойти куда-то рискованное; лучше всего подходит по смыслу."
+              }
+            },
+            {
               "type": "FILL_BLANK",
               "content": {
                 "text": "___ drove Shackleton forward was the belief that an answer was waiting somewhere ahead.",
                 "answers": ["What"]
+              }
+            },
+            {
+              "type": "FILL_BLANK",
+              "content": {
+                "text": "It was the uncharted cave, not the treasure, ___ truly fascinated the young explorer.",
+                "answers": ["that"]
+              }
+            },
+            {
+              "type": "FILL_BLANK",
+              "content": {
+                "text": "Her ___ about the hidden tunnel kept her exploring long after sunset.",
+                "answers": ["curiosity"]
               }
             }
           ]
