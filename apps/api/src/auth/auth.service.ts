@@ -1,16 +1,21 @@
 import { BadRequestException, ConflictException, ForbiddenException, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as argon2 from 'argon2';
-import { eq } from 'drizzle-orm';
+import { and, eq, gt, isNull } from 'drizzle-orm';
+import { createHash, randomBytes } from 'node:crypto';
 import { AuditService } from '../common/audit.service';
 import { RequestMeta } from '../common/auth.decorators';
 import { ADULT_AGE, ageInYears, isUniqueViolation, MIN_STUDENT_AGE, normalizeEmail } from '../common/utils';
 import { Env } from '../config/env';
 import { DB, Database } from '../db/db.module';
-import { consents, studentProfiles, users } from '../db/schema';
+import { consents, passwordResetTokens, studentProfiles, users } from '../db/schema';
+import { EmailService } from '../notifications/email.service';
 import { toPublicUser } from '../users/user.mapper';
-import { LoginDto, RefreshDto, RegisterDto } from './dto/auth.dto';
+import { ForgotPasswordDto, LoginDto, RefreshDto, RegisterDto, ResetPasswordDto } from './dto/auth.dto';
 import { TokenService } from './token.service';
+
+const sha256hex = (v: string) => createHash('sha256').update(v).digest('hex');
+const RESET_TOKEN_TTL_MS = 60 * 60 * 1000; // 1 час
 
 @Injectable()
 export class AuthService {
@@ -23,6 +28,7 @@ export class AuthService {
     private readonly tokens: TokenService,
     private readonly audit: AuditService,
     private readonly config: ConfigService<Env, true>,
+    private readonly email: EmailService,
   ) {}
 
   async register(dto: RegisterDto, meta: RequestMeta) {
@@ -56,7 +62,12 @@ export class AuthService {
           .returning();
 
         if (dto.role === 'STUDENT') {
-          await tx.insert(studentProfiles).values({ userId: created.id, birthDate: dto.birthDate!, isMinor });
+          await tx.insert(studentProfiles).values({
+            userId: created.id,
+            birthDate: dto.birthDate!,
+            isMinor,
+            desiredLearningTrack: dto.learningTrack ?? 'SELF_STUDY',
+          });
         }
         if (!isMinor) {
           await tx.insert(consents).values({
@@ -108,6 +119,51 @@ export class AuthService {
 
   async logout(dto: RefreshDto) {
     await this.tokens.revoke(dto.refreshToken);
+    return { ok: true };
+  }
+
+  /**
+   * Всегда отвечает одинаково (не подтверждает и не отрицает наличие email в базе —
+   * иначе через этот эндпоинт можно было бы проверять, кто зарегистрирован).
+   */
+  async forgotPassword(dto: ForgotPasswordDto, meta: RequestMeta) {
+    const user = await this.db.query.users.findFirst({ where: eq(users.email, normalizeEmail(dto.email)) });
+    if (!user || user.status === 'BLOCKED') return { ok: true };
+
+    const rawToken = randomBytes(32).toString('base64url');
+    await this.db.insert(passwordResetTokens).values({
+      userId: user.id,
+      tokenHash: sha256hex(rawToken),
+      expiresAt: new Date(Date.now() + RESET_TOKEN_TTL_MS),
+    });
+    const webOrigin = this.config.get('WEB_ORIGIN', { infer: true }).split(',')[0];
+    const link = `${webOrigin}/reset-password?token=${rawToken}`;
+    await this.email.send(
+      user.email,
+      'Восстановление пароля SoyleUp',
+      `Чтобы задать новый пароль, откройте ссылку (действует 1 час): ${link}\n\nЕсли вы не запрашивали восстановление пароля — просто игнорируйте это письмо.`,
+    );
+    await this.audit.log({ actorId: user.id, action: 'auth.forgot_password_requested', entity: 'user', entityId: user.id, ip: meta.ip });
+
+    // Только для сквозных тестов: без этого проверить happy path нельзя — токен уходит
+    // только в письмо, а не в ответ. В production/dev NODE_ENV !== 'test', поле не появится.
+    const isTest = this.config.get('NODE_ENV', { infer: true }) === 'test';
+    return isTest ? { ok: true, token: rawToken } : { ok: true };
+  }
+
+  async resetPassword(dto: ResetPasswordDto, meta: RequestMeta) {
+    const record = await this.db.query.passwordResetTokens.findFirst({
+      where: and(eq(passwordResetTokens.tokenHash, sha256hex(dto.token)), isNull(passwordResetTokens.usedAt), gt(passwordResetTokens.expiresAt, new Date())),
+    });
+    if (!record) throw new BadRequestException('Invalid or expired token');
+
+    await this.db.transaction(async (tx) => {
+      await tx.update(users).set({ passwordHash: await argon2.hash(dto.newPassword) }).where(eq(users.id, record.userId));
+      await tx.update(passwordResetTokens).set({ usedAt: new Date() }).where(eq(passwordResetTokens.id, record.id));
+    });
+    // После смены пароля выходим из всех устройств — токен мог утечь вместе с почтой
+    await this.tokens.revokeAllForUser(record.userId);
+    await this.audit.log({ actorId: record.userId, action: 'auth.password_reset', entity: 'user', entityId: record.userId, ip: meta.ip });
     return { ok: true };
   }
 }

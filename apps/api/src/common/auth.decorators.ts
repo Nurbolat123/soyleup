@@ -6,6 +6,7 @@ export interface AuthUser {
   id: string;
   role: Role;
   status: UserStatus;
+  canManageContent: boolean;
 }
 
 export const IS_PUBLIC = 'auth:public';
@@ -15,6 +16,10 @@ export const Public = () => SetMetadata(IS_PUBLIC, true);
 export const ALLOW_PENDING = 'auth:allowPending';
 /** Доступно аккаунту, который ждёт согласия родителя */
 export const AllowPending = () => SetMetadata(ALLOW_PENDING, true);
+
+export const OPTIONAL_AUTH = 'auth:optional';
+/** Работает и без токена (req.user не задан), и с валидным токеном (req.user задан). Для placement-теста без регистрации. */
+export const OptionalAuth = () => SetMetadata(OPTIONAL_AUTH, true);
 
 export const ROLES = 'auth:roles';
 export const Roles = (...roles: Role[]) => SetMetadata(ROLES, roles);

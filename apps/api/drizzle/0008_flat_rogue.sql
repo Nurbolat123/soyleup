@@ -1,0 +1,1 @@
+ALTER TABLE "users" ADD COLUMN "can_manage_content" boolean DEFAULT false NOT NULL;

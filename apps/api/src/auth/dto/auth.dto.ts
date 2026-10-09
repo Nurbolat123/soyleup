@@ -33,6 +33,11 @@ export class RegisterDto {
   @Matches(/^\d{4}-\d{2}-\d{2}$/)
   birthDate?: string;
 
+  /** Пожелание ученика при регистрации — не тариф с оплатой, куратора всё равно назначает админ */
+  @IsOptional()
+  @IsIn(['SELF_STUDY', 'WITH_CURATOR'])
+  learningTrack?: 'SELF_STUDY' | 'WITH_CURATOR';
+
   @IsOptional()
   @IsIn(['ru', 'kk', 'en'])
   locale?: 'ru' | 'kk' | 'en';
@@ -57,4 +62,23 @@ export class RefreshDto {
   @IsNotEmpty()
   @MaxLength(200)
   refreshToken: string;
+}
+
+export class ForgotPasswordDto {
+  @IsEmail()
+  @MaxLength(254)
+  email: string;
+}
+
+export class ResetPasswordDto {
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(200)
+  token: string;
+
+  /** 8–72 символа, как и при регистрации */
+  @IsString()
+  @MinLength(8)
+  @MaxLength(72)
+  newPassword: string;
 }
